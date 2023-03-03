@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.shop_c.mapper.TestMapper">
+
+	<select id = "selectTest" 
+			resultType="goodee.gdj58.shop_c.vo.Test">
+			
+		
+		SELECT site_hits_no siteHitsNo 
+			, site_hits siteHits
+			, createdate
+		FROM shopping_site_hits
+			
+			
+	
+	
+	</select>	
+
+
+	<insert id = "insertTest">
+	
+		INSERT INTO shopping_site_hits (
+			site_hits
+		) VALUES (
+			21
+		)
+	
+	</insert>
+
+
+
+
+
+
+
+
+</mapper>
