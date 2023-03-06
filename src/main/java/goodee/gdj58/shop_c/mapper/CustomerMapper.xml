@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.shop_c.mapper.Customer">
+	<select id="customerInfo"
+			parameterType="goodee.gdj58.shop_c.vo.Customer"
+			resultType="goodee.gdj58.shop_c.vo.Customer">
+		SELECT customerId
+			, customerName
+			, customerNickname
+			, customerPostalcode
+			, customerAddress
+			, customerPhone
+			, customerRank
+			, customerEmail
+			, customerPoint
+			, customerBirth
+			, customerGender
+			, createdate
+			, customerEmailMarketingAccept
+			, customerInfoAgree
+			, customerLastLoginDate
+		FROM customer
+		WHERE customerId = #{customerId}
+	</select>
+	
+	<select id="login"
+			parameterType="goodee.gdj58.shop_c.vo.Customer"
+			resultType="goodee.gdj58.shop_c.vo.Customer">
+		SELECT customerId
+			, customerName
+			, customerNickname
+		FROM customer
+		WHERE customerId = #{customerId} AND customerPW = PASSWORD(#{customerPw})
+	</select>
+
+</mapper>
