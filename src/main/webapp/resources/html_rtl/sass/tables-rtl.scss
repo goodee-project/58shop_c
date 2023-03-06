@@ -1,0 +1,39 @@
+@import 'variables'; // colors, fonts etc...
+@import 'mixin'; // custom mixins
+@import 'layout'; // responsive grid and media queries
+
+.pricing-switcher {
+	
+	label {
+		float: right;
+	}
+	.switch {
+		left: inherit;
+		right: 3px;
+	}
+	input[type="radio"]:checked+label+.switch,
+	input[type="radio"]:checked+label:nth-of-type(n)+.switch {
+		/* use label:nth-of-type(n) to fix a bug on safari with multiple adjacent-sibling selectors*/
+		@include translateX(-88px);
+	}
+}
+
+.pricing-footer {
+	&::after {
+		/* right arrow visible on mobile */
+		right: inherit;
+		left: 1em;
+		-webkit-transform: rotate(180deg); 
+				-moz-transform: rotate(180deg);
+				-o-transform: rotate(180deg);
+				-ms-transform: rotate(180deg);
+				transform: rotate(180deg); 
+	}
+}
+
+.pricing-features {
+	li {
+		float: right;
+	}
+}
+

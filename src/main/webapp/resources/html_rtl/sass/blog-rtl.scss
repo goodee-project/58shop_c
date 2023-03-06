@@ -1,0 +1,88 @@
+@import 'variables';
+@import 'mixin';
+
+/*-------- Blog --------*/
+article.blog {
+    .post_info {
+        ul {
+            li {
+                padding: 12px 55px  0 0;
+                .thumb {
+                	left: inherit;
+                    right: 0;
+                }
+                &:last-child {
+                    float: left;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}
+/*Blog Sidebar*/
+.alignleft {
+	float: right;
+	margin: 0 0 10px 15px;
+}
+
+.widget-title {
+	padding: 15px 0;
+	margin-bottom: 20px;
+	border-bottom: 1px solid $border-color-2;
+	 h4 {
+		padding: 0;
+		margin: 0;
+		font-weight: 500;
+		line-height:$line-height-none;
+		@include fontSize(15px);
+	}
+}
+.widget {
+	ul.cats {
+		a {
+			span {
+				right: inherit;
+				left: 0;
+			}
+		}
+	}
+}
+
+
+/*Blog Post*/
+.postmeta {
+	padding-bottom: 10px;
+	ul {
+		margin-bottom: 10px;
+		li {
+			display: inline-block;
+			margin:0 0 5px 10px;
+			a {
+				color: #999;
+				&:hover {
+					color: $color-1;
+				}
+			}
+		}
+	}
+}
+.dropcaps p:first-child::first-letter {
+	float: right;
+	margin: 10px 0 0 15px !important;
+}
+#comments {
+	.replied-to {
+		margin-left: inherit;
+		margin-right: 35px;
+		@include mobile {
+			margin-left: inherit;
+			margin-right: 20px;
+		}
+	}
+}
+.avatar {
+	float:right;
+	margin-right:inherit;
+	margin-left:25px;	
+}

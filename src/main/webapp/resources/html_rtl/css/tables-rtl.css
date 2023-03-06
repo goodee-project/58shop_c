@@ -1,0 +1,30 @@
+.pricing-switcher label {
+  float: right;
+}
+.pricing-switcher .switch {
+  left: inherit;
+  right: 3px;
+}
+.pricing-switcher input[type="radio"]:checked + label + .switch,
+.pricing-switcher input[type="radio"]:checked + label:nth-of-type(n) + .switch {
+  /* use label:nth-of-type(n) to fix a bug on safari with multiple adjacent-sibling selectors*/
+  -webkit-transform: translateX(-88px);
+  -ms-transform: translateX(-88px);
+  -o-transform: translateX(-88px);
+  transform: translateX(-88px);
+}
+
+.pricing-footer::after {
+  /* right arrow visible on mobile */
+  right: inherit;
+  left: 1em;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.pricing-features li {
+  float: right;
+}
