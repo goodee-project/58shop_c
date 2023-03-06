@@ -1,24 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.CustomerMapper">
+	
+	<insert id="insertTotalId"
+			parameterType="java.lang.String">
+	</insert>
+	
+	<insert id="insertCustomer"
+			parameterType="goodee.gdj58.shop_c.vo.Customer">
+		INSERT INTO customer(
+						customer_id
+						, customer_pw
+						, customer_name
+						, customer_nickname
+						, customer_postcode
+						, customer_address
+						, customer_phone
+						, customer_rank
+						, customer_email
+						, customer_pay
+						, customer_point
+						, customer_birth
+						, customer_gender
+						, createdate
+						, updatedate
+						, customer_email_marketing_accept
+						, customer_info_agree
+						, customer_last_login_date
+					) VALUES (
+						#{customerId}
+						, PASSWORD(#{customerPw})
+						, #{customerName}
+						, #{customerNickname}
+						, #{customerPostcode}
+						, #{customerAddress}
+						, #{customerPhone}
+						, '일반'
+						, #{customerEmail}
+						, 0
+						, 0
+						, #{customerBirth}
+						, #{customerGender}
+						, CURDATE()
+						, CURDATE()
+						, #{customerEmailMarketingAccept}
+						, #{customerInfoAgree}
+						, CURDATE()
+					)
+	</insert>
+	
 	<select id="customerInfo"
 			parameterType="goodee.gdj58.shop_c.vo.Customer"
 			resultType="goodee.gdj58.shop_c.vo.Customer">
-		SELECT customerId
-			, customerName
-			, customerNickname
-			, customerPostalcode
-			, customerAddress
-			, customerPhone
-			, customerRank
-			, customerEmail
-			, customerPoint
-			, customerBirth
-			, customerGender
+		SELECT customer_id customerId
+			, customer_name customerName
+			, customer_nickname customerNickname
+			, customer_postecode customerPostcode
+			, customer_address customerAddress
+			, customer_phone customerPhone
+			, customer_rank customerRank
+			, customer_email customerEmail
+			, customer_point customerPoint
+			, customer_birth customerBirth
+			, customer_gender customerGender
 			, createdate
-			, customerEmailMarketingAccept
-			, customerInfoAgree
-			, customerLastLoginDate
+			, customer_email_marketing_accept customerEmailMarketingAccept
+			, customer_last_login_date customerLastLoginDate
 		FROM customer
 		WHERE customerId = #{customerId}
 	</select>
@@ -26,11 +73,11 @@
 	<select id="login"
 			parameterType="goodee.gdj58.shop_c.vo.Customer"
 			resultType="goodee.gdj58.shop_c.vo.Customer">
-		SELECT customerId
-			, customerName
-			, customerNickname
+		SELECT customer_id customerId
+			, customer_name customerName
+			, customer_nickname customerNickname
 		FROM customer
-		WHERE customerId = #{customerId} AND customerPW = PASSWORD(#{customerPw})
+		WHERE customer_id = #{customerId} AND customer_pw = PASSWORD(#{customerPw})
 	</select>
 
 </mapper>
