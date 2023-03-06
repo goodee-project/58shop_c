@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Goods {
 	private int goodsNo;
+	private String companyId;
 	private int typeNo; // 카테고리
 	private String goodsName;
 	private int goodsPrice;
