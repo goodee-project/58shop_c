@@ -1,3 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="goodee.gdj58.shop_c.mapper.CartMapper"></mapper>
+<mapper namespace="goodee.gdj58.shop_c.mapper.CartMapper">
+	
+	
+	<!--  구매완료시 장바구니상품 삭제 -->
+	<delete id="deleteCartById" parameterType="int">
+		DELETE 
+		FROM shopping_cart 
+		WHERE customer_id = #{customeId} 
+	</delete>
+	 
+	<!--  장바구니 상품 삭제버튼 -->
+	<delete id="deleteCartOne" parameterType="int">
+		DELETE 
+		FROM shopping_cart 
+		WHERE cart_no = #{cartNo} 
+		AND customer_id = #{customeId} 
+	</delete>	
+		 
+	<!--  장바구니 수량 수정 -->
+	<update id="modifyCartQuantity" parameterType="int">
+		UPDATE shopping_cart SET cart_quantity = #{cartQuantity}
+		WHERE cart_no = #{cartNo} AND customer_id = #{customerId}	
+	</update>	
+	 
+	<!--  현재 장바구니에 있는 상품일시 수량 + -->
+	<update id="modifyCartQuantityBySum" parameterType="int">
+		UPDATE shopping_cart SET cart_quantity = #{cartQuantity} + cart_quantity
+		WHERE cart_no = #{cartNo} AND customer_id = #{customerId}	
+	</update>
+		 
+	<!--  현재 장바구니에 있는 상품인지 확인 -->
+	<select id="selectCartOneCk" resultType="goodee.gdj58.shop_c.vo.Cart" parameterType="int">
+		SELECT * FROM shopping_cart
+		WHERE customer_id = #{customerId}	
+	</select>
+	 
+	<!--  cartQuantity 합계 -->
+	<select id="selectCartListSumByCart" resultType="java.util.Map" parameterType="String">
+		SELECT SUM(t.cartQuantity) sumQuantity
+		FROM (SELECT c.cart_no cartNo
+					, c.cart_quantity cartQuantity
+					, go.goods_option_no goodsOptionNo
+					, g.goods_price goodsPrice
+				FROM shopping_cart c
+				INNER JOIN shopping_goods_option go ON c.goods_option_no = go.goods_option_no
+				INNER JOIN shopping_goods g ON go.goods_no = g.goods_no
+		WHERE c.customer_id = #{customerId}) t	 
+	</select>
+		 
+	<!--  cartList 합계 -->
+	<select id="selectCartListSumByCart" resultType="java.util.Map" parameterType="String">
+	SELECT SUM(t.cartQuantity*t.goodsPrice) sumPrice
+	FROM (SELECT c.cart_no cartNo
+				, c.cart_quantity cartQuantity
+				, go.goods_option_no goodsOptionNo
+				, g.goods_price goodsPrice
+			FROM shopping_cart c
+			INNER JOIN shopping_goods_option go ON c.goods_option_no = go.goods_option_no
+			INNER JOIN shopping_goods g ON go.goods_no = g.goods_no
+	WHERE c.customer_id = #{customerId}) t	 
+	</select>
+	 
+	<!--  장바구니 추가 -->
+	<insert id="insertCart" parameterType="goodee.gdj58.shop_c.vo.Cart">
+		INSERT INTO shopping_cart(
+			cart_no
+			, goods_option_no
+			, customer_id
+			, cart_quantity
+		) VALUES (
+			#{cartNo}
+			, #{goodsOptionNo}
+			, #{customerId}
+			, #{cartQuantity})	 		 
+	</insert>		
+	  
+	<!--  장바구니  -->
+	<select id="selectCartList" resultType="java.util.Map" parameterType="string">
+		SELECT 
+		c.cart_no cartNo
+		, c.cart_quantity cartQuantity
+		, go.goods_option_no goodsOptionNo
+		, g.goods_name goodsName
+		, g.goods_price goodsPrice
+		, gi.goods_img_save_name goodsImgSaveName
+		FROM shopping_cart c
+		INNER JOIN shopping_goods_option go ON c.goods_option_no = go.goods_option_no
+		INNER JOIN shopping_goods_img gi ON go.goods_option_no = gi.goods_no
+		INNER JOIN shopping_goods g ON gi.goods_no = g.goods_no
+		WHERE c.customer_id = #{customerId}
+	</select>
+
+</mapper>
