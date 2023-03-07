@@ -2,13 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.CustomerMapper">
 	
-	<insert id="insertTotalId"
-			parameterType="java.lang.String">
-	</insert>
-	
+	<!-- 회원가입 -->
 	<insert id="insertCustomer"
 			parameterType="goodee.gdj58.shop_c.vo.Customer">
-		INSERT INTO customer(
+		INSERT INTO customer (
 						customer_id
 						, customer_pw
 						, customer_name
@@ -26,7 +23,6 @@
 						, updatedate
 						, customer_email_marketing_accept
 						, customer_info_agree
-						, customer_last_login_date
 					) VALUES (
 						#{customerId}
 						, PASSWORD(#{customerPw})
@@ -45,10 +41,10 @@
 						, CURDATE()
 						, #{customerEmailMarketingAccept}
 						, #{customerInfoAgree}
-						, CURDATE()
 					)
 	</insert>
 	
+	<!-- 회원정보조회 -->
 	<select id="customerInfo"
 			parameterType="goodee.gdj58.shop_c.vo.Customer"
 			resultType="goodee.gdj58.shop_c.vo.Customer">
@@ -70,6 +66,15 @@
 		WHERE customerId = #{customerId}
 	</select>
 	
+	<!-- 마지막 로그인 일시 업데이트 -->
+	<update id="lastLoginUpdate"
+			parameterType="goodee.gdj58.shop_c.vo.Customer">
+		UPDATE customer
+		SET customer_last_login_date = CURDATE()
+		WHERE customer_id = #{customerId} AND customer_pw = PASSWORD(#{customerPw})
+	</update>
+	
+	<!-- 로그인 정보 -->
 	<select id="login"
 			parameterType="goodee.gdj58.shop_c.vo.Customer"
 			resultType="goodee.gdj58.shop_c.vo.Customer">

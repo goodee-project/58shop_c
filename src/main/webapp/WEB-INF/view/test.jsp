@@ -12,6 +12,7 @@
 	
 	<body>
 		
-		
+		<div>로그인확인</div>
+		<a href="${pageContext.request.contextPath}/customer/logout">로그아웃</a>
 	</body>
 </html>

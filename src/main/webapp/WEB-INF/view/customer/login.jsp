@@ -7,17 +7,18 @@
 <title></title>
 <style>
 	.loginMsg {
-		color:red;
+		color:#FF3300;
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function() {
-		let loginMsgCheck=0;
 		
 		$('#id').focus();
 
 		$('#loginBtn').click(function() {
+			let loginMsgCheck=0;
+			
 			// 아이디 유효성 검사
 			if($('#loginId').val() == '') {
 				$('#idMsg').text('아이디를 입력해주세요');
@@ -34,18 +35,15 @@
 			
 			$('.loginMsg').each(function() {
 				if($(this).text() == '') { // 아이디와 비밀번호를 모두 입력하면 loginMsgCheck == 2
-					++ loginMsgCheck;
-					return false;
+					++loginMsgCheck;
+					console.log($(this).text());
 				} 
 			});
-			console.log('loginMsgCheck: '+loginMsgCheck);
-			console.log('length: '+$('.loginMsg').length);
-			
-			if(loginMsgCheck == $('.loginMsg').length) { // loginMsgCheck의 길이와 loginMsg class개체 개수와 같으면 submit
+			console.log('+loginMsgCheck: '+loginMsgCheck);
+			if(loginMsgCheck == $('.loginMsg').length) { // loginMsgCheck의 값과 loginMsg class개체 개수와 같으면 submit
 				$('#loginForm').submit();
 			}
 		});
-		
 		
 	});
 </script>
@@ -58,7 +56,7 @@
 				<tr>
 					<td>ID</td>
 					<td>
-						<input type="text" id="loginId" name="loginId">
+						<input type="text" id="loginId" name="customerId">
 					</td>
 				</tr>
 				<tr>
@@ -70,7 +68,7 @@
 				<tr>
 					<td>PASSWORD</td>
 					<td>
-						<input type="password" id="loginPw" name="loginPw">
+						<input type="password" id="loginPw" name="customerPw">
 					</td>
 				</tr>
 				<tr>
@@ -83,5 +81,9 @@
 		</div>
 		<button type="button" id="loginBtn">login</button>
 	</form>
+	<div>
+		아직 회원이 아니신가요?
+		<a href="${pageContext.request.contextPath}/signup">회원가입</a>
+	</div>
 </body>
 </html>
