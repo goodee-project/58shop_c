@@ -18,6 +18,12 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!--JSON  -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1</version>
+		</dependency>
 		
 		<!--  JSP뷰 엔진 -->
 		<dependency>
