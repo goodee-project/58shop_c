@@ -195,10 +195,12 @@
 				$('#customerEmail').val($('#emailId').val()+'@'+emailDomain);
 				console.log('email: '+$('#customerEmail').val());
 			});
+			if($('#inputDomain').length == 1) {
 			$(document).on('change',$('#inputDomain'),function() { // 동적생성객체에 이벤트주기 $(document).on(발생시킬이벤트(ex. click), 객체접근자, function()
 				$('#customerEmail').val($('#emailId').val()+'@'+$('#inputDomain').val());
 				console.log('email: '+$('#customerEmail').val());
 			});
+			}
 	
 			// 전화번호
 			$('.phoneNum').change(function() {
@@ -292,6 +294,7 @@
 			
 			
 			$('#insertBtn').click(function() {
+				let submitCheck=0;
 				$('#customerAddress').val($('#address').val()+$('#addressDetail').val());
 				
 				console.log('name: '+$('#name').val());
@@ -308,81 +311,127 @@
 				if($('#name').val() == '') {
 					$('#nameMsg').text('이름을 입력하세요');
 					$('#nameMsg').focus();
-				} 
+				} else {
+					$('#nameMsg').text('');
+					++submitCheck;
+				}
 				
 				// 닉네임
 				if($('#nickname').val() == '') {
 					$('#nickMsg').text('닉네임을 입력하세요');
 					$('#nickMsg').focus()
-				} 
+				} else {
+					$('#nickMsg').text('');
+					++submitCheck;
+				}
 				
 				// 비밀번호 유효성검사
 				if($('#pw').val() == '') {
 					$('#pwMsg').text('비밀번호를 입력하세요');
 					$('#pw').focus();
-				} 
+				} else {
+					$('#pwMsg').text('');
+					++submitCheck;
+				}
 				
 				// 비밀번호 확인
 				if($('#pwck').val() == '') {
 					$('#pwckMsg').text('비밀번호가 일치하지 않습니다');
 					$('#pwck').focus();
-				} 
+				} else {
+					$('#pwckMsg').text('');
+					++submitCheck;
+				}
 				
 				// 이메일 유효성검사
 				if($('#emailId').val() == '') {
 					$('#emailMsg').text('이메일을 입력하세요');
 					$('#emailId').focus();
-				}
+				} else {
+					$('#emailMsg').text('');
+					++submitCheck;
+				} 
+				
 				if($('#emailDomain').val() == '') {
 					$('#emailMsg').text('이메일을 입력하세요');	
 					$('#emailDomain').focus();
-				} 
+				} else {
+					$('#emailMsg').text('');	
+					++submitCheck;
+				}
 	
 				// 전화번호
 				if($('#phone').val() == '') {
 					$('#phoneMsg').text('연락처를 확인하세요');
 					$('.phoneNum').focus();
+				} else {
+					$('#phoneMsg').text('');
+					++submitCheck;
 				}
 			
 				// 생년월일
 				if($('#year').val() == '0') {
 					$('#birthMsg').text('년도를 선택하세요');
 					$('#year').focus();
+				} else {
+					$('#birthMsg').text('');
+					++submitCheck;
 				}
 				if($('#month').val() == '0') {
 					$('#birthMsg').text('월을 선택하세요');
 					$('#month').focus();
+				} else {
+					$('#birthMsg').text('');
+					++submitCheck;
 				} 
 				if($('#date').val() == '0') {
 					$('#birthMsg').text('일을 선택하세요');
 					$('#date').focus();
+				} else {
+					$('#birthMsg').text('');
+					++submitCheck;
 				} 
 	
 				// 주소
 				if($('#address').val() == '') {
 					$('#addressMsg').text('주소를 입력하세요');
 					$('#address').focus();
-				} 
+				} else {
+					$('#addressMsg').text('');
+					++submitCheck;
+				}
 				
 				// 상세주소
 				if($('#addressDetail').val() == '') {
 					$('#addressDetailMsg').text('상세주소를 입력하세요');
 					$('#addressDetail').focus();
+				} else {
+					$('#addressDetailMsg').text('');
+					++submitCheck;
 				} 
 				
 				// 마케팅 동의
-				if($('.marketing').val() == '') {
+				if(!$('.marketing').is(':checked')) {
 					$('#marketingMsg').text('마케팅메일 수신여부를 체크해주세요');
 					$('.marketing').focus();
+				} else {
+					$('#marketingMsg').text('');
+					++submitCheck;
 				} 
 				
 				// 개인정보수집동의
-				if($('#customerInfo').val() == '') {
+				if(!$('#customerInfo').is(':checked')) {
 					alert('개인정보수집 및 이용에 동의해주세요');
 					return false;
 				} else {
-					$('#insertForm').submit();
+					++submitCheck;
 				}
+				
+				console.log(submitCheck);
+				
+				if(submitCheck == 14) {
+					$('#insertForm').submit();
+				} 
 				
 				
 			});
@@ -481,6 +530,7 @@
 					@
 					<span id="email">
 						<select id="emailDomain">
+							<option>==</option>
 							<option value="google.com">google.com</option>
 							<option value="naver.com">naver.com</option>
 							<option value="직접입력">직접입력</option>
