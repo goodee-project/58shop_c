@@ -69,7 +69,7 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}
 	
 	// 로그인 액션
@@ -78,7 +78,7 @@ public class CustomerController {
 		Customer loginCustomer=customerService.login(customer);
 		log.debug("\u001B[32m"+"CustomerController: "+loginCustomer);
 		session.setAttribute("loginCustomer", loginCustomer); // 세션에 로그인 정보 저장
-		return "test";
+		return "redirect:/main";
 	}
 	
 	// 로그인 폼
@@ -86,8 +86,8 @@ public class CustomerController {
 	public String loginCustomer(HttpSession session) {
 		Customer loginCustomer=(Customer)session.getAttribute("loginCustomer");
 		if(loginCustomer != null) { // 로그인 된 상태
-			return "redirect:/home";
+			return "redirect:/main";
 		}
-		return "customer/login";
+		return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}
 }

@@ -50,7 +50,7 @@
 	</select>
 		 
 	<!--  cartList 합계 -->
-	<select id="selectCartListSumByCart" resultType="java.util.Map" parameterType="String">
+	<select id="selectCartListSumByCart1" resultType="java.util.Map" parameterType="String">
 	SELECT SUM(t.cartQuantity*t.goodsPrice) sumPrice
 	FROM (SELECT c.cart_no cartNo
 				, c.cart_quantity cartQuantity

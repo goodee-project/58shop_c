@@ -41,7 +41,9 @@
 	<header class="header menu_fixed">
 		<ul id="top_menu">
 			<li><a href="" class="cart-menu-btn" title="Cart"></a></li>
+			<!--  
 			<li><a href="" id="sign-in" class="login" title="Sign In">Sign In</a></li>
+			-->
 			<li><a href="" class="wishlist_bt_top" title="Your wishlist">Your wishlist</a></li>
 		</ul>
 		<!-- /top_menu -->
@@ -62,6 +64,7 @@
 				<li><span><a href="">마켓</a></span></li>
 				<li><span><a href="">이벤트</a></span></li>
 				<li><span><a href="">고객센터</a></span></li>
+				<li><span><a href="${pageContext.request.contextPath }/customer/logout">로그아웃</a></span></li>
 			</ul>		
 		</nav>
 
