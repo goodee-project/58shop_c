@@ -559,16 +559,18 @@
 					<span id="genderMsg" class="checkMsg"></span>
 				</div>
 				
-				<div class="form-group">
-					<label>연락처</label>
-					<input type="hidden" id="phone" name="customerPhone">
-					<input class="form-control phoneNum" type="number" min="0" oninput="handleOnInput(this, 3)">
-					<input class="form-control phoneNum" type="number" min="0" oninput="handleOnInput(this, 4)">
-					<input class="form-control phoneNum" type="number" min="0" oninput="handleOnInput(this, 4)">
-					
-					<span id="phoneMsg" class="checkMsg"></span>
-					
-					<i class="icon_lock_alt"></i>
+				<div>
+					<div>
+						<label>연락처</label>
+					</div>
+					<div>
+						<input type="hidden" id="phone" name="customerPhone">
+						<input class="form-phone phoneNum" type="number" min="0" oninput="handleOnInput(this, 3)">
+						<input class="form-phone phoneNum" type="number" min="0" oninput="handleOnInput(this, 4)">
+						<input class="form-phone phoneNum" type="number" min="0" oninput="handleOnInput(this, 4)">
+						<span id="phoneMsg" class="checkMsg"></span>
+					</div>
+
 				</div>
 				
 				<div class="form-group">
