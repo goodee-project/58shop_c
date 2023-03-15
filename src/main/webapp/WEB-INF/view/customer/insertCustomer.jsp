@@ -38,6 +38,12 @@
 	<script src="https://www.google.com/recaptcha/api.js?render=6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
+		// submit 후 뒤로가기 막는 코드
+		window.history.forward();
+		function noBack(){
+			window.history.forward();
+		}
+
 		// 핸드폰번호에는 숫자만 입력가능하게 하는 함수
 		function handleOnInput(el, maxlength) {
 			  if(el.value.length > maxlength) {
@@ -57,33 +63,30 @@
 			  }
 		}
 		
-		 function reCapt() {
-	            grecaptcha.ready(function() {
-	                grecaptcha.execute('6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz', {action: 'signup'}).then(function(token) {
-	                    $('#token').val(token);
-	                    $.ajax({
-	                        url: 'validation',
-	                        type : 'POST',
-	                        dataType: 'json',
-	                        data : {'token': token},
-	                        success : function(result){
-	                            console.log(result);
-	                        },
-	                        fail: function(e){
-	                            console.log("fail")
-	                        }
-	                      });// end ajax
-	                });
-	            });
-	      }
+		// 전화번호 유효성검사
+		 function checkPhoneNumber(phone) {
+			let phoneRule=/^(010)[0-9]{4}[0-9]{4}$/
+			return phoneRule.test(phone);
+		}
 		
+		// 구글 recaptcha 토큰받기
+		function recaptchaToken() {
+			grecaptcha.ready(function() { 
+				grecaptcha.execute('6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz', {action: 'submit'}).then(function(token) {
+	             	//console.log(token);
+	             	$('#token').val(token);
+	             });
+			});
+		}
 		
-		
-	
 		$(function() {	
-			reCapt();
+
 			$('#id').focus();
 			
+			// recaptcha 토큰 받기
+			recaptchaToken();
+			// recaptcha 토큰 2분마다 새로 생성
+			setInterval(function () { recaptchaToken(); }, 2 * 60 * 1000);
 			
 			// 주소찾기
 			$('#addressBtn').click(function() {
@@ -127,9 +130,7 @@
 					});
 				}
 			});
-		
-			
-			
+
 			// 이름
 			$('#name').change(function() {
 				if($(this).val() == '') {
@@ -166,6 +167,15 @@
 				}
 			});
 			
+			// 성별
+			$('.gender').change(function() {
+				if($('.gender').val() == '') {
+					$('#genderMsg').text('성별을 선택하세요');
+				} else {
+					$('#genderMsg').text('');
+				}
+			})
+			
 			// 이메일 유효성검사
 			$('#emailId').change(function() {
 				if($(this).val() == '') {
@@ -176,9 +186,9 @@
 				}
 			});
 			
+
 			$('#emailDomain').change(function() {		
-				let emailDomain;
-				if($(this).val() == '') {
+				if($(this).val() == 0) {
 					$('#emailMsg').text('이메일을 입력하세요');
 				} else if($(this).val() == '직접입력') {
 					if($('#inputDomain').length == 0) {
@@ -187,20 +197,13 @@
 				} else {
 					if($('#inputDomain').length == 1) {
 						$('#inputDomain').remove();
-					}
-					emailDomain=$(this).val();
-					$('#emailMsg').text('');
-					$('#customerEmail').val($('#emailId').val()+'@'+$(this).val());
+					};
 				}
-				$('#customerEmail').val($('#emailId').val()+'@'+emailDomain);
-				console.log('email: '+$('#customerEmail').val());
 			});
-			if($('#inputDomain').length == 1) {
+
 			$(document).on('change',$('#inputDomain'),function() { // 동적생성객체에 이벤트주기 $(document).on(발생시킬이벤트(ex. click), 객체접근자, function()
-				$('#customerEmail').val($('#emailId').val()+'@'+$('#inputDomain').val());
-				console.log('email: '+$('#customerEmail').val());
+				console.log('inputDomain value: '+$('#inputDomain').val());
 			});
-			}
 	
 			// 전화번호
 			$('.phoneNum').change(function() {
@@ -215,6 +218,13 @@
 					}
 				});
 				$('#phone').val(phoneNumber);
+				let checkPhone=checkPhoneNumber($('#phone').val());
+				console.log(checkPhoneNumber($('#phone').val()));
+				if(!checkPhone) {
+					$('#phoneMsg').text('잘못된 전화번호입니다');
+				} else {
+					$('#phoneMsg').text('');	
+				}
 				console.log($('#phone').val());
 			});
 		
@@ -268,7 +278,6 @@
 				if($(this).val() == '') {
 					$('#addressMsg').text('주소를 입력하세요');
 				} else {
-					$('#addressMsg').text('');
 					$('#addressDetail').focus();
 				}
 			});
@@ -278,6 +287,7 @@
 				if($(this).val() == '') {
 					$('#addressDetailMsg').text('상세주소를 입력하세요');
 				} else {
+					$('#addressMsg').text('');
 					$('#addressDetailMsg').text('');
 				}
 			});
@@ -291,11 +301,23 @@
 				}
 			});
 			
-			
-			
+			// 가입버튼 누른 후
 			$('#insertBtn').click(function() {
 				let submitCheck=0;
+				console.log($('#token').val());
+				
+				// 주소 합치기
 				$('#customerAddress').val($('#address').val()+$('#addressDetail').val());
+				
+				// 이메일 주소 합치기
+				let domain;
+				if($('#emailDomain').val() != '직접입력' && $('#emailDomain').val() != '0') {
+					domain=$('#emailDomain').val();
+				} else if($('#emailDomain').val() == '직접입력'){
+					domain=$('#inputDomain').val();
+				}
+				console.log(domain);
+				$('#customerEmail').val($('#emailId').val()+'@'+domain);
 				
 				console.log('name: '+$('#name').val());
 				console.log('nickname: '+$('#nickname').val());
@@ -306,6 +328,7 @@
 				console.log('address: '+$('#customerAddress').val());
 				console.log('gender: '+$('.gender:checked').val());
 				console.log('postcode: '+$('#postcode').val());
+				console.log('inputDomainLength: '+$('#inputDomain').length);
 				
 				// 이름
 				if($('#name').val() == '') {
@@ -343,8 +366,19 @@
 					++submitCheck;
 				}
 				
+				// 성별확인
+				if(!$('.gender').is(':checked')) {
+					$('#genderMsg').text('성별을 선택하세요');
+					$('.gender').focus();
+				} else {
+					$('#genderMsg').text('');
+				}
+				
 				// 이메일 유효성검사
-				if($('#emailId').val() == '') {
+				console.log('emailDomain: '+$('#emailDomain').val());
+				console.log('inputDomain: '+$('#inputDomain').val());
+				console.log('emailId: '+$('#emailId').val());
+				if($('#emailId').val() == 0) {
 					$('#emailMsg').text('이메일을 입력하세요');
 					$('#emailId').focus();
 				} else {
@@ -352,7 +386,10 @@
 					++submitCheck;
 				} 
 				
-				if($('#emailDomain').val() == '') {
+				if($('#emailDomain').val() == 0) {
+					$('#emailMsg').text('이메일을 입력하세요');	
+					$('#emailDomain').focus();
+				} else if($('#emailDomain').val() == '직접입력' && $('#inputDomail').val() == '') {
 					$('#emailMsg').text('이메일을 입력하세요');	
 					$('#emailDomain').focus();
 				} else {
@@ -361,9 +398,11 @@
 				}
 	
 				// 전화번호
-				if($('#phone').val() == '') {
+				let checkPhone=checkPhoneNumber($('#phone').val());
+				if(!checkPhone) {
+					$('#phoneMsg').text('잘못된 전화번호입니다');
+				} else if($('#phone').val() == '') {
 					$('#phoneMsg').text('연락처를 확인하세요');
-					$('.phoneNum').focus();
 				} else {
 					$('#phoneMsg').text('');
 					++submitCheck;
@@ -395,7 +434,6 @@
 				// 주소
 				if($('#address').val() == '') {
 					$('#addressMsg').text('주소를 입력하세요');
-					$('#address').focus();
 				} else {
 					$('#addressMsg').text('');
 					++submitCheck;
@@ -425,23 +463,33 @@
 					return false;
 				} else {
 					++submitCheck;
-				}
-				
-				console.log(submitCheck);
-				
+				}				
+				//console.log(submitCheck);
+
 				if(submitCheck == 14) {
-					$('#insertForm').submit();
+					// 구글 reCaptcha 확인
+					$.ajax({
+	                        url: 'validation',
+	                        type : 'POST',
+	                        //ContentType: "application/x-www-form-urlencoded",
+	                        dataType: 'json',
+	                        data : {'token': $('#token').val()},
+	                        success : function(result){
+	                            console.log(result);
+	                        	$('#insertForm').submit();
+	                        },
+	                        fail: function(e){
+	                            console.log("fail");
+	                        }
+	       			});
 				} 
-				
-				
 			});
-	
 		});
 	</script>
 	
 </head>
 
-<body id="register_bg">
+<body id="register_bg" onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 	
 	<nav id="menu" class="fake_menu"></nav>
 	
@@ -530,7 +578,7 @@
 					@
 					<span id="email">
 						<select id="emailDomain">
-							<option>==</option>
+							<option value="0">==</option>
 							<option value="google.com">google.com</option>
 							<option value="naver.com">naver.com</option>
 							<option value="직접입력">직접입력</option>
@@ -621,9 +669,7 @@
 				</table>
 				
 				<br>
-			    <textarea type="text" id="token" name="token" value=""></textarea>
-
-
+				<input type="hidden" id="token" name="token">
 				<div id="pass-info" class="clearfix"></div>
 				<button type="button" class="btn_1 rounded full-width add_top_30" id="insertBtn">가입하기</button>
 				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/login">로그인하기</a></strong></div>
