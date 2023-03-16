@@ -1,3 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="goodee.gdj58.shop_c.mapper.GoodsMapper"></mapper>
+<mapper namespace="goodee.gdj58.shop_c.mapper.GoodsMapper">
+	<!-- 카테고리별 상품 출력 -->
+	<select id="selectGoodsCategory"
+			parameterType="java.util.Map"
+			resultType="java.util.Map">
+		WITH recursive t3 AS
+		( 
+			SELECT t1.type_no, t1.type_content, t1.parent_no, t1.group_no
+			FROM shopping_type t1
+			WHERE t1.type_no=#{typeNo}
+			UNION ALL
+			SELECT t2.type_no, t2.type_content, t2.parent_no, t2.group_no
+			FROM shopping_type t2
+			INNER JOIN t3 ON t2.parent_no=t3.type_no
+		)
+		SELECT t3.type_no typeNo
+			, t3.type_content typeContent
+			, t3.group_no groupNo
+			, t3.parent_no parentNo
+			, g.goods_no goodsNo
+			, g.company_id companyId
+			, g.goods_name goodsName
+			, g.goods_price goodsPrice
+			, g.goods_level goodsLevel
+			, g.goods_active goodsActive
+			, g.updatedate updatedate
+			, g.createdate createdate
+		FROM t3
+		INNER JOIN shopping_goods g
+		ON t3.type_no=g.type_no
+		<choose>
+			<when test='keyword.equals("new")'>
+				ORDER BY g.createdate DESC
+			</when>
+			<when test='keyword.equals("low")'>
+				ORDER BY g.goods_price ASC
+			</when>
+			<when test='keyword.equals("high")'>
+				ORDER BY g.goods_price DESC
+			</when>
+		</choose>
+	</select>
+
+</mapper>

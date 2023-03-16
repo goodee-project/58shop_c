@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.shop_c.mapper.TotalIdMapper;
+import goodee.gdj58.shop_c.util.TeamColor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,11 +18,11 @@ public class TotalIdService {
 	public String findId(String customerId) {
 		String result="YES";
 		String id=totalIdMapper.findId(customerId);
-		log.debug("\u001B[32m"+"TotalIdService findId: "+id);
+		log.debug(TeamColor.GREEN+"TotalIdService findId: "+id);
 		if(id != null) { // 사용중인 아이디
 			result="NO";
 		}
-		log.debug("\u001B[32m"+"TotalIdService : "+result);
+		log.debug(TeamColor.GREEN+"TotalIdService: "+result);
 		return result;
 	}
 }

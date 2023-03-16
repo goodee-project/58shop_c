@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import goodee.gdj58.shop_c.service.SignupService;
 import goodee.gdj58.shop_c.service.TotalIdService;
+import goodee.gdj58.shop_c.util.TeamColor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,7 +20,7 @@ public class CustomerRestController {
 	// 구글 recaptcha
     @PostMapping("/validation")
     public String recaptcha(@RequestParam(value="token") String token){
-    	log.debug(token);
+    	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
     	return signupService.recaptcha(token);
     }
     

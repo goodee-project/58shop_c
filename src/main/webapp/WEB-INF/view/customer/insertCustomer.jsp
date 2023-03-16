@@ -629,6 +629,7 @@
 					<input type="text" class="form-control" id="address" class="address" readonly="readonly">
 					<input type="text" class="form-control" id="postcode" name="customerPostcode" readonly="readonly">
 					<button type="button" id="addressBtn">주소찾기</button>
+					<i class="ti-home"></i>
 					<div>
 						<span id="addressMsg" class="checkMsg"></span>
 					</div>
@@ -638,7 +639,7 @@
 					<label>상세주소</label>
 					<input class="form-control" type="text" id="addressDetail" class="address">
 					<span id="addressDetailMsg" class="checkMsg"></span>
-					<i class="icon_lock_alt"></i>
+					<i class="ti-home"></i>
 				</div>
 				
 					<table>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import goodee.gdj58.shop_c.service.CustomerService;
+import goodee.gdj58.shop_c.util.TeamColor;
 import goodee.gdj58.shop_c.vo.Customer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +21,10 @@ public class CustomerController {
 	// 회원가입 액션
 	@PostMapping("/signup")
 	public String insertCustomer(HttpSession session, Customer customer) {
-		customerService.insertCustomer(customer);
+		int row=customerService.insertCustomer(customer);
+		if(row == 1) {
+			log.debug(TeamColor.GREEN+"CustomerController: 회원가입성공");
+		}
 		return "redirect:/login";
 	}
 	
@@ -38,15 +42,15 @@ public class CustomerController {
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		//return "redirect:/login";
-		return "redirect:http://3.34.241.220/58platform/integrationPage";
+		return "redirect:/login";
+		//return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}
 	
 	// 로그인 액션
 	@PostMapping("/login")
 	public String loginCustomer(HttpSession session, Customer customer) {
 		Customer loginCustomer=customerService.login(customer);
-		log.debug("\u001B[32m"+"CustomerController: "+loginCustomer);
+		log.debug(TeamColor.GREEN+"CustomerController: "+loginCustomer);
 		session.setAttribute("loginCustomer", loginCustomer); // 세션에 로그인 정보 저장
 		return "redirect:/main";
 	}
@@ -58,7 +62,7 @@ public class CustomerController {
 		if(loginCustomer != null) { // 로그인 된 상태
 			return "redirect:/main";
 		}
-		//return "customer/login";
-		return "redirect:http://3.34.241.220/58platform/integrationPage";
+		return "customer/login";
+		//return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}
 }
