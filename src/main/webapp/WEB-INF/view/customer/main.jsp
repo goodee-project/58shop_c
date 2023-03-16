@@ -108,7 +108,16 @@
 				</li>
 				<li><span><a href="">이벤트</a></span></li>
 				<li><span><a href="">고객센터</a></span></li>
-				<li><span><a href="${pageContext.request.contextPath }/customer/logout">로그아웃</a></span></li>
+				<li>
+					<c:choose>
+						<c:when test="${loginCustomer != null}">
+							<span><a href="${pageContext.request.contextPath }/customer/logout">로그아웃</a></span>
+						</c:when>
+						<c:otherwise>
+							<span><a href="${pageContext.request.contextPath }/customer/login">로그인</a></span>
+						</c:otherwise>
+					</c:choose>
+				</li>
 			</ul>		
 		</nav>
 

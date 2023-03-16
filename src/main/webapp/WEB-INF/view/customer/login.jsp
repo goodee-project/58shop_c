@@ -39,7 +39,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			
+
 			$('#id').focus();
 	
 			$('#loginBtn').click(function() {
@@ -111,14 +111,12 @@
 					
 				</div>
 				<div class="clearfix add_bottom_30">
-					<div class="checkboxes float-start">
-						<label class="container_check">Remember me
-						  <input type="checkbox">
-						  <span class="checkmark"></span>
-						</label>
-					</div>
 					<div class="float-end mt-1"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
 				</div>
+				<div>
+					<input type="hidden" id="loginFail" value="${loginFail}">
+					<span id="failMsg" class="loginMsg"></span>
+				</div>	
 				<button type="button" class="btn_1 rounded full-width" id="loginBtn">login</button>
 				<div class="text-center add_top_10">아직 회원이 아니신가요? <strong><a href="${pageContext.request.contextPath}/signup">회원가입</a></strong></div>
 			</form>

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -48,8 +49,13 @@ public class CustomerController {
 	
 	// 로그인 액션
 	@PostMapping("/login")
-	public String loginCustomer(HttpSession session, Customer customer) {
+	public String loginCustomer(HttpSession session, Customer customer, Model model) {
 		Customer loginCustomer=customerService.login(customer);
+		if(loginCustomer == null) {
+			String loginFail="fail";
+			model.addAttribute("loginFail", loginFail);
+			return "customer/login";
+		}
 		log.debug(TeamColor.GREEN+"CustomerController: "+loginCustomer);
 		session.setAttribute("loginCustomer", loginCustomer); // 세션에 로그인 정보 저장
 		return "redirect:/main";
