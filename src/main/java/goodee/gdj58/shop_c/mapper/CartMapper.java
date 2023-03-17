@@ -1,6 +1,6 @@
 package goodee.gdj58.shop_c.mapper;
 
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -10,14 +10,24 @@ import goodee.gdj58.shop_c.vo.Cart;
 
 @Mapper                              
 public interface CartMapper {
-	 
-	int deleteCartById(String customerId); //구매완료시 장바구니상품 삭제
-	int deleteCartOne(Cart cart); //장바구니 상품 삭제버튼
-	int modifyCartQuantity(Cart cart); //장바구니 수량 수정
-	int modifyCartQuantityBySum(Cart cart); //현재 장바구니에 있는 상품일시 수량 +
-	int selectCartOneCk(Cart cart); //현재 장바구니에 있는 상품인지 확인 
-	HashMap<String, Object> selectCartQuantitySum(String cusomerId); //cartQuantity 합계
-	HashMap<String, Object> selectCartListSumByCart(String cusomerId); //cartList 합계
-	int insertCart(Cart cart); //장바구니 추가
-	List<Map<String, Object>> selectCartList(String cusomerId); //장바구니
+
+
+	Map<String, Object> cartQuantitySum(String customerId); // 4-2) 장바구니 총 상품 개수
+	int deleteCartAll(String customerId); // 4-1) 주문시 cart delete
+	int deleteCart(Cart cart); // 4) cart delete
+	int updateCart(Map<String, Object> paramMap); // 3) cart update
+	int cartOneQty(Cart cart); // 2-2) cartOne (1개의 물품 수량정보만 불러오기)
+	List<Map<String, Object>> cartOne(String customerId, int cartNo); // 2-1) cartlistOne
+	List<Map<String, Object>> cartList(String customerId); // 2) cart list
+	boolean cartListCk(Cart cart); // 1-1) cart 중복체크
+	int insertCart(Cart cart); // 1) cart insert	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

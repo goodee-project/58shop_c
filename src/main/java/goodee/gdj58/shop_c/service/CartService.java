@@ -9,59 +9,64 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.shop_c.mapper.CartMapper;
+import goodee.gdj58.shop_c.util.TeamColor;
 import goodee.gdj58.shop_c.vo.Cart;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Service
 @Transactional
 public class CartService {
 	@Autowired private CartMapper cartMapper;
 	
-	//구매완료시 장바구니상품 삭제
-	public int removeCartById(String customerId) {
-		return cartMapper.deleteCartById(customerId);
+	//4-2) 장바구니 총 상품 개수
+	public Map<String, Object> getCartQuantitySum(String customerId){
+		Map<String, Object> m = new HashMap<String, Object>();
+		m.put("cusotmerId", customerId);
+		return cartMapper.cartQuantitySum(customerId);
+	}
+	//4-1) 주문시 cart delete
+	public int deleteCartAll(String customerId) {
+		return cartMapper.deleteCartAll(customerId);
 	}
 	
-	//장바구니 상품 삭제버튼
-	public int removeCartOne(Cart cart) {
-		return cartMapper.deleteCartOne(cart);		
+	//4) cart delete
+	public int deleteCart(Cart cart) {		
+		return cartMapper.deleteCart(cart);		
 	}
 	
+	//3) cart update
+	public int updateCart(int cartQuantity, int cartNo, String customerId) {
+		Map<String, Object> paramMap = new HashMap<String, Object>(); // 다형성
+		paramMap.put("cartQuantity", cartQuantity);
+		paramMap.put("cartNo", cartNo);
+		paramMap.put("customerId", customerId);
+		return cartMapper.updateCart(paramMap);
+	}
+	// 2-2) cartOne (1개의 물품 수량정보만 불러오기)
+	public int cartOneQty(Cart cart) {
+		return cartMapper.cartOneQty(cart);
+	}	
 	
-	//장바구니 수량 수정
-	public int modifyCartQuantity(Cart cart) {
-		return cartMapper.modifyCartQuantity(cart);
+	// 2-1) cartlistOne
+	public List<Map<String, Object>> cartOne(String customerId, int cartNo){
+		Map<String, Object> list = new HashMap<String, Object>();
+		list.put("customerId", customerId);
+		list.put("cartNo", cartNo);
+		return cartMapper.cartOne(customerId, cartNo);
+	}
+	//2) cart list
+	public List<Map<String, Object>> cartList(String customerId){
+		log.debug(TeamColor.PURPLE + customerId + "<- customerId, cartList");		
+		return cartMapper.cartList(customerId);
 	}
 	
-	
-	//현재 장바구니에 있는 상품일시 수량 +
-	public int modifyCartQuantityBySum(Cart cart) {
-		return cartMapper.modifyCartQuantityBySum(cart);		
+	//1-1) cart 중복체크
+	public boolean cartListCk(Cart cart) {
+		return cartMapper.cartListCk(cart);
 	}
 	
-	
-	
-	//현재 장바구니에 있는 상품인지 확인
-	public int getCartOneCk(Cart cart) {
-		return cartMapper.selectCartOneCk(cart);		
-	}
-
-	//cartQuantity 합계
-	public HashMap<String, Object> getCartQuantitySum(String cusomerId){
-		return cartMapper.selectCartQuantitySum(cusomerId);		
-	}
-
-	//cartList 합계
-	public HashMap<String, Object> getCartListSumByCart(String cusomerId){
-		return cartMapper.selectCartListSumByCart(cusomerId);
-	}
-	
-	//장바구니 추가
-	public int addCart(Cart cart) {
+	//1) cart insert	
+	public int insertCart(Cart cart) {
 		return cartMapper.insertCart(cart);
-	}
-		
-	//장바구니
-	public List<Map<String, Object>> selectCartList(String cusomerId){
-		return cartMapper.selectCartList(cusomerId);
 	}
 }

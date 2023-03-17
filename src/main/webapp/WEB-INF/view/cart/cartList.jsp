@@ -1,21 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
-<head>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
     <meta name="author" content="Ansonika">
-    <title>Panagea | Premium site template for travel agencies, hotels and restaurant listing.</title>
+    <title>cart</title>
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="resources/html/img/favicon.ico" type="resources/html/image/x-icon">
-    <link rel="apple-touch-icon" type="resources/html/image/x-icon" href="resources/html/img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="resources/html/image/x-icon" sizes="72x72" href="resources/html/img/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="resources/html/image/x-icon" sizes="114x114" href="resources/html/img/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="resources/html/image/x-icon" sizes="144x144" href="resources/html/img/apple-touch-icon-144x144-precomposed.png">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="resources/html/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="resources/html/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="resources/html/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="resources/html/img/apple-touch-icon-144x144-precomposed.png">
 
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -25,20 +26,47 @@
     <link href="resources/html/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/html/css/style.css" rel="stylesheet">
 	<link href="resources/html/css/vendors.css" rel="stylesheet">
-	
-	<!-- SPECIFIC CSS -->
-    <link href="resources/html/layerslider/css/layerslider.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
     <link href="resources/html/css/custom.css" rel="stylesheet">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<c:forEach var="c" items="${list}">
+			<script>
+				$(document).ready(function(){
+					// 상품 수량 수정 js
+					$('#cartQuantityBtn${c.goodsNo}').click(function(){
+						let cartQuantity = $('#cartQuantity${c.goodsNo}');
+						console.log('(1)'+cartQuantity.val());
+						
+						let cartQtt = $('#cartQtt${c.goodsNo}');
+						cartQtt = cartQuantity
+						console.log('(2)'+cartQtt.val())
+						$('input[name=cartQuantity]').attr('value',cartQtt.val());
+						$('#updateQttForm${c.goodsNo}').submit();
+					});
+				});
+			</script>
+		</c:forEach>
+
+
+
+
 
 </head>
 
 <body>
 	
-	<div id="page">
-	
+	<div id="page" class="theia-exception">
+		
 	<header class="header menu_fixed">
+		
+		<div id="logo">
+			<a href="index.html">
+				<img src="img/logo.svg" width="150" height="36" alt="" class="logo_normal">
+				<img src="img/logo_sticky.svg" width="150" height="36" alt="" class="logo_sticky">
+			</a>
+		</div>
 		<ul id="top_menu">
 			<li><a href="${pageContext.request.contextPath}/cart/cartList" class="cart-menu-btn" title="Cart"></a></li>
 			<!--  
@@ -46,6 +74,7 @@
 			-->
 			<li><a href="" class="wishlist_bt_top" title="Your wishlist">Your wishlist</a></li>
 		</ul>
+
 		<!-- /top_menu -->
 		<a href="#menu" class="btn_mobile">
 			<div class="hamburger hamburger--spin" id="hamburger">
@@ -121,144 +150,169 @@
 			</ul>		
 		</nav>
 
+
 	</header>
 	<!-- /header -->
-
+	
 	<main>
-		<!-- Slider -->
-		<div id="full-slider-wrapper">
-			<div id="layerslider" style="width:100%;height:750px;">
-				<!-- first slide -->
-				<div class="ls-slide" data-ls="slidedelay: 5000; transition2d:85;">
-					<img src="${pageContext.request.contextPath}/upload/goodsImg/img02.jpg" class="ls-bg" alt="Slide background">
-					<h3 class="ls-l slide_typo" style="top: 47%; left: 50%;" data-ls="offsetxin:0;durationin:2000;delayin:1000;easingin:easeOutElastic;rotatexin:90;transformoriginin:50% bottom 0;offsetxout:0;rotatexout:90;transformoriginout:50% bottom 0;"><strong>HYPER BLOOM</strong></h3>
-					<p class="ls-l slide_typo_2" style="top:55%; left:50%;" data-ls="durationin:2000;delayin:1000;easingin:easeOutElastic;">
-						SPRING IS COMING
-					</p>
-					<p class="ls-l" style="top:70%; left:50%;" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;"><a class="btn_1 rounded" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;" href=''>Read more</a></p>
-					
-				</div>
-				<!-- second slide -->
-				<div class="ls-slide" data-ls="slidedelay:5000; transition2d:103;">
-					<img src="${pageContext.request.contextPath}/upload/goodsImg/img03.jpg" class="ls-bg" alt="Slide background">
-					<h3 class="ls-l slide_typo" style="top: 47%; left: 50%;" data-ls="offsetxin:0;durationin:2000;delayin:1000;easingin:easeOutElastic;rotatexin:90;transformoriginin:50% bottom 0;offsetxout:0;rotatexout:90;transformoriginout:50% bottom 0;"><strong>HAPPY WHITE DAY</strong></h3>
-					<p class="ls-l slide_typo_2" style="top:55%; left:50%;" data-ls="durationin:2000;delayin:1000;easingin:easeOutElastic;">
-						몽블랑 화이트데이 기프트
-					</p>
-					<p class="ls-l" style="top:70%; left:50%;" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;"><a class="btn_1 rounded" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;" href=''>Read more</a></p>
-				</div>
-				<!-- third slide -->
-				<div class="ls-slide" data-ls="slidedelay: 5000; transition2d:5;">
-					<img src="${pageContext.request.contextPath}/upload/goodsImg/img04.jpg" class="ls-bg" alt="Slide background">
-					<h3 class="ls-l slide_typo" style="top:47%; left: 50%;" data-ls="offsetxin:0;durationin:2000;delayin:1000;easingin:easeOutElastic;rotatexin:90;transformoriginin:50% bottom 0;offsetxout:0;rotatexout:90;transformoriginout:50% bottom 0;"><strong>JO MALONE LONDON</strong></h3>
-					<p class="ls-l slide_typo_2" style="top:55%; left:50%;" data-ls="durationin:2000;delayin:1000;easingin:easeOutElastic;">
-						The Blossoms Collection
-					</p>
-					<p class="ls-l" style="top:70%; left:50%;" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;"><a class="btn_1 rounded" data-ls="durationin:2000;delayin:1400;easingin:easeOutElastic;" href=''>Read more</a></p>
+		<div class="hero_in cart_section">
+			<div class="wrapper">
+				<div class="container">
+					<div class="bs-wizard clearfix">
+						<div class="bs-wizard-step active">
+							<div class="text-center bs-wizard-stepnum">Your cart</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="#0" class="bs-wizard-dot"></a>
+						</div>
+
+						<div class="bs-wizard-step disabled">
+							<div class="text-center bs-wizard-stepnum">Payment</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="#0" class="bs-wizard-dot"></a>
+						</div>
+
+						<div class="bs-wizard-step disabled">
+							<div class="text-center bs-wizard-stepnum">Finish!</div>
+							<div class="progress">
+								<div class="progress-bar"></div>
+							</div>
+							<a href="#0" class="bs-wizard-dot"></a>
+						</div>
+					</div>
+					<!-- End bs-wizard -->
 				</div>
 			</div>
 		</div>
-		<!-- End layerslider -->
-		<div class="container container-custom margin_80_55">
-			<section class="add_bottom_45">
-				<div class="main_title_3">
-					<span><em></em></span>
-					<h2>Brand Look Book</h2>
-					<p>CHANEL</p>
+		<!--/hero_in-->
+
+		<div class="bg_color_1">
+			<div class="container margin_60_35">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="box_cart">
+						
+					<!-- 회원 장바구니 리스트 -->	
+					
+					<form action="${pageContext.request.contextPath}/orders/ordersAdd" method="get">
+						<table class="table table-hover w-100 rounded" style="table-layout: auto; width: 100%; table-layout: fixed;">
+
+							<tr>
+									<th>업체명${c.companyName}</th>
+							</tr>
+
+							<tr>
+								<th>상품이미지</th>
+								<th>상품이름</th>
+								<th>수량</th>
+								<th>상품금액</th>
+								<th>삭제</th>
+							</tr>
+							<c:forEach var="c" items="${list}">
+								<tr>
+									<td><!-- 상품이미지 -->
+										<div>
+										<div>
+											<img src="${pageContext.request.contextPath}/upload/goodsImg/${c.goodsImgSaveName}" width="200" height="200">
+											<div>
+												<p>${c.goodsPrice}</p>
+											</div>
+										</div>
+										</div>
+									</td>
+									<th><!-- 상품이름 -->
+										<input type="hidden" name="goodsNo" value="${c.goodsNo}"> 
+										${c.goodsName}
+										<input type="hidden" name="goodsName" value="${c.goodsName}" readonly="readonly"> 
+									</th>
+									<!-- 수량수정 -->
+									<td>
+										<select name="cartQuantity" id="cartQuantity${c.goodsNo}">
+											<c:forEach var="x" begin="1" end="10" step="1">
+												<c:choose> 
+													<c:when test="${x == c.cartQuantity}">
+														<option value="${x}" selected="selected">${x}</option>
+													</c:when> 
+													<c:otherwise>
+														<option value="${x}">${x}</option>
+													</c:otherwise> 
+												</c:choose> 
+											</c:forEach>
+										</select>
+										<button id="cartQuantityBtn${c.goodsNo}"  type="button">수정</button>
+									</td>
+									<td><!-- 상품가격 -->
+										${c.goodsPrice*c.cartQuantity}
+										<input type="hidden" name="goodsPrice" value="${c.goodsPrice}" readonly="readonly">
+									</td>
+									<td>
+										<a  href="${pageContext.request.contextPath}/CartDelete?goodsNo=${c.goodsNo}">X</a>
+									</td>
+								</tr>
+							</c:forEach>						
+						</table>
+						<br>
+						
+					</form>
+					
+					
+					<!-- 수량변경 히든폼 -->
+					<c:forEach var="c" items="${list}">
+						<form action="${pageContext.request.contextPath}/updateCart" method="post" id="updateQttForm${c.goodsNo}">
+							<input type="hidden" name="goodsNo" value="${c.goodsNo}">
+							<input type="hidden" name="cartQuantity" value="" id="cartQtt${c.goodsNo}">
+						</form>
+					</c:forEach>
+
+						
+						<!-- /cart-options -->
+					</div>
+					</div>
+					<!-- /col -->
+	
+					
+					<aside class="col-lg-4" id="sidebar">
+						<div class="box_detail">
+							<div id="total_cart">
+							<!-- 총주문금액 (상품개수 하나 이상일때만 조회가능)-->
+							<c:if test="${list.size() != 0}">
+									<tr>
+										<th colspan="3"><span style="font-size:20px">Order Price</span></th>
+										<th>
+											<c:set var = "cartPrice" value = "0" />
+												<c:forEach var="c" items="${list}">
+													<c:set var= "cartPrice" value="${cartPrice + (c.goodsPrice*c.cartQuantity)}"/>
+												</c:forEach>
+											<span style="font-size:23px; color:blue;">${cartPrice}￦</span>
+											<input type="hidden" name="cartPrice" value="${cartPrice}" readonly="readonly">
+										</th>
+
+									</tr>
+							</c:if>								
+
+							</div>
+							
+							<button class="btn_1 full-width purchase" type="submit">Order</button>
+							<div class="text-center"><small>No money charged in this step</small></div>
+						</div>
+					</aside>
 				</div>
-
-				<div id="reccomended_adventure" class="owl-carousel owl-theme">
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>7.9</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img09.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>9.0</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img10.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>9.5</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img11.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>9.0</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img12.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>9.0</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img13.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-
-					<div class="item">
-						<a href="" class="grid_item_adventure">
-							<figure>
-								<div class="score"><strong>8.5</strong></div>
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/img14.jpg" class="img-fluid" alt="">
-								<div class="info">
-									<em>CHANEL</em>
-									<h3>spring-summer<br>2023-pre-collection</h3>
-								</div>
-							</figure>
-						</a>
-					</div>
-				</div>
-				<!-- /reccomended_aventure -->
-			</section>
+				<!-- /row -->
 			</div>
-			<!-- /section -->
+			<!-- /container -->
+		</div>
+		<!-- /bg_color_1 -->
 	</main>
-	<!-- /main -->
+	<!--/main-->
 	
 	<footer>
 		<div class="container margin_60_35">
 			<div class="row">
 				<div class="col-lg-5 col-md-12 pe-5">
-					<p><img src="resources/html/img/logo.svg" width="150" height="36" alt=""></p>
+					<p><img src="img/logo.svg" width="150" height="36" alt=""></p>
 					<p>Mea nibh meis philosophia eu. Duis legimus efficiantur ea sea. Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cu. Nihil facilisi indoctum an vix, ut delectus expetendis vis.</p>
 					<div class="follow_us">
 						<ul>
@@ -393,25 +447,6 @@
     <script src="resources/html/js/common_scripts.js"></script>
     <script src="resources/html/js/main.js"></script>
 	<script src="resources/html/phpmailer/validate.js"></script>
-	
-	<!-- SPECIFIC SCRIPTS -->
-    <script src="resources/html/layerslider/js/greensock.js"></script>
-    <script src="resources/html/layerslider/js/layerslider.transitions.js"></script>
-    <script src="resources/html/layerslider/js/layerslider.kreaturamedia.jquery.js"></script>
-    <script>
-        'use strict';
-        $('#layerslider').layerSlider({
-            autoStart: true,
-            navButtons: false,
-            navStartStop: false,
-            showCircleTimer: false,
-            responsive: true,
-            responsiveUnder: 1280,
-            layersContainer: 1200,
-            skinsPath: 'layerslider/skins/'
-                // Please make sure that you didn't forget to add a comma to the line endings
-                // except the last line!
-        });
-    </script>
+  
 </body>
 </html>
