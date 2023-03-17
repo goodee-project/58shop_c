@@ -60,50 +60,50 @@
 				<li><span><a href="">신상품</a></span></li>
 				<li><span><a href="">베스트</a></span></li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=1&keyword=">뷰티</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=1&keyword=&searchword=">Beauty</a>
 					<ul>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=2&keyword=">향수</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=2&keyword=&searchword=">Perfume</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=3&keyword=">여성향수</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=4&keyword=">남성향수</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=3&keyword=&searchword=">Woman</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=4&keyword=&searchword=">Man</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=5&keyword=">헤어/바디</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=5&keyword=&searchword=">Hair/Body</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=6&keyword=">샴푸/린스</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=7&keyword=">바디워시/로션</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=6&keyword=&searchword=">HairShampoo/Conditioner</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=7&keyword=&searchword=">BodyWash/Lotion</a></li>
 							</ul>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=8&keyword=">패션</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=8&keyword=&searchword=">Fashion</a>
 					<ul>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=9&keyword=">여성패션</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=9&keyword=&searchword=">Woman</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=10&keyword=">아우터</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=11&keyword=">상의</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=12&keyword=">하의</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=10&keyword=&searchword=">Outer</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=11&keyword=&searchword=">Top</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=12&keyword=&searchword=">Bottom</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=13&keyword=">남성패션</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=13&keyword=&searchword=">Man</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=14&keyword=">아우터</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=15&keyword=">상의</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=16&keyword=">하의</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=14&keyword=&searchword=">Outer</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=15&keyword=&searchword=">Top</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=16&keyword=&searchword=">Bottom</a></li>
 							</ul>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=17&keyword=">마켓</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=17&keyword=&searchword=">Market</a>
 					<ul>
-						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=18&keyword=">신선식품</a></li>
-						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=19&keyword=">밀키트</a></li>
+						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=18&keyword=&searchword=">Fresh</a></li>
+						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=19&keyword=&searchword=">Meal Kit</a></li>
 					</ul>
 				</li>
 				<li><span><a href="">이벤트</a></span></li>

@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.GoodsMapper">
+	
+	<!-- 카테고리 이름 출력 -->
+	<select id="selectGoodsCategoryName"
+			parameterType="int"
+			resultType="java.util.Map">
+		WITH recursive t AS 
+		(
+			SELECT type_no
+				, parent_no
+				, type_content
+				, type_content typeName
+				, depth
+			FROM shopping_type
+			WHERE parent_no=0
+			UNION ALL 
+			SELECT t1.type_no
+				, t1.parent_no
+				, t1.type_content
+				, CONCAT(t.typeName, '>', t1.type_content) menu
+				, t1.depth
+			FROM shopping_type t1
+			INNER JOIN t
+			ON t1.parent_no=t.type_no
+		)
+		SELECT typeName, type_content typeContent,
+		(
+			SELECT type_content
+			FROM shopping_type t2
+			WHERE t2.type_no=t.parent_no AND t.depth > 0
+		) parent
+		FROM t
+		WHERE t.type_no=#{typeNo}
+	</select>
+	
 	<!-- 카테고리별 상품 출력 -->
 	<select id="selectGoodsCategory"
 			parameterType="java.util.Map"
 			resultType="java.util.Map">
 		WITH recursive t3 AS
 		( 
-			SELECT t1.type_no, t1.type_content, t1.parent_no, t1.group_no
+			SELECT t1.type_no, t1.type_content, t1.parent_no, t1.group_no, t1.depth
 			FROM shopping_type t1
 			WHERE t1.type_no=#{typeNo}
 			UNION ALL
-			SELECT t2.type_no, t2.type_content, t2.parent_no, t2.group_no
+			SELECT t2.type_no, t2.type_content, t2.parent_no, t2.group_no, t2.depth
 			FROM shopping_type t2
 			INNER JOIN t3 ON t2.parent_no=t3.type_no
 		)
@@ -19,6 +53,7 @@
 			, t3.type_content typeContent
 			, t3.group_no groupNo
 			, t3.parent_no parentNo
+			, t3.depth depth
 			, g.goods_no goodsNo
 			, g.company_id companyId
 			, g.goods_name goodsName
@@ -27,9 +62,18 @@
 			, g.goods_active goodsActive
 			, g.updatedate updatedate
 			, g.createdate createdate
+			, img.goods_img_origin_name goodsImgOriginName
+			, img.goods_img_level goodsImgLevel
 		FROM t3
 		INNER JOIN shopping_goods g
 		ON t3.type_no=g.type_no
+		INNER JOIN shopping_goods_img img
+		ON g.goods_no=img.goods_no
+		<where>
+			<if test='searchword != null || searchword !=""'>
+				g.goods_name LIKE CONCAT('%',#{searchword},'%')
+			</if>
+		</where>
 		<choose>
 			<when test='keyword.equals("new")'>
 				ORDER BY g.createdate DESC
