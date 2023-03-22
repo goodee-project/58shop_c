@@ -70,12 +70,14 @@
 					</a>
 				</td>
 				<td>
-					<a href="${pageContext.request.contextPath}/goods/goodsOne">
+					<a href="${pageContext.request.contextPath}/goods/goodsOne?goodsNo=${i.goodsNo}">
 						${i.goodsName}
 					</a>		
 				</td>
 				<td>${i.goodsPrice}</td>
-				<td>${i.companyId}</td>
+				<td>
+					<a href="${pageContext.request.contextPath}/goods/goodsCompany?companyNo=${i.companyId}">${i.companyName}</a>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

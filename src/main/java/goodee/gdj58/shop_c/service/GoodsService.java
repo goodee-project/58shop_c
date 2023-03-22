@@ -19,6 +19,24 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsService {
 	@Autowired GoodsMapper goodsMapper;
 	
+	public List<Map<String, Object>> selectGoodsOne(int goodsNo) {
+		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
+		resultMap=goodsMapper.selectGoodsOne(goodsNo);
+		if(!resultMap.isEmpty()) {
+			log.debug(TeamColor.GREEN+"GoodsService: 상품정보 조회 성공");
+		}
+		return resultMap;
+	}
+	
+	public List<Map<String, Object>> selectGoodsOption(int goodsNo) {
+		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
+		resultMap=goodsMapper.selectGoodsOption(goodsNo);
+		if(!resultMap.isEmpty()) {
+			log.debug(TeamColor.GREEN+"GoodsService: 상품옵션 조회 성공");
+		}
+		return resultMap;
+	}
+
 	public List<Map<String, Object>> selectGoodsCategoryName(int typeNo) {
 		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
 		resultMap=goodsMapper.selectGoodsCategoryName(typeNo);

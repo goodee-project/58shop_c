@@ -2,6 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.GoodsMapper">
 	
+	
+	<!-- 개별 상품정보 출력 -->
+	<select id="selectGoodsOne"
+			parameterType="int"
+			resultType="java.util.Map">
+		SELECT g.goods_no goodsNo
+			, g.goods_name goodsName
+			, g.goods_price goodsPrice
+			, g.type_no typeNo
+			, g.company_id companyId
+			, c.company_name companyName
+			, c.company_registration_number companyRegistratinNumber
+			, c.company_ceo companyCeo
+			, c.company_phone companyPhone
+			, c.company_email companyEmail
+			, c.company_address companyAddress
+			, img.goods_img_origin_name goodsImgOriginName
+			, img.goods_img_level goodsImgLevel		
+		FROM shopping_goods g
+		INNER JOIN shopping_company c
+		ON g.company_id=c.company_id
+		INNER JOIN shopping_goods_img img
+		ON g.goods_no=img.goods_no
+		WHERE g.goods_no=#{goodsNo}
+	</select>
+	
+	<!-- 상품옵션 출력 -->
+	<select id="selectGoodsOption"
+			parameterType="int"
+			resultType="java.util.Map">
+		SELECT goods_option_no goodsOptionNo
+			, goods_option_content goodsOptionContent
+			, goods_option_quantity goodsOptionQuantity
+		FROM shopping_goods_option
+		WHERE goods_no=#{goodsNo}
+	</select>
+	
 	<!-- 카테고리 이름 출력 -->
 	<select id="selectGoodsCategoryName"
 			parameterType="int"
@@ -62,6 +99,7 @@
 			, g.goods_active goodsActive
 			, g.updatedate updatedate
 			, g.createdate createdate
+			, c.company_name companyName
 			, img.goods_img_origin_name goodsImgOriginName
 			, img.goods_img_level goodsImgLevel
 		FROM t3
@@ -69,6 +107,8 @@
 		ON t3.type_no=g.type_no
 		INNER JOIN shopping_goods_img img
 		ON g.goods_no=img.goods_no
+		INNER JOIN shopping_company c
+		ON g.company_id=c.company_id
 		<where>
 			<if test='searchword != null || searchword !=""'>
 				g.goods_name LIKE CONCAT('%',#{searchword},'%')

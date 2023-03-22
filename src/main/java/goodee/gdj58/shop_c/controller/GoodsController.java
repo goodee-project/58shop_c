@@ -19,6 +19,19 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsController {
 	@Autowired GoodsService goodsService;
 	
+	// 상품옵션 조회
+	@GetMapping("/goods/goodsOne")
+	public String selectGoodsOne(@RequestParam(value="goodsNo") int goodsNo
+									, Model model) {
+		List<Map<String, Object>> selectGoodsOption=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> selectGoodsOne=new ArrayList<Map<String, Object>>();
+		selectGoodsOption=goodsService.selectGoodsOption(goodsNo);
+		selectGoodsOne=goodsService.selectGoodsOne(goodsNo);
+		model.addAttribute("goodsOption", selectGoodsOption);
+		model.addAttribute("goodsOne", selectGoodsOne);
+		return "goods/goodsOne";
+	}
+	
 	// 카테고리 상품 조회
 	@GetMapping("/goods/category")
 	public String selectGoodsCategory(@RequestParam(value="typeNo") int typeNo
