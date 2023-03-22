@@ -35,15 +35,15 @@
 			<script>
 				$(document).ready(function(){
 					// 상품 수량 수정 js
-					$('#cartQuantityBtn${c.goodsNo}').click(function(){
-						let cartQuantity = $('#cartQuantity${c.goodsNo}');
+					$('#cartQuantityBtn${c.cartNo}').click(function(){
+						let cartQuantity = $('#cartQuantity${c.cartNo}');
 						console.log('(1)'+cartQuantity.val());
 						
-						let cartQtt = $('#cartQtt${c.goodsNo}');
+						let cartQtt = $('#cartQtt${c.cartNo}');
 						cartQtt = cartQuantity
 						console.log('(2)'+cartQtt.val())
 						$('input[name=cartQuantity]').attr('value',cartQtt.val());
-						$('#updateQttForm${c.goodsNo}').submit();
+						$('#updateQttForm${c.cartNo}').submit();
 					});
 				});
 			</script>
@@ -201,10 +201,6 @@
 						<table class="table table-hover w-100 rounded" style="table-layout: auto; width: 100%; table-layout: fixed;">
 
 							<tr>
-									<th>업체명${c.companyName}</th>
-							</tr>
-
-							<tr>
 								<th>상품이미지</th>
 								<th>상품이름</th>
 								<th>수량</th>
@@ -212,6 +208,10 @@
 								<th>삭제</th>
 							</tr>
 							<c:forEach var="c" items="${list}">
+								<tr>
+									<td>${c.companyName}</td>
+								</tr>
+								
 								<tr>
 									<td><!-- 상품이미지 -->
 										<div>
@@ -230,7 +230,7 @@
 									</th>
 									<!-- 수량수정 -->
 									<td>
-										<select name="cartQuantity" id="cartQuantity${c.goodsNo}">
+										<select name="cartQuantity" id="cartQuantity${c.cartNo}">
 											<c:forEach var="x" begin="1" end="10" step="1">
 												<c:choose> 
 													<c:when test="${x == c.cartQuantity}">
@@ -242,14 +242,14 @@
 												</c:choose> 
 											</c:forEach>
 										</select>
-										<button id="cartQuantityBtn${c.goodsNo}"  type="button">수정</button>
+										<button id="cartQuantityBtn${c.cartNo}"  type="button">수정</button>
 									</td>
 									<td><!-- 상품가격 -->
 										${c.goodsPrice*c.cartQuantity}
 										<input type="hidden" name="goodsPrice" value="${c.goodsPrice}" readonly="readonly">
 									</td>
 									<td>
-										<a  href="${pageContext.request.contextPath}/CartDelete?goodsNo=${c.goodsNo}">X</a>
+										<a  href="${pageContext.request.contextPath}/deleteCart?cartNo=${c.cartNo}">X</a>
 									</td>
 								</tr>
 							</c:forEach>						
@@ -261,9 +261,9 @@
 					
 					<!-- 수량변경 히든폼 -->
 					<c:forEach var="c" items="${list}">
-						<form action="${pageContext.request.contextPath}/updateCart" method="post" id="updateQttForm${c.goodsNo}">
-							<input type="hidden" name="goodsNo" value="${c.goodsNo}">
-							<input type="hidden" name="cartQuantity" value="" id="cartQtt${c.goodsNo}">
+						<form action="${pageContext.request.contextPath}/updateCart" method="post" id="updateQttForm${c.cartNo}">
+							<input type="hidden" name="cartNo" value="${c.cartNo}">
+							<input type="hidden" name="cartQuantity" value="" id="cartQtt${c.cartNo}">
 						</form>
 					</c:forEach>
 

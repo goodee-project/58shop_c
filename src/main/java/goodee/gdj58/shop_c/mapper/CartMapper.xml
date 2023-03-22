@@ -17,16 +17,14 @@
 
 	<!--  4-1) 주문시 cart delete -->
 	<delete id="deleteCartAll" parameterType="String">
-		DELETE 
-		FROM shopping_cart 
+		DELETE FROM shopping_cart 
 		WHERE customer_id = #{customeId} 
 	</delete>
 	 
 	<!--  4) cart delete -->
-	<delete id="deleteCart" parameterType="int">
-		DELETE 
-		FROM shopping_cart 
-		WHERE cart_no = #{cartNo} AND customer_id = #{customeId} 
+	<delete id="deleteCart" parameterType="goodee.gdj58.shop_c.vo.Cart">
+		DELETE FROM shopping_cart 
+		WHERE cart_no = #{cartNo} AND customer_id = #{customerId} 
 	</delete>	
 		 
 	<!--  3) cart update -->

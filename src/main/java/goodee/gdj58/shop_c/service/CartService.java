@@ -19,7 +19,7 @@ public class CartService {
 	@Autowired private CartMapper cartMapper;
 	
 	//4-2) 장바구니 총 상품 개수
-	public Map<String, Object> getCartQuantitySum(String customerId){
+	public Map<String, Object> cartQuantitySum(String customerId){
 		Map<String, Object> m = new HashMap<String, Object>();
 		m.put("cusotmerId", customerId);
 		return cartMapper.cartQuantitySum(customerId);
@@ -30,17 +30,16 @@ public class CartService {
 	}
 	
 	//4) cart delete
-	public int deleteCart(Cart cart) {		
-		return cartMapper.deleteCart(cart);		
-	}
+	public int deleteCart(Cart cart) {
+		int row = 0;
+		log.debug(TeamColor.PURPLE + row + "<- row, deleteCart service");	
+		return cartMapper.deleteCart(cart);
+	}	
 	
 	//3) cart update
 	public int updateCart(int cartQuantity, int cartNo, String customerId) {
-		Map<String, Object> paramMap = new HashMap<String, Object>(); // 다형성
-		paramMap.put("cartQuantity", cartQuantity);
-		paramMap.put("cartNo", cartNo);
-		paramMap.put("customerId", customerId);
-		return cartMapper.updateCart(paramMap);
+
+		return cartMapper.updateCart(cartQuantity, cartNo, customerId);
 	}
 	// 2-2) cartOne (1개의 물품 수량정보만 불러오기)
 	public int cartOneQty(Cart cart) {
