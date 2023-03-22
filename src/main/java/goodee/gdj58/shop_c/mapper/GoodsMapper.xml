@@ -2,10 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.GoodsMapper">
 	
+	<!-- 특정업체 상품만 보기(업체스토어) -->
+	<select id="selectGoodsCompany"
+			parameterType="java.lang.String"
+			resultType="java.util.Map">
+		WITH recursive t3 AS
+		( 
+			SELECT t1.type_no, t1.type_content, t1.parent_no, t1.group_no, t1.depth
+			FROM shopping_type t1
+			WHERE t1.depth=0
+			UNION ALL
+			SELECT t2.type_no, t2.type_content, t2.parent_no, t2.group_no, t2.depth
+			FROM shopping_type t2
+			INNER JOIN t3 ON t2.parent_no=t3.type_no
+		)
+		SELECT t3.type_no typeNo
+			, t3.type_content typeContent
+			, t3.group_no groupNo
+			, t3.parent_no parentNo
+			, t3.depth depth
+			, g.goods_no goodsNo
+			, g.company_id companyId
+			, g.goods_name goodsName
+			, g.goods_price goodsPrice
+			, g.goods_level goodsLevel
+			, g.goods_active goodsActive
+			, g.updatedate updatedate
+			, g.createdate createdate
+			, c.company_name companyName
+			, img.goods_img_origin_name goodsImgOriginName
+			, img.goods_img_level goodsImgLevel
+		FROM t3
+		INNER JOIN shopping_goods g
+		ON t3.type_no=g.type_no
+		INNER JOIN shopping_goods_img img
+		ON g.goods_no=img.goods_no
+		INNER JOIN shopping_company c
+		ON g.company_id=c.company_id
+		<where>
+			<choose>
+				<when test='searchword != null || searchword !=""'>
+					g.goods_name LIKE CONCAT('%',#{searchword},'%') AND g.company_id=#{companyId}
+				</when>
+				<otherwise>
+					g.company_id=#{companyId}
+				</otherwise>
+			</choose>
+		</where>
+		<choose>
+			<when test='keyword.equals("new")'>
+				ORDER BY g.createdate DESC
+			</when>
+			<when test='keyword.equals("low")'>
+				ORDER BY g.goods_price ASC
+			</when>
+			<when test='keyword.equals("high")'>
+				ORDER BY g.goods_price DESC
+			</when>
+		</choose>
+	</select>
 	
 	<!-- 개별 상품정보 출력 -->
 	<select id="selectGoodsOne"
-			parameterType="int"
+			parameterType="java.lang.Integer"
 			resultType="java.util.Map">
 		SELECT g.goods_no goodsNo
 			, g.goods_name goodsName

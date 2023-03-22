@@ -19,6 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsService {
 	@Autowired GoodsMapper goodsMapper;
 	
+	// 특정 업체 상품만 보기(업체스토어)
+	public List<Map<String, Object>> selectGoodsCompany(String companyId) {
+		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
+		resultMap=goodsMapper.selectGoodsCompany(companyId);
+		if(!resultMap.isEmpty()) {
+			log.debug(TeamColor.GREEN+"GoodsService: 특정업체 상품목록 모아보기 성공");
+		}
+		return resultMap;
+	}
+	
+	
+	// 상품 상세정보
 	public List<Map<String, Object>> selectGoodsOne(int goodsNo) {
 		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
 		resultMap=goodsMapper.selectGoodsOne(goodsNo);
@@ -28,6 +40,7 @@ public class GoodsService {
 		return resultMap;
 	}
 	
+	// 상품 옵션
 	public List<Map<String, Object>> selectGoodsOption(int goodsNo) {
 		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
 		resultMap=goodsMapper.selectGoodsOption(goodsNo);
@@ -37,6 +50,7 @@ public class GoodsService {
 		return resultMap;
 	}
 
+	// 상품 카테고리 이름
 	public List<Map<String, Object>> selectGoodsCategoryName(int typeNo) {
 		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
 		resultMap=goodsMapper.selectGoodsCategoryName(typeNo);
@@ -58,8 +72,9 @@ public class GoodsService {
 		return resultMap;
 	}
 	
+	// 상품 카테고리 상품목록(검색결과 포함)
 	public List<Map<String, Object>> selectGoodsCategory(int typeNo, String keyword, String searchword) {
-		if(keyword == null || keyword.equals("")) {
+		if(keyword == null || keyword.equals("")) { // 검색어가 없을 때 기본값은 신제품순
 			keyword="new";
 		}
 

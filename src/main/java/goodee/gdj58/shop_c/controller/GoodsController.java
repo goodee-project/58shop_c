@@ -11,13 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.shop_c.service.GoodsService;
-import goodee.gdj58.shop_c.util.TeamColor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 public class GoodsController {
 	@Autowired GoodsService goodsService;
+	
+	// 특정업체 상품보기
+	@GetMapping("/goods/goodsComapany")
+	public String selectGoodsCompany(@RequestParam(value="companyId") String companyId
+									, Model model) {
+		
+		return "goods/goodsCompany";
+	}
 	
 	// 상품옵션 조회
 	@GetMapping("/goods/goodsOne")
