@@ -19,16 +19,35 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsService {
 	@Autowired GoodsMapper goodsMapper;
 	
+	// 특정 업체 상품상세페이지 보기(업체스토어)
+	public Map<String, Object> selectGoodsOneCompany(int goodsNo, String companyId) {
+		Map<String, Object> goodsOne=new HashMap<String, Object>();
+		goodsOne.put("goodsNo", goodsNo);
+		goodsOne.put("companyId", companyId);
+		
+		Map<String, Object> resultMap=new HashMap<String, Object>();
+		resultMap=goodsMapper.selectGoodsOneCompany(goodsOne);
+		if(!resultMap.isEmpty()) {
+			log.debug(TeamColor.GREEN+"GoodsService: 특정업체 상품상세페이지 조회 성공");
+		}
+		return resultMap;
+	}
+	
+	
 	// 특정 업체 상품만 보기(업체스토어)
-	public List<Map<String, Object>> selectGoodsCompany(String companyId) {
+	public List<Map<String, Object>> selectGoodsCompany(String keyword, String companyId, String searchword) {
+		Map<String, Object> company=new HashMap<String, Object>();
+		company.put("searchword", searchword);
+		company.put("companyId", companyId);
+		company.put("keyword", keyword);
+		
 		List<Map<String, Object>> resultMap=new ArrayList<Map<String, Object>>();
-		resultMap=goodsMapper.selectGoodsCompany(companyId);
+		resultMap=goodsMapper.selectGoodsCompany(company);
 		if(!resultMap.isEmpty()) {
 			log.debug(TeamColor.GREEN+"GoodsService: 특정업체 상품목록 모아보기 성공");
 		}
 		return resultMap;
 	}
-	
 	
 	// 상품 상세정보
 	public List<Map<String, Object>> selectGoodsOne(int goodsNo) {
@@ -91,5 +110,4 @@ public class GoodsService {
 		
 		return resultMap; 
 	}
-	
 }

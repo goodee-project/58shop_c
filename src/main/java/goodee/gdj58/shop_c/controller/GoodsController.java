@@ -1,6 +1,7 @@
 package goodee.gdj58.shop_c.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,18 +19,51 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsController {
 	@Autowired GoodsService goodsService;
 	
+	// 특정업체 상품상세페이지 보기
+	@GetMapping("/goods/goodsOneCompany")
+	public String selectGoodsOneCompany(@RequestParam(value="goodsNo", defaultValue="0") int goodsNo
+										, @RequestParam(value="companyId", defaultValue="") String companyId
+										, Model model) {
+		if(goodsNo == 0 || companyId.equals("")) { // parameter값이 제대로 들어오지 않았을 때 다시 상품리스트로 보내기
+			return "redirect:/goods/goodsCompany";
+		}
+		Map<String, Object> selectGoodsOneCompany=new HashMap<String, Object>();
+		selectGoodsOneCompany=goodsService.selectGoodsOneCompany(goodsNo, companyId);
+		model.addAttribute("goodsOne", selectGoodsOneCompany);
+		return "goods/goodsOneCompany";
+	}
+	
 	// 특정업체 상품보기
-	@GetMapping("/goods/goodsComapany")
-	public String selectGoodsCompany(@RequestParam(value="companyId") String companyId
+	@GetMapping("/goods/goodsCompany")
+	public String selectGoodsCompany(@RequestParam(value="companyId", defaultValue="") String companyId
+									, @RequestParam(value="searchword", required=false) String searchword 
+									, @RequestParam(value="keyword", required=false) String keyword
 									, Model model) {
+		List<Map<String, Object>> selectGoodsCompany=new ArrayList<Map<String, Object>>();
 		
+		if(searchword == null) { // 검색어가 없을 때
+			searchword="";
+		}
+		if(keyword == null) { // 목록출력 조건값이 없을 때, 기본값은 신상품순
+			keyword="new";
+		}
+		
+		selectGoodsCompany=goodsService.selectGoodsCompany(keyword, companyId, searchword);
+		model.addAttribute("companyId", companyId);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchword", searchword);
+		model.addAttribute("selectGoodsCompany", selectGoodsCompany);
 		return "goods/goodsCompany";
 	}
 	
 	// 상품옵션 조회
 	@GetMapping("/goods/goodsOne")
-	public String selectGoodsOne(@RequestParam(value="goodsNo") int goodsNo
+	public String selectGoodsOne(@RequestParam(value="goodsNo", defaultValue="0") int goodsNo
 									, Model model) {
+		if(goodsNo == 0) { // parameter값이 제대로 넘어오지 않았을 때
+			return "redirect:/goods/category";
+		}
+		
 		List<Map<String, Object>> selectGoodsOption=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> selectGoodsOne=new ArrayList<Map<String, Object>>();
 		selectGoodsOption=goodsService.selectGoodsOption(goodsNo);
@@ -41,10 +75,20 @@ public class GoodsController {
 	
 	// 카테고리 상품 조회
 	@GetMapping("/goods/category")
-	public String selectGoodsCategory(@RequestParam(value="typeNo") int typeNo
-									, @RequestParam(value="keyword") String keyword
-									, @RequestParam(value="searchword") String searchword
+	public String selectGoodsCategory(@RequestParam(value="typeNo", defaultValue="0") int typeNo
+									, @RequestParam(value="keyword", required=false) String keyword
+									, @RequestParam(value="searchword", required=false) String searchword
 									, Model model) {
+		if(typeNo == 0) { // parameter값이 제대로 넘어오지 않았을 때
+			return "redirect:/main";
+		}
+		
+		if(searchword == null) { // 검색어가 없을 때
+			searchword="";
+		}
+		if(keyword == null) { // 목록출력 조건값이 없을 때, 기본값은 신상품순
+			keyword="new";
+		}
 		List<Map<String, Object>> selectGoodsCategory=new ArrayList<Map<String, Object>>(); 
 		List<Map<String, Object>> selectGoodsCategoryName=new ArrayList<Map<String, Object>>(); 
 		selectGoodsCategory=goodsService.selectGoodsCategory(typeNo, keyword, searchword); // 카테고리 상품 조회

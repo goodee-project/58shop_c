@@ -19,13 +19,13 @@ public class CustomerRestController {
 	
 	// 구글 recaptcha
     @PostMapping("/validation")
-    public String recaptcha(@RequestParam(value="token") String token){
+    public String recaptcha(@RequestParam(value="token", defaultValue="") String token){
     	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
     	return signupService.recaptcha(token);
     }
     
 	@GetMapping("/idCheck")
-	public String idCheck(@RequestParam(value="customerId") String customerId) {
+	public String idCheck(@RequestParam(value="customerId", defaultValue="") String customerId) {
 		return totalIdService.findId(customerId);
 	}
 }

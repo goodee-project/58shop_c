@@ -60,50 +60,50 @@
 				<li><span><a href="">신상품</a></span></li>
 				<li><span><a href="">베스트</a></span></li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=1&keyword=&searchword=">Beauty</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=1">Beauty</a>
 					<ul>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=2&keyword=&searchword=">Perfume</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=2">Perfume</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=3&keyword=&searchword=">Woman</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=4&keyword=&searchword=">Man</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=3">Woman</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=4">Man</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=5&keyword=&searchword=">Hair/Body</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=5">Hair/Body</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=6&keyword=&searchword=">HairShampoo/Conditioner</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=7&keyword=&searchword=">BodyWash/Lotion</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=6">HairShampoo/Conditioner</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=7">BodyWash/Lotion</a></li>
 							</ul>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=8&keyword=&searchword=">Fashion</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=8">Fashion</a>
 					<ul>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=9&keyword=&searchword=">Woman</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=9">Woman</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=10&keyword=&searchword=">Outer</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=11&keyword=&searchword=">Top</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=12&keyword=&searchword=">Bottom</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=10">Outer</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=11">Top</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=12">Bottom</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="${pageContext.request.contextPath}/goods/category?typeNo=13&keyword=&searchword=">Man</a>
+							<a href="${pageContext.request.contextPath}/goods/category?typeNo=13">Man</a>
 							<ul>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=14&keyword=&searchword=">Outer</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=15&keyword=&searchword=">Top</a></li>
-								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=16&keyword=&searchword=">Bottom</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=14">Outer</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=15">Top</a></li>
+								<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=16">Bottom</a></li>
 							</ul>
 						</li>
 					</ul>
 				</li>
 				<li>
-					<a href="${pageContext.request.contextPath}/goods/category?typeNo=17&keyword=&searchword=">Market</a>
+					<a href="${pageContext.request.contextPath}/goods/category?typeNo=17">Market</a>
 					<ul>
-						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=18&keyword=&searchword=">Fresh</a></li>
-						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=19&keyword=&searchword=">Meal Kit</a></li>
+						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=18">Fresh</a></li>
+						<li><a href="${pageContext.request.contextPath}/goods/category?typeNo=19">Meal Kit</a></li>
 					</ul>
 				</li>
 				<li><span><a href="">이벤트</a></span></li>
