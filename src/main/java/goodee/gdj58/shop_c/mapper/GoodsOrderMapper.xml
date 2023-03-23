@@ -1,4 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.GoodsOrderMapper">
+
+
+
+	<!-- 주문서 주문상태 취소로 변경 -->
+	<update id = "cUpdateOrderSheetStateCancel"
+			parameterType = "java.util.HashMap">
+			
+		UPDATE shopping_order_sheet
+		SET order_sheet_state = '취소'
+		WHERE order_sheet_no = #{orderSheetNo}
+	
+	</update>
+
+	<!-- 주문서 company_id, customer_address_no 저장 -->
+	<select id = "cSelectCompanyIdCustomerAddress"
+			parameterType = "java.util.HashMap"
+			resultType = "java.util.HashMap">
+			
+		SELECT
+			company_id companyId
+			, customer_address_no customerAddressNo
+		FROM shopping_order_sheet
+		WHERE order_sheet_no = #{orderSheetNo}
+			AND customer_id = #{customerId}
+
+	</select>
+
+
+	<!-- 주문 중 결제완료인 goods_option_no, quantity 저장 -->
+	<select id = "cSelectOptionNoQuantityPrice"
+			parameterType = "java.util.HashMap"
+			resultType = "java.util.HashMap">
+			
+		SELECT
+			ord.goods_option_no
+			, ord.goods_order_quantity
+			, ord.goods_order_price
+		FROM shopping_goods_order ord
+		INNER JOIN shopping_order_sheet s
+			ON ord.order_sheet_no = s.order_sheet_no
+		WHERE s.order_sheet_no = #{orderSheetNo}
+			AND s.customer_id = #{customerId}
+			AND ord.goods_order_state = '결제완료'
+
+	</select>
+
+
+	<!-- 해당 주문 주문상태 취소로 변경 -->
+	<update id = "cUpdateOrderStateCancel"
+			parameterType = "java.util.HashMap">
+			
+		UPDATE shopping_goods_order
+		SET goods_order_state = '취소'
+		WHERE goods_order_no = #{goodsOrderNo}
+
+	</update>
+
+	<!-- 사용 총 포인트가 0보다 크다면 point_save 이력 추가 -->
+	<insert id = "cInsertPointSaveHistory"
+			parameterType = "java.util.HashMap">
+			
+		INSERT INTO point_save_history (
+			point_save_history_category
+			, point_save_history_content
+			, customer_id
+			, point
+		) VALUES (
+			'쇼핑환불'
+			, #{orderSheetNo}
+			, #{customerId}
+			, #{point}
+		)
+
+	</insert>
+
+	<!-- 주문에 사용한 총 포인트 -->
+	<select id = "cSelectSumPointOrderCancel"
+			parameterType = "java.util.HashMap"
+			resultType = "int">
+	
+		SELECT
+			SUM(ord.goods_order_use_point) point
+		FROM shopping_goods_order ord
+		INNER JOIN shopping_order_sheet s
+			ON s.order_sheet_no = ord.order_sheet_no
+		WHERE s.order_sheet_no = #{orderSheetNo}
+			AND s.customer_id = #{customerId}
+			AND ord.goods_order_state = '결제완료'
+
+	</select>
+
+
+	<!-- 주문서 가격(결제 가격) total_use_pay 복구 -->
+	<update id = "cUpdateTotalUsePayRewind"
+			parameterType = "java.util.HashMap">
+			
+		UPDATE total_use_pay
+		SET use_pay = (SELECT
+							use_pay + (SELECT
+											order_sheet_price
+										FROM shopping_order_sheet
+										WHERE order_sheet_no = #{orderSheetNo}	
+											AND customer_id = #{customerId})
+						FROM total_use_pay)
+		WHERE customer_id = #{customerId}
+		
+	</update>
+
+	<!-- 주문서 가격(결제 가격) pay_save 이력 추가 -->
+ 	<insert id = "cInsertPaySaveHistory"
+ 			parameterType = "java.util.HashMap">
+ 			
+		INSERT INTO pay_save_history (
+			pay_save_history_category
+			, pay_save_history_content
+			, customer_id
+			, price
+		) VALUES (
+			'쇼핑환불'
+			, #{orderSheetNo}
+			, #{customerId}	
+			, (SELECT
+					order_sheet_price
+				FROM shopping_order_sheet
+				WHERE order_sheet_no = #{orderSheetNo}	
+					AND customer_id = #{customerId})
+		)	
+ 	
+ 	</insert>
+
+
+	<!-- cancel_history 주문 이력 추가 -->
+	<insert id = "cInsertCancelHistory"
+			parameterType = "java.util.HashMap">
+			
+		INSERT INTO shopping_cancel_history (
+			goods_order_no
+		) VALUES (
+			#{goodsOrderNo}
+		)	
+		
+	</insert>
+
+	<!-- 결제 완료 된 주문 count -->
+	<select id = "cSelectCountOrderPayment"
+			parameterType = "java.util.HashMap"
+			resultType = "int">
+			
+		SELECT
+			COUNT(ord.goods_order_no) count
+		FROM shopping_goods_order ord
+		INNER JOIN shopping_order_sheet s
+			ON ord.order_sheet_no = s.order_sheet_no
+		WHERE s.order_sheet_no = #{orderSheetNo}
+			AND s.customer_id = #{customerId}
+			AND ord.goods_order_state = '결제완료'		
+			
+	</select>
+
+
 </mapper>
