@@ -1,6 +1,8 @@
 package goodee.gdj58.shop_c.controller;
 
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,14 @@ public class CustomerController {
 	
 	// 회원가입 폼
 	@GetMapping("/signup")
-	public String insertCustomer(HttpSession session) {
+	public String insertCustomer(HttpSession session, Model model) {
+		final String signupSiteKey="6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz"; // 리캡차 사이트키
+
 		Customer loginCustomer=(Customer)session.getAttribute("loginCustomer");
 		if(loginCustomer != null) { // 로그인 된 상태
 			return "redirect:/home";
 		}
+		model.addAttribute("signupSiteKey", signupSiteKey);
 		return "customer/insertCustomer";
 	}
 	
@@ -51,10 +56,29 @@ public class CustomerController {
 	@PostMapping("/login")
 	public String loginCustomer(HttpSession session, Customer customer, Model model) {
 		Customer loginCustomer=customerService.login(customer);
+		int failCount=0; // 로그인 시도 횟수를 저장할 변수
+		String loginId=customer.getCustomerId();
+		HashMap<String, Object> loginMap=(HashMap<String, Object>)session.getAttribute("loginFail");
+		if(loginMap == null) {
+			failCount=0;
+		} else {
+			failCount=(int)loginMap.get("failCount");
+		}
 		if(loginCustomer == null) {
-			String loginFail="fail";
-			model.addAttribute("loginFail", loginFail);
+			String loginFailMsg="fail";
+			++failCount;
+			
+			// 로그인 실패 정보 묶기
+			HashMap<String, Object> loginFail=new HashMap<String, Object>();
+			loginFail.put("loginId", loginId);
+			loginFail.put("failCount", failCount);
+			
+			log.debug(TeamColor.GREEN+"failCount: "+failCount);
+			session.setAttribute("loginFail", loginFail);
+			model.addAttribute("loginFailMsg", loginFailMsg);
 			return "customer/login";
+		} else {
+			session.removeAttribute("loginFail");
 		}
 		log.debug(TeamColor.GREEN+"CustomerController: "+loginCustomer);
 		session.setAttribute("loginCustomer", loginCustomer); // 세션에 로그인 정보 저장
@@ -63,11 +87,14 @@ public class CustomerController {
 	
 	// 로그인 폼
 	@GetMapping("/login")
-	public String loginCustomer(HttpSession session) {
+	public String loginCustomer(HttpSession session, Model model) {
+		final String loginSiteKey="6Ld2OyklAAAAAKVkv4RNU_U26dK-LvHqph0-DfZe"; // 리캡차 사이트키
+		
 		Customer loginCustomer=(Customer)session.getAttribute("loginCustomer");
 		if(loginCustomer != null) { // 로그인 된 상태
 			return "redirect:/main";
 		}
+		model.addAttribute("loginSiteKey", loginSiteKey);
 		return "customer/login";
 		//return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}

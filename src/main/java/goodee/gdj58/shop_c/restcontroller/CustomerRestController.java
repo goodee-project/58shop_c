@@ -17,9 +17,20 @@ public class CustomerRestController {
 	@Autowired TotalIdService totalIdService;
 	@Autowired SignupService signupService;
 	
+	/* 로그인 --------------------------------------------------------------------------------------*/
+	
 	// 구글 recaptcha
-    @PostMapping("/validation")
-    public String recaptcha(@RequestParam(value="token", defaultValue="") String token){
+	@PostMapping("/login/validation")
+    public String loginRecaptcha(@RequestParam(value="token", defaultValue="") String token){
+    	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
+    	return signupService.recaptcha(token);
+    }
+	
+	/* 회원가입 -------------------------------------------------------------------------------------*/
+	
+	// 구글 recaptcha
+    @PostMapping("/signup/validation")
+    public String signupRecaptcha(@RequestParam(value="token", defaultValue="") String token){
     	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
     	return signupService.recaptcha(token);
     }

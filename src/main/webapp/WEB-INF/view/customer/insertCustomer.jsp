@@ -35,7 +35,7 @@
 		}
 	</style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-	<script src="https://www.google.com/recaptcha/api.js?render=6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz"></script>
+	<script src="https://www.google.com/recaptcha/api.js?render=${signupSiteKey}"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		// submit 후 뒤로가기 막는 코드
@@ -469,7 +469,7 @@
 				if(submitCheck == 14) {
 					// 구글 reCaptcha 확인
 					$.ajax({
-	                        url: 'validation',
+	                        url: 'signup/validation',
 	                        type : 'POST',
 	                        //ContentType: "application/x-www-form-urlencoded",
 	                        dataType: 'json',
@@ -672,7 +672,7 @@
 				</table>
 				
 				<br>
-				<input type="hidden" id="token" name="token">
+				<input type="hidden" id="token" name="token"> <!-- 리캡차토큰 -->
 				<div id="pass-info" class="clearfix"></div>
 				<button type="button" class="btn_1 rounded full-width add_top_30" id="insertBtn">가입하기</button>
 				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/login">로그인하기</a></strong></div>

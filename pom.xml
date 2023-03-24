@@ -18,6 +18,21 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		
+		<!-- 구글 리캡챠 -->
+        <dependency>
+            <groupId>net.tanesha.recaptcha4j</groupId>
+            <artifactId>recaptcha4j</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+ 
+        <!-- 구글 리캡챠 사용하기 위한 json -->
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+		
 		<!--JSON  -->
 		<dependency>
 			<groupId>org.glassfish</groupId>

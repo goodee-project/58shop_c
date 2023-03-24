@@ -88,7 +88,11 @@
 						${i.goodsName}
 					</a>		
 				</td>
-				<td>${i.goodsPrice}</td>
+				<td>
+					<c:if test="">
+						${i.goodsPrice}
+					</c:if>
+				</td>
 				<td>
 					<a href="${pageContext.request.contextPath}/goods/goodsCompany?companyId=${i.companyId}">${i.companyName}</a>
 				</td>

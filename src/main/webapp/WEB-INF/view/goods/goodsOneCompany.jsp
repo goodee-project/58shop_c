@@ -18,7 +18,7 @@
 		//console.log('quantityList: '+quantityList[0]);
 		
 		// select 태그에 option 넣기
-		for(var count=0; count < optionList.length; ++count) {
+		for(let count=0; count < optionList.length; ++count) {
 			let option = $('<option value="'+count+'">'+optionList[count]+' [재고'+quantityList[count]+']'+'</option>');
 			$('#selectOption').append(option);
 		}
@@ -48,7 +48,7 @@
 			console.log('selectOptionNo:'+selectOptionNo);
 			goodsNo=optionNoList[selectOptionNo]; // 상품번호
 			stock=Number(quantityList[selectOptionNo]); // 상품의 재고
-			console.log('quantity:'+quantity);
+			console.log('goodsNo:'+goodsNo);
 			console.log('stock:'+stock);
 			
 		});
@@ -76,15 +76,18 @@
 				return true;
 			} else if(ckOption > 0 && ckQuantity > stock) {
 				alert('재고가 부족합니다. '+stock+'개 이하로 담아주세요.');
+				quantity=stock;
 				$('input[name=cartQuantity]').val(stock);
 				$('#selectQuantity').val(stock);
 				return true;
 			} else if(ckOption > 0 && ckQuantity == 0) {
 				alert('수량은 1개 이상 선택해주세요.');
+				quantity=1;
 				$('input[name=cartQuantity]').val(1);
 				$('#selectQuantity').val(1);
 				return true;
 			} else {
+				console.log('장바구니담기완료');
 				//$('#cartForm').submit();
 			}
 		})

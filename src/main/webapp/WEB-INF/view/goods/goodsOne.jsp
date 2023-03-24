@@ -68,7 +68,7 @@
 			
 			// check == 2 일 때 submit
 			if(check == 2) {
-				console.log('주문완료');
+				console.log('장바구니담기완료');
 				//$('#cartForm').submit();
 				return false;
 			}

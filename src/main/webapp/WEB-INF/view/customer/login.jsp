@@ -30,7 +30,6 @@
     <!-- YOUR CUSTOM CSS -->
     <link href="${pageContext.request.contextPath}/resources/html/css/custom.css" rel="stylesheet">
     
-    
     <style>
 		.loginMsg {
 			color:#FF3300;
@@ -67,6 +66,17 @@
 				});
 				console.log('+loginMsgCheck: '+loginMsgCheck);
 				if(loginMsgCheck == $('.loginMsg').length) { // loginMsgCheck의 값과 loginMsg class개체 개수와 같으면 submit
+					
+					// 로그인 시도 3번 실패시 리캡차 테스트 출력하기
+					let failCount=$('#failCount').val();
+					let failLoginId=$('#failLoginId').val();
+					let loginId=$('#loginId').val();
+					if(failCount > 2 && loginId == failLoginId) {
+						let recapt=$('<option value="'+count+'">'+optionList[count]+' [재고'+quantityList[count]+']'+'</option>');
+						$('#selectOption').append(option);
+					}
+					
+					
 					$('#loginForm').submit();
 				}
 			});
@@ -117,6 +127,15 @@
 					<input type="hidden" id="loginFail" value="${loginFail}">
 					<span id="failMsg" class="loginMsg"></span>
 				</div>	
+				
+				<!-- 로그인 시도 3번 실패 시 캡차 테스트를 거쳐야 로그인 가능하다 -->
+				<input type="hidden" id="failCount" value="${loginFail.failCount}">
+				<input type="hidden" id="failLoginId" value="${loginFail.loginId}">
+				
+				<
+				<div id="recaptcha"></div>
+				<div data-sitekey="${loginSitekey}"></div>
+				
 				<button type="button" class="btn_1 rounded full-width" id="loginBtn">login</button>
 				<div class="text-center add_top_10">아직 회원이 아니신가요? <strong><a href="${pageContext.request.contextPath}/signup">회원가입</a></strong></div>
 			</form>
