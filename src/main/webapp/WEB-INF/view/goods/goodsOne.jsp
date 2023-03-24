@@ -87,49 +87,55 @@
 		<table>
 			<tr>
 				<td>
-					<img src="${pageContext.request.contextPath}/upload/goodsImg/${g.goodsImgOriginName}" width="150" height="150">
+					<img src="${pageContext.request.contextPath}/upload/goodsImg/${g.goodsImgOriginName}" width="300" height="300">
 				</td>
-			</tr>
-			<tr>
-				<td>${g.companyName}</td>
-				<td>${g.goodsPrice}원</td>
 				<td>
-				<c:choose>	
-					<c:when test="${fn:length(goodsOption) > 1}"><!-- 옵션이 2개 이상일 때 -->
-						<select id="selectOption">
-							<option>선택</option>
-							<c:forEach var="i" items="${goodsOption}">
-								<option value="${i.goodsOptionNo}">${i.goodsOptionContent} [재고:${i.goodsOptionQuantity}]</option>
+					<div>
+						${g.goodsName}
+					</div>
+					<div>
+						<a href="${pageContext.request.contextPath}/goods/goodsCompany?companyId=${g.companyId}">
+							${g.companyName}
+						</a>
+					</div>
+					<div>
+						${g.goodsPrice}원
+					</div>
+					<c:choose>	
+						<c:when test="${fn:length(goodsOption) > 1}"><!-- 옵션이 2개 이상일 때 -->
+							<select id="selectOption">
+								<option>선택</option>
+								<c:forEach var="i" items="${goodsOption}">
+									<option value="${i.goodsOptionNo}">${i.goodsOptionContent} [재고:${i.goodsOptionQuantity}]</option>
+								</c:forEach>
+							</select>
+							<c:forEach var="s" items="${goodsOption}">
+								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
 							</c:forEach>
-						</select>
-						<c:forEach var="s" items="${goodsOption}">
-							<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
-						</c:forEach>
-	
-						<c:forEach var="s" items="${goodsOption}">
-							<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
-						</c:forEach>
-					</c:when>
-					<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
-						<c:forEach var="s" items="${goodsOption}">
-							<input type="hidden" id="oneOption" value="${s.goodsOptionNo}">
-							<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
-						</c:forEach>
-					</c:when>
-				</c:choose>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span>수량:</span>
-					<input type="number" id="quantity" value=1>
+		
+							<c:forEach var="s" items="${goodsOption}">
+								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
+							</c:forEach>
+						</c:when>
+						<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
+							<c:forEach var="s" items="${goodsOption}">
+								<input type="hidden" id="oneOption" value="${s.goodsOptionNo}">
+								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
+							</c:forEach>
+						</c:when>
+					</c:choose>
+					<div>
+						<input type="number" id="quantity" value=1>
+					</div>
+					<div>
+						<button type="button" id="cartBtn">장바구니 담기</button>
+					</div>
 				</td>
 			</tr>
 		</table>
 		<form action="${pageContext.request.contextPath}/insertCart" method="get" id="cartForm">
 			<input type="hidden" id="cartQuantity">
 			<input type="hidden" id="goodsOptionNo">
-			<button type="button" id="cartBtn">장바구니 담기</button>
 		</form>
 	</div>
 	</c:forEach>

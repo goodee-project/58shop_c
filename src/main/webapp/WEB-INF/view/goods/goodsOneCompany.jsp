@@ -23,34 +23,70 @@
 			$('#selectOption').append(option);
 		}
 		
-		let quantity;
+		let stock=0;
+		let goodsNo='';
+		let quantity=$('#selectQuantity').val();
+		let selectOptionNo=0;
 		
 		// 옵션이 없을 때
-		if(optionStr == '') {
+		if(optionStr == '') { 
 			$('#goodsOptionNo').val(optionNoStr);
-			quantity=quantityStr;
+			quantity=quantityStr; // 수량
+			goodsNo=optionNoStr; // 상품번호
+			stock=Number(quantityStr); // 재고
 			console.log('quantity: '+quantity);
 			console.log('optionNoStr: '+optionNoStr);
 		}
 		
 		// 선택옵션이 있을 때
 		$('#selectOption').change(function() {
-			let selectOptionNo=Number($('#selectOption').val());
-			//console.log(selectOptionNo);
-			$('#goodsOptionNo').val(selectOptionNo);
-			quantity=quantityList[selectOptionNo];
-			console.log(quantity);
+			if($('#selectOption').val() == '') { // 옵션선택을 안했을 때
+				goodsNo=0;
+				return true;
+			}
+			selectOptionNo=Number($('#selectOption').val()); // 선택된 옵션값으로 상품번호를 찾는다
+			console.log('selectOptionNo:'+selectOptionNo);
+			goodsNo=optionNoList[selectOptionNo]; // 상품번호
+			stock=Number(quantityList[selectOptionNo]); // 상품의 재고
+			console.log('quantity:'+quantity);
+			console.log('stock:'+stock);
+			
 		});
 		
 		$('#selectQuantity').change(function() {
-			$('#cartQuantity').val($(this).val());
+			let selectQuantity=$(this).val();
+			quantity=selectQuantity;
+			console.log(quantity);
 		});
+
+		//console.log('quantity :'+quantity);
+		//console.log('goodsNo :'+goodsNo);
 		
 		$('#cartBtn').click(function() {
-			let chk=$('#cartQuantity').val();
-			let chk2=$('#goodsOptionNo').val();
-			console.log(chk);
-			console.log(chk2);
+			// 폼으로 넘길 변수에 값 넣기
+			$('input[name=cartQuantity]').val(Number(quantity)); // 수량
+			$('input[name=goodsOptionNo]').val(Number(goodsNo)); // 상품번호
+			let ckQuantity=$('input[name=cartQuantity]').val();
+			let ckOption=$('input[name=goodsOptionNo]').val();
+			console.log('수량:'+ckQuantity+'/상품번호:'+ckOption);
+			
+			// 옵션&수량체크
+			if(ckOption == 0) {
+				alert('옵션을 선택하세요');
+				return true;
+			} else if(ckOption > 0 && ckQuantity > stock) {
+				alert('재고가 부족합니다. '+stock+'개 이하로 담아주세요.');
+				$('input[name=cartQuantity]').val(stock);
+				$('#selectQuantity').val(stock);
+				return true;
+			} else if(ckOption > 0 && ckQuantity == 0) {
+				alert('수량은 1개 이상 선택해주세요.');
+				$('input[name=cartQuantity]').val(1);
+				$('#selectQuantity').val(1);
+				return true;
+			} else {
+				//$('#cartForm').submit();
+			}
 		})
 		
 	});
@@ -67,8 +103,10 @@
 				<img src="${pageContext.request.contextPath}/upload/goodsImg/${goodsOne.goodsImgOriginName}" width="300" height="300">
 			</td>
 			<td>
-				<span>${goodsOne.goodsName}</span>
-				<span>${goodsOne.goodsPrice}원</span>
+				${goodsOne.goodsName}
+				<div>
+					${goodsOne.goodsPrice}원
+				</div>
 				<c:if test="${goodsOne.goodsOptionContent ne ''}">
 					<div>
 						<select id="selectOption">
@@ -85,7 +123,7 @@
 			</td>
 		</tr>
 	</table>
-	<form action="${pageContext.request.contextPath}/insertCart" method="get">
+	<form action="${pageContext.request.contextPath}/insertCart" method="get" id="cartForm">
 		<input type="hidden" name="goodsOptionNo">
 		<input type="hidden" name="cartQuantity">
 	</form>
