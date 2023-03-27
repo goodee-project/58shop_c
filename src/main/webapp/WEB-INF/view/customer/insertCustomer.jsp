@@ -72,7 +72,8 @@
 		// 구글 recaptcha 토큰받기
 		function recaptchaToken() {
 			grecaptcha.ready(function() { 
-				grecaptcha.execute('6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz', {action: 'submit'}).then(function(token) {
+				let sitekey=$('#signupSiteKey').val();
+				grecaptcha.execute(sitekey, {action: 'submit'}).then(function(token) {
 	             	//console.log(token);
 	             	$('#token').val(token);
 	             });
@@ -674,6 +675,7 @@
 				<br>
 				<input type="hidden" id="token" name="token"> <!-- 리캡차토큰 -->
 				<div id="pass-info" class="clearfix"></div>
+				<input type="hidden" id="signupSiteKey" value="${signupSiteKey}">
 				<button type="button" class="btn_1 rounded full-width add_top_30" id="insertBtn">가입하기</button>
 				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/login">로그인하기</a></strong></div>
 			</form>

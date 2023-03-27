@@ -112,10 +112,6 @@
 							<c:forEach var="s" items="${goodsOption}">
 								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
 							</c:forEach>
-		
-							<c:forEach var="s" items="${goodsOption}">
-								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
-							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
 							<c:forEach var="s" items="${goodsOption}">

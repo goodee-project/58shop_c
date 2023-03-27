@@ -59,10 +59,15 @@ public class CustomerController {
 		int failCount=0; // 로그인 시도 횟수를 저장할 변수
 		String loginId=customer.getCustomerId();
 		HashMap<String, Object> loginMap=(HashMap<String, Object>)session.getAttribute("loginFail");
-		if(loginMap == null) {
+		String failId=(String)loginMap.get("loginId");
+		if(loginMap == null || failId == null) { // 세션에 저장된 로그인시도 정보가 없을 때
 			failCount=0;
-		} else {
-			failCount=(int)loginMap.get("failCount");
+		} else if(loginMap != null) {
+			if(loginId.equals(failId)) {
+				failCount=(int)loginMap.get("failCount");
+			} else {
+				failCount=0;
+			}
 		}
 		if(loginCustomer == null) {
 			String loginFailMsg="fail";
