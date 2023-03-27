@@ -14,11 +14,18 @@ public interface GoodsOrderMapper {
 	
 	// ====================== 주문 취소 시작 ======================
 	
-	// 결제 완료 된 주문 count
-	int cSelectCountOrderPayment(HashMap<String, Object> paramMap);
 	
 	// cancel_history 주문 이력 추가
 	int cInsertCancelHistory(HashMap<String, Object> paramMap);
+	
+	// 취소할 주문의 option_no, option_quantity 가져오기
+	HashMap<String, Object> cSelectCancelOptionNoQuantity(HashMap<String, Object> paramMap);
+	
+	// 취소한 주문의 옵션 수량 만큼 goods_option 테이블 재고 복구
+	int cUpdateGoodsOptionQuantityRewind(HashMap<String, Object> cancelOptionMap);
+	
+	// 주문 취소로 인해 복구한 재고 이력 남기기
+	int cInsertStockHistory(HashMap<String, Object> cancelOptionMap);
 	
 	// 취소 전 결제 했었던 주문서 가격
 	int cSelectOrderSheetPrice(HashMap<String, Object> paramMap);
@@ -40,6 +47,9 @@ public interface GoodsOrderMapper {
 	
 	// 사용 총 포인트가 0보다 크다면 customer 테이블 point 환급
 	int cUpdateCustomerPointRewind(HashMap<String, Object> paramMap);
+	
+	// 결제 완료 된 주문 count
+	int cSelectCountOrderPayment(HashMap<String, Object> paramMap);
 	
 	// 해당 주문 주문상태 취소로 변경
 	int cUpdateOrderStateCancel(HashMap<String, Object> paramMap);

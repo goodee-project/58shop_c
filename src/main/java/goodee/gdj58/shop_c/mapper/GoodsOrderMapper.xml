@@ -4,22 +4,6 @@
 
 	<!-- ================= 주문 취소 시작 ================= -->
 
-	<!-- 결제 완료 된 주문 count -->
-	<select id = "cSelectCountOrderPayment"
-			parameterType = "java.util.HashMap"
-			resultType = "int">
-			
-		SELECT
-			COUNT(ord.goods_order_no) count
-		FROM shopping_goods_order ord
-		INNER JOIN shopping_order_sheet s
-			ON ord.order_sheet_no = s.order_sheet_no
-		WHERE s.order_sheet_no = #{orderSheetNo}
-			AND s.customer_id = #{customerId}
-			AND ord.goods_order_state = '결제완료'		
-			
-	</select>
-
 	<!-- cancel_history 주문 이력 추가 -->
 	<insert id = "cInsertCancelHistory"
 			parameterType = "java.util.HashMap">
@@ -31,6 +15,58 @@
 		)	
 		
 	</insert>
+	
+	
+	
+	<!-- 취소할 주문의 option_no, option_quantity 가져오기 -->
+	<select id = "cSelectCancelOptionNoQuantity"
+			parameterType = "java.util.HashMap"
+			resultType = "java.util.HashMap">
+	
+		SELECT
+			goods_option_no goodsOptionNo
+			, goods_order_quantity goodsOrderQuantity
+		FROM shopping_goods_order
+		WHERE goods_order_no = #{goodsOrderNo}		
+	
+	</select>
+	
+	
+	<!-- 취소한 주문의 옵션 수량 만큼 goods_option 테이블 재고 복구 -->
+	<update id = "cUpdateGoodsOptionQuantityRewind"
+			parameterType = "java.util.HashMap">
+			
+		UPDATE shopping_goods_option
+		SET goods_option_quantity = (SELECT
+										goods_option_quantity + #{goodsOrderQuantity}
+									FROM shopping_goods_option
+									WHERE goods_option_no = #{goodsOptionNo})
+			, updatedate = NOW()
+		WHERE goods_option_no = #{goodsOptionNo}	
+	
+	</update>
+	
+	
+	<!-- 주문 취소로 인해 복구한 재고 이력 남기기 -->
+	<insert id = "cInsertStockHistory"
+			parameterType = "java.util.HashMap">
+			
+		INSERT INTO shopping_stock_history (
+			goods_option_no
+			, stock_history_quantity
+			, stock_history_state
+			, stock_history_memo
+		) VALUES (
+			#{goodsOptionNo}
+			, #{goodsOrderQuantity}
+			, '입고'
+			, '주문취소'
+		)			
+	
+	</insert>
+	
+	
+	
 
 	<!-- 취소 전 결제 했었던 주문서 가격 -->
 	<select id = "cSelectOrderSheetPrice"
@@ -135,6 +171,23 @@
 		WHERE customer_id = #{customerId}
 		
 	</update>
+
+	<!-- 결제 완료 된 주문 count -->
+	<select id = "cSelectCountOrderPayment"
+			parameterType = "java.util.HashMap"
+			resultType = "int">
+			
+		SELECT
+			COUNT(ord.goods_order_no) count
+		FROM shopping_goods_order ord
+		INNER JOIN shopping_order_sheet s
+			ON ord.order_sheet_no = s.order_sheet_no
+		WHERE s.order_sheet_no = #{orderSheetNo}
+			AND s.customer_id = #{customerId}
+			AND ord.goods_order_state = '결제완료'		
+			
+	</select>
+
 
 	<!-- 해당 주문 주문상태 취소로 변경 -->
 	<update id = "cUpdateOrderStateCancel"

@@ -23,8 +23,8 @@ public class GoodsOrderService {
 		주문 취소
 		-> 페이, 포인트 환급 후 주문서(sheet), 주문 취소
 		-> 취소한 항목 제외하고 새 주문서, 새 주문 생성
+		-> 새 주문, 주문서는 등급할인만 적용(포인트는 환급후 미적용)
 		
-		===> 재고 관련 적용 해야함
 		
 		=================================================================
 		
@@ -32,6 +32,12 @@ public class GoodsOrderService {
 		[주문 취소 과정]
 		
 			cancel_history 주문 이력 추가
+			
+			취소할 주문의 option_no, option_quantity 가져오기
+			
+			취소한 주문의 옵션 수량 만큼 goods_option 테이블 재고 복구
+			
+			주문 취소로 인해 복구한 재고 이력 남기기
 			
 			취소 전 결제 했었던 주문서 가격
 			
@@ -42,8 +48,8 @@ public class GoodsOrderService {
 			customer 테이블 pay 환급 
 			
 			주문들 포인트 sum이 0보다 크다면 
-			point_save 이력 추가
-			customer 테이블 point 환급
+				point_save 이력 추가
+				customer 테이블 point 환급
 		
 		=================================================================
 		
@@ -95,6 +101,15 @@ public class GoodsOrderService {
 		
 		// cancel_history 주문 이력 추가
 		goodsOrderMapper.cInsertCancelHistory(paramMap);
+		
+		// 취소할 주문의 option_no, option_quantity 가져오기
+		HashMap<String, Object> cancelOptionMap = goodsOrderMapper.cSelectCancelOptionNoQuantity(paramMap);
+		
+		// 취소한 주문의 옵션 수량 만큼 goods_option 테이블 재고 복구
+		goodsOrderMapper.cUpdateGoodsOptionQuantityRewind(cancelOptionMap);
+		
+		// 주문 취소로 인해 복구한 재고 이력 남기기
+		goodsOrderMapper.cInsertStockHistory(cancelOptionMap);
 		
 		// 취소 전 결제 했었던 주문서 가격
 		int orderSheetPrice = goodsOrderMapper.cSelectOrderSheetPrice(paramMap);
