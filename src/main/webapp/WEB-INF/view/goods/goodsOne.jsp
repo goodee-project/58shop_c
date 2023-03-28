@@ -69,8 +69,8 @@
 			// check == 2 일 때 submit
 			if(check == 2) {
 				console.log('장바구니담기완료');
-				//$('#cartForm').submit();
-				return false;
+				$('#cartForm').submit();
+				return true;
 			}
 			
 		});
@@ -130,8 +130,8 @@
 			</tr>
 		</table>
 		<form action="${pageContext.request.contextPath}/insertCart" method="get" id="cartForm">
-			<input type="hidden" id="cartQuantity">
-			<input type="hidden" id="goodsOptionNo">
+			<input type="hidden" id="cartQuantity" name="cartQuantity">
+			<input type="hidden" id="goodsOptionNo" name="goodsOptionNo">
 		</form>
 	</div>
 	</c:forEach>
