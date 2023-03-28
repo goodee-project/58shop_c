@@ -7,13 +7,37 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import goodee.gdj58.shop_c.vo.Cart;
+import goodee.gdj58.shop_c.vo.Customer;
+
 
 @Mapper
 public interface GoodsOrderMapper {
 	List<Map<String, Object>> selectOrdersList(Map<String, Object> paramMap);
 	
-	// ====================== 주문 취소 시작 ======================
+	// ====================== 주문 폼 시작 ======================
+	// 메서드 앞 of는 주문 폼 구분하기 위해 붙임
 	
+	// 주문자 정보(주문자 이름, 이메일, 연락처)
+	HashMap<String, Object> ofSelectCustomer(String customerId);
+	
+	// 상품 한 종류 주문 상품 정보
+	// 이미지, 상품명, 회사명, 가격, 옵션 내용
+	// 여러 주문일 때는 반복문 돌릴 예정
+	HashMap<String, Object> ofSelectGoodsOrderInfoOne(int goodsOptionNo);
+	
+	// 장바구니에서 option_no, 수량 가져오기
+	ArrayList<Cart> ofSelectCart(String customerId);
+	
+	
+	// ====================== 주문 폼 끝 ======================
+	
+	
+	
+	
+	
+	// ====================== 주문 취소 시작 ======================
+	// 메서드 앞 c는 취소 구분하기 위해 붙임. 
 	
 	// cancel_history 주문 이력 추가
 	int cInsertCancelHistory(HashMap<String, Object> paramMap);

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import goodee.gdj58.shop_c.mapper.GoodsOrderMapper;
 import goodee.gdj58.shop_c.util.TeamColor;
+import goodee.gdj58.shop_c.vo.Cart;
+import goodee.gdj58.shop_c.vo.Customer;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -18,6 +20,82 @@ public class GoodsOrderService {
 	
 	@Autowired
 	private GoodsOrderMapper goodsOrderMapper;
+	
+	
+	// ================ 주문 폼 시작 ================
+	
+	// 주문자 정보(주문자 이름, 이메일, 연락처)
+	public HashMap<String, Object> ofSelectCustomer(String customerId) {
+		
+		return goodsOrderMapper.ofSelectCustomer(customerId);
+		
+	}
+	
+	// 상품 한 종류 주문 상품 정보
+	// 이미지, 상품명, 회사명, 가격, 옵션 내용
+	// 여러 주문일 때는 반복문 돌릴 예정
+	public ArrayList<HashMap<String, Object>> ofSelectGoodsOrderInfoList(Integer goodsOptionNo, Integer goodsOrderQuantity
+																			, String customerId) {
+		
+		ArrayList<HashMap<String, Object>> goodsOrderInfoList = new ArrayList<HashMap<String, Object>>();
+		
+		if(goodsOptionNo != null && goodsOrderQuantity != null) {
+			
+			HashMap<String, Object> map = goodsOrderMapper.ofSelectGoodsOrderInfoOne(goodsOptionNo.intValue());
+			
+			map.put("goodsOrderQuantity", goodsOrderQuantity.intValue());
+			
+			goodsOrderInfoList.add(map);
+			
+			
+		} else {
+			
+			ArrayList<Cart> cartList = goodsOrderMapper.ofSelectCart(customerId);
+			
+			for(Cart cart : cartList) {
+				
+				HashMap<String, Object> hm = goodsOrderMapper.ofSelectGoodsOrderInfoOne(cart.getGoodsOptionNo());
+
+				hm.put("goodsOrderQuantity", cart.getCartQuantity());
+				
+				goodsOrderInfoList.add(hm);
+				
+			}
+			
+			
+		}
+		
+		
+		return goodsOrderInfoList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/*
 		주문 취소
