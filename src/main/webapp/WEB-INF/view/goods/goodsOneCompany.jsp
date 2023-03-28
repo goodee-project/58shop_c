@@ -88,7 +88,7 @@
 				return true;
 			} else {
 				console.log('장바구니담기완료');
-				//$('#cartForm').submit();
+				$('#cartForm').submit();
 			}
 		})
 		

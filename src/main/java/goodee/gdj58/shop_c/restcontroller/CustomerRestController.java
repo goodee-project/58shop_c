@@ -1,7 +1,5 @@
 package goodee.gdj58.shop_c.restcontroller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,38 +15,38 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class CustomerRestController {
 	@Autowired TotalIdService totalIdService;
-	@Autowired recaptchaService signupService;
+	@Autowired recaptchaService recaptchaService;
 	
 	/* 로그인 --------------------------------------------------------------------------------------*/
 	
 	// 구글 recaptcha
 	@PostMapping("/login/validation")
-    public String loginRecaptcha(@RequestParam(value="recaptcha") String recaptcha
-    							, HttpServletRequest request){
-    	String resultStr="";
+    public boolean loginRecaptcha(@RequestParam(value="recaptcha") String recaptcha){
+    	boolean resultStr=false;
 		String gRecaptchaResponse=recaptcha;
+		log.debug(TeamColor.GREEN+gRecaptchaResponse);
     	try {
-    		if(signupService.loginRecaptcha(gRecaptchaResponse)) {
-    			resultStr="YES";
+    		if(recaptchaService.loginRecaptcha(gRecaptchaResponse)) {
+    			resultStr=true;
     		} else {
-    			resultStr="NO";
+    			resultStr=false;
     		} 
     	} catch(Exception e) {
 			e.printStackTrace();
-			resultStr="error";
+			resultStr=false;
 		}
     	return resultStr;
     }
 	
 	/* 회원가입 -------------------------------------------------------------------------------------*/
-	
+
 	// 구글 recaptcha
     @PostMapping("/signup/validation")
     public String signupRecaptcha(@RequestParam(value="token", defaultValue="") String token){
     	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
-    	return signupService.signupRecaptcha(token);
+    	return recaptchaService.signupRecaptcha(token);
     }
-    
+
 	@GetMapping("/idCheck")
 	public String idCheck(@RequestParam(value="customerId", defaultValue="") String customerId) {
 		return totalIdService.findId(customerId);

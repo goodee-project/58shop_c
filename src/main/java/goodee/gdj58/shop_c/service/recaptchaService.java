@@ -86,7 +86,7 @@ public class recaptchaService {
         }
     }
     
-    
+
     // 구글 recaptcha: 회원가입
     public String signupRecaptcha(String token){
         HttpHeaders headers = new HttpHeaders();
@@ -102,4 +102,5 @@ public class recaptchaService {
 
         return response.getBody();
     }
+
 }

@@ -30,22 +30,47 @@
     <!-- YOUR CUSTOM CSS -->
     <link href="${pageContext.request.contextPath}/resources/html/css/custom.css" rel="stylesheet">
     
-    <!-- google recaptcha -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
     <style>
 		.loginMsg {
 			color:#FF3300;
 		}
 	</style>
+	<!-- google recaptcha -->
+   	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 	<script>
+	 	// g-recaptcha 생성
+		var onloadCallback = function() {
+		    grecaptcha.render('g-recaptcha', {
+						    'sitekey' : '6Ld2OyklAAAAAKVkv4RNU_U26dK-LvHqph0-DfZe',
+						    'callback' : verifyCallback,
+						    'expired-callback' : expiredCallback,
+		    });
+		};
+
+		  //	인증 성공 시
+		  var verifyCallback = function(response) {
+		    $("#loginBtn").removeClass("disabled-btn");
+		    $("#loginBtn").attr("disabled", false);
+		  };
+
+		  //	인증 만료 시
+		  var expiredCallback = function(response) {
+		    $("#loginBtn").addClass("disabled-btn");
+		    $("#loginBtn").attr("disabled", true);
+		  }
+
+		  //	g-recaptcha 리셋
+		    var resetCallback = function() {
+		    grecaptcha.reset();
+		  }
 		$(document).ready(function() {
-			
+			$("#loginBtn").attr("disabled", false);
 			$('#id').focus();
 	
-			$('#loginBtn').on('click',function() {
-				
+			$('#loginBtn').on('click',function(){
+
 				let loginMsgCheck=0;
 
 				// 아이디 유효성 검사
@@ -70,69 +95,44 @@
 				});
 				console.log('+loginMsgCheck: '+loginMsgCheck);
 				if(loginMsgCheck == $('.loginMsg').length) { // loginMsgCheck의 값과 loginMsg class개체 개수와 같으면 submit
-					//$('#loginForm').submit();
+					onloadCallback;
 					// 로그인 시도 3번 실패시 리캡차 테스트 출력하기
 					let failCount=$('#failCount').val();
 					let failLoginId=$('#failLoginId').val();
 					let loginId=$('#loginId').val();
 					if(failCount > 2 && loginId == failLoginId) {
 						
-						// 로그인 버튼을 눌렀을 때 gRecaptcha 형성 
-						let recaptchaCallBack=function() {
-							gRecaptcha.render('gRecaptcha', {'callback':verifyCallback
-															, 'expired=callback':expiredCallback,});
+						verifyCallback;
+						expiredCallback;
+						resetCallback;
+						
+						if($('#loginBtn').hasClass('disabled-btn')){
+     	 						alert("recaptcha 인증 후 로그인이 가능합니다.");
+						} else {
+							let recaptcha=$('#g-recaptcha-response').val();
+							console.log(recaptcha);
+							$.ajax({
+       								type: 'POST',
+       								//contentType: 'application/json',
+       								url: 'login/validation',
+       								data: {'recaptcha': recaptcha},
+       								dataType: 'JSON',
+       								success: function(data){
+       									console.log(data);
+           								if(data == true) {
+        	   									$('#loginForm').submit();
+           								} else {
+               								alert("로그인 실패");
+           								}
+       								},
+       								error: function(err) {
+           								alert("에러");
+       								}
+      						}); // ajax끝
 						}
-						
-						// 인증 성공 시
-						let verifyCallback=function(response) {
-							$("#loginBtn").removeClass("disabled-btn");
-						    $("#loginBtn").attr("disabled", false);
-							$('#loginForm').submit();
-						}
-						
-						// 인증 만료 시
-						let expiredCallback=function(response) {
-							alert('인증 실패');
-							$("#loginBtn").addClass("disabled-btn");
-						    $("#loginBtn").attr("disabled", true);
-						}
-						
-						// gRecaptcha reset
-						let resetCallback=function() {
-							gRecaptcha.reset();
-						}
-						
-						if($("#loginBtn").hasClass('disabled-btn')){
-						       alert("recaptcha 인증 후 로그인이 가능합니다.");
-						   } else {
-						       var recaptcha=$("#gRecaptcha-response").val();
-						   }
-						
-						 $.ajax({
-					           type: "get",
-					           contentType: "application/json",
-					           url: "login/validation",
-					           data: {
-					               recaptcha : recaptcha
-					           },
-					           dataType: "JSON",
-					           success: function(data){
-
-					               if(data.status == true){
-					                   
-					               } else {
-					                   alert("로그인 실패");
-					               }
-					           },
-					           error: function(err){
-					               alert("에러" + err.toString());
-					           }
-					       });
-						
-						
 					} else {
-						$('#loginForm').submit();
-					}
+							$('#loginForm').submit();
+					}	
 				}
 			});
 		});
@@ -160,12 +160,9 @@
 					<label>ID</label>
 					<input type="text" class="form-control" id="loginId" name="customerId">
 					<i class="icon_mail_alt"></i>
-					
-					<span id="idMsg" class="loginMsg"></span>
-				
+					<span id="idMsg" class="loginMsg"></span>				
 				</div>
-				
-				
+
 				<div class="form-group">
 					<label>Password</label>
 					<input type="password" class="form-control" id="loginPw" name="customerPw" value="">
@@ -185,7 +182,9 @@
 				<!-- 로그인 시도 3번 실패 시 캡차 테스트를 거쳐야 로그인 가능하다 -->
 				<input type="hidden" id="failCount" value="${loginFail.failCount}">
 				<input type="hidden" id="failLoginId" value="${loginFail.loginId}">
-				<div id="gRecaptcha" data-sitekey="${loginSiteKey}"></div>
+				<c:if test="${loginFail.failCount > 2}">
+					<div id="g-recaptcha"></div>
+				</c:if>
 			
 				<button type="button" class="btn_1 rounded full-width disabled-btn" id="loginBtn">login</button>
 				<div class="text-center add_top_10">아직 회원이 아니신가요? <strong><a href="${pageContext.request.contextPath}/signup">회원가입</a></strong></div>

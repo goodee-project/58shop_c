@@ -468,6 +468,7 @@
 				//console.log(submitCheck);
 
 				if(submitCheck == 14) {
+				
 					// 구글 reCaptcha 확인
 					$.ajax({
 	                        url: 'signup/validation',
@@ -483,6 +484,7 @@
 	                            console.log("fail");
 	                        }
 	       			});
+
 				} 
 			});
 		});
