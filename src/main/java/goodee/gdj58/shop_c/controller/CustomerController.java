@@ -57,9 +57,12 @@ public class CustomerController {
 	public String loginCustomer(HttpSession session, Customer customer, Model model) {
 		Customer loginCustomer=customerService.login(customer);
 		int failCount=0; // 로그인 시도 횟수를 저장할 변수
-		String loginId=customer.getCustomerId();
+		String loginId=customer.getCustomerId(); // 로그인 시도한 아이디
 		HashMap<String, Object> loginMap=(HashMap<String, Object>)session.getAttribute("loginFail");
-		String failId=(String)loginMap.get("loginId");
+		String failId="";
+		if(loginMap != null) {
+			failId=(String)loginMap.get("loginId"); // 세션에 저장된 로그인에 실패한 아이디
+		}
 		if(loginMap == null || failId == null) { // 세션에 저장된 로그인시도 정보가 없을 때
 			failCount=0;
 		} else if(loginMap != null) {
@@ -69,7 +72,7 @@ public class CustomerController {
 				failCount=0;
 			}
 		}
-		if(loginCustomer == null) {
+		if(loginCustomer == null) { // 로그인 실패 시
 			String loginFailMsg="fail";
 			++failCount;
 			
