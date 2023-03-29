@@ -62,7 +62,7 @@
 		//console.log('quantity :'+quantity);
 		//console.log('goodsNo :'+goodsNo);
 		
-		$('#cartBtn').click(function() {
+		$('.submitBtn').click(function() {
 			// 폼으로 넘길 변수에 값 넣기
 			$('input[name=cartQuantity]').val(Number(quantity)); // 수량
 			$('input[name=goodsOptionNo]').val(Number(goodsNo)); // 상품번호
@@ -86,10 +86,17 @@
 				$('input[name=cartQuantity]').val(1);
 				$('#selectQuantity').val(1);
 				return true;
-			} else {
-				console.log('장바구니담기완료');
-				$('#cartForm').submit();
-			}
+			} 
+			
+			$('.submitBtn').each(function() {
+			    if($(this).hasClass('cart')) {
+			    	console.log('장바구니담기submit');
+			    	$('#cartForm').submit();
+			    } else if($(this).hasClass('order')) {
+			    	console.log('주문하기submit');
+			    	$('#orderForm').submit();
+			    }
+			});
 		})
 		
 	});
@@ -121,12 +128,17 @@
 					<input type="number" id="selectQuantity" value="1">
 				</div>
 				<div>
-					<button type="button" id="cartBtn">장바구니 담기</button>
+					<button type="button" class="submitBtn cart">장바구니 담기</button>
+					<button type="button" class="submitBtn order">주문하기</button>
 				</div>
 			</td>
 		</tr>
 	</table>
 	<form action="${pageContext.request.contextPath}/insertCart" method="get" id="cartForm">
+		<input type="hidden" name="goodsOptionNo">
+		<input type="hidden" name="cartQuantity">
+	</form>
+	<form action="${pageContext.request.contextPath}/customer/order/orderForm" method="get" id="orderForm">
 		<input type="hidden" name="goodsOptionNo">
 		<input type="hidden" name="cartQuantity">
 	</form>

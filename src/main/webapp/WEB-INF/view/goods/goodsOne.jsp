@@ -21,11 +21,15 @@
 		// 선택옵션 존재할 때
 		$('#selectOption').change(function() {
 			$('#goodsOptionNo').val($('#selectOption').val());
+			let optionNo=Number($('#selectOption').val());
+			let checkStock=Number($('#option'+optionNo).val());
+			//console.log(checkStock);
+			$('#optionStock').data('stock', checkStock);
 		});
 		
 		// 선택옵션 없을 때
 		let optionNo=$('#oneOption').val();
-		console.log(optionNo);
+		//console.log(optionNo);
 		if(optionNo) {
 			$('#goodsOptionNo').val(optionNo);
 		}
@@ -38,10 +42,21 @@
 		
 		$('#cartBtn').click(function() {
 			let check=0; // check == 2 일 때 submit
+			console.log($('#optionStock').data('stock'));
 			
 			// 재고 확인
+			let stock=0;
+			let optionStock=$('#optionStock').data('stock'); //옵션이 있을 때
+			let oneStock=$('#oneStock').val(); //옵션이 없을 때
 			let quantity=Number($('#quantity').val());
-			let stock=Number($('#stock').val());
+			//console.log('oneStock: '+oneStock);
+			//console.log('optionStock: '+optionStock);
+			if(typeof optionStock == "undefined") {
+				stock=Number(oneStock);
+			} else {
+				stock=Number(optionStock);
+			}
+			
 			if(quantity > stock) {
 				alert('재고가 부족합니다. '+stock+'개 이하로 담아주세요.');
 				$('#quantity').val(stock);
@@ -109,14 +124,15 @@
 									<option value="${i.goodsOptionNo}">${i.goodsOptionContent} [재고:${i.goodsOptionQuantity}]</option>
 								</c:forEach>
 							</select>
-							<c:forEach var="s" items="${goodsOption}">
-								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
+							<span id="optionStock"></span>
+							<c:forEach var="j" items="${goodsOption}"> <!-- 옵션 수량 확인하기 -->
+								<input id="option${j.goodsOptionNo}" type="hidden" value="${j.goodsOptionQuantity}">
 							</c:forEach>
 						</c:when>
 						<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
 							<c:forEach var="s" items="${goodsOption}">
 								<input type="hidden" id="oneOption" value="${s.goodsOptionNo}">
-								<input type="hidden" id="stock" value="${s.goodsOptionQuantity}">
+								<input type="hidden" id="oneStock" value="${s.goodsOptionQuantity}">
 							</c:forEach>
 						</c:when>
 					</c:choose>
