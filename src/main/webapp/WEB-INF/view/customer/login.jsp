@@ -114,7 +114,7 @@
 							$.ajax({
        								type: 'POST',
        								//contentType: 'application/json',
-       								url: 'login/validation',
+       								url: 'loginValidation',
        								data: {'recaptcha': recaptcha},
        								dataType: 'JSON',
        								success: function(data){
@@ -154,7 +154,15 @@
 			<figure>
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/html/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
-			  <form action="${pageContext.request.contextPath}/login" method="post" id="loginForm">
+			
+				<c:if test="${loginFailMsg != null}">
+					<div class="alert alert-danger alert-dismissible">
+    					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    					${loginFailMsg}
+  					</div>
+				</c:if>
+			
+			  <form action="${pageContext.request.contextPath}/customer/login" method="post" id="loginForm">
 				
 				<div class="form-group">
 					<label>ID</label>
@@ -187,7 +195,7 @@
 				</c:if>
 			
 				<button type="button" class="btn_1 rounded full-width disabled-btn" id="loginBtn">login</button>
-				<div class="text-center add_top_10">아직 회원이 아니신가요? <strong><a href="${pageContext.request.contextPath}/signup">회원가입</a></strong></div>
+				<div class="text-center add_top_10">아직 회원이 아니신가요? <strong><a href="${pageContext.request.contextPath}/customer/signup">회원가입</a></strong></div>
 			</form>
 			<div class="copy">© 2018 Panagea</div>
 		</aside>

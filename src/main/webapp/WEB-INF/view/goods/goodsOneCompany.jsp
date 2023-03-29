@@ -117,20 +117,35 @@
 				<div>
 					${goodsOne.goodsPrice}원
 				</div>
-				<c:if test="${goodsOne.goodsOptionContent ne ''}">
+				
+				<c:choose>
+					<c:when test="${goodsOne.quantitySum > 0}">
+					
+					<c:if test="${goodsOne.goodsOptionContent ne ''}">
+						<div>
+							<select id="selectOption">
+								<option value="">선택</option>	
+							</select>
+						</div>
+					</c:if>
 					<div>
-						<select id="selectOption">
-							<option value="">선택</option>	
-						</select>
+						<input type="number" id="selectQuantity" value="1">
 					</div>
-				</c:if>
-				<div>
-					<input type="number" id="selectQuantity" value="1">
-				</div>
-				<div>
-					<button type="button" class="submitBtn cart">장바구니 담기</button>
-					<button type="button" class="submitBtn order">주문하기</button>
-				</div>
+					<div>
+						<button type="button" class="submitBtn cart">장바구니 담기</button>
+						<button type="button" class="submitBtn order">주문하기</button>
+					</div>
+					</c:when>
+					<c:otherwise>
+						<div>
+							<input type="number" value="0" readonly="readonly">
+						</div>
+						<div>
+							<button type="button">품절</button>
+						</div>
+					</c:otherwise>
+				</c:choose>
+				
 			</td>
 		</tr>
 	</table>

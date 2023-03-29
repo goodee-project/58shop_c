@@ -116,32 +116,48 @@
 					<div>
 						${g.goodsPrice}원
 					</div>
-					<c:choose>	
-						<c:when test="${fn:length(goodsOption) > 1}"><!-- 옵션이 2개 이상일 때 -->
-							<select id="selectOption">
-								<option>선택</option>
-								<c:forEach var="i" items="${goodsOption}">
-									<option value="${i.goodsOptionNo}">${i.goodsOptionContent} [재고:${i.goodsOptionQuantity}]</option>
-								</c:forEach>
-							</select>
-							<span id="optionStock"></span>
-							<c:forEach var="j" items="${goodsOption}"> <!-- 옵션 수량 확인하기 -->
-								<input id="option${j.goodsOptionNo}" type="hidden" value="${j.goodsOptionQuantity}">
-							</c:forEach>
+					
+					<c:choose>
+						<c:when test="${g.quantitySum > 0}">
+						
+							<c:choose>	
+								<c:when test="${fn:length(goodsOption) > 1}"><!-- 옵션이 2개 이상일 때 -->
+									<select id="selectOption">
+										<option>선택</option>
+										<c:forEach var="i" items="${goodsOption}">
+											<option value="${i.goodsOptionNo}">${i.goodsOptionContent} [재고:${i.goodsOptionQuantity}]</option>
+										</c:forEach>
+									</select>
+									<span id="optionStock"></span>
+									<c:forEach var="j" items="${goodsOption}"> <!-- 옵션 수량 확인하기 -->
+										<input id="option${j.goodsOptionNo}" type="hidden" value="${j.goodsOptionQuantity}">
+									</c:forEach>
+								</c:when>
+								<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
+									<c:forEach var="s" items="${goodsOption}">
+										<input type="hidden" id="oneOption" value="${s.goodsOptionNo}">
+										<input type="hidden" id="oneStock" value="${s.goodsOptionQuantity}">
+									</c:forEach>
+								</c:when>
+							</c:choose>
+							<div>
+								<input type="number" id="quantity" value=1>
+							</div>
+							<div>
+								<button type="button" id="cartBtn">장바구니 담기</button>
+							</div>
 						</c:when>
-						<c:when test="${fn:length(goodsOption) == 1}"><!-- 옵션이 하나뿐일 때 -->
-							<c:forEach var="s" items="${goodsOption}">
-								<input type="hidden" id="oneOption" value="${s.goodsOptionNo}">
-								<input type="hidden" id="oneStock" value="${s.goodsOptionQuantity}">
-							</c:forEach>
-						</c:when>
+						<c:otherwise>
+							<div>
+								<input type="number" value="0" readonly="readonly">
+							</div>
+							<div>
+								<button type="button">품절</button>
+							</div>
+						</c:otherwise>
+					
 					</c:choose>
-					<div>
-						<input type="number" id="quantity" value=1>
-					</div>
-					<div>
-						<button type="button" id="cartBtn">장바구니 담기</button>
-					</div>
+					
 				</td>
 			</tr>
 		</table>

@@ -20,7 +20,7 @@ public class CustomerRestController {
 	/* 로그인 --------------------------------------------------------------------------------------*/
 	
 	// 구글 recaptcha
-	@PostMapping("/login/validation")
+	@PostMapping("/customer/loginValidation")
     public boolean loginRecaptcha(@RequestParam(value="recaptcha") String recaptcha){
     	boolean resultStr=false;
 		String gRecaptchaResponse=recaptcha;
@@ -41,7 +41,7 @@ public class CustomerRestController {
 	/* 회원가입 -------------------------------------------------------------------------------------*/
 
 	// 구글 recaptcha
-    @PostMapping("/signup/validation")
+    @PostMapping("/customer/signupValidation")
     public String signupRecaptcha(@RequestParam(value="token", defaultValue="") String token){
     	log.debug(TeamColor.GREEN+"CustomerRestController token: "+token);
     	return recaptchaService.signupRecaptcha(token);

@@ -21,8 +21,19 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerController {
 	@Autowired CustomerService customerService;
 	
+	
+	/* 마이페이지 ------------------------------------------------------------------------------------*/
+	
+	@GetMapping("/login/mypageMain")
+	public String mypageMain(HttpSession session) {
+		return "customer/mypageMain";
+	}
+	
+	
+	/* 회원가입 -------------------------------------------------------------------------------------*/
+	
 	// 회원가입 액션
-	@PostMapping("/signup")
+	@PostMapping("/customer/signup")
 	public String insertCustomer(HttpSession session, Customer customer) {
 		int row=customerService.insertCustomer(customer);
 		if(row == 1) {
@@ -32,28 +43,27 @@ public class CustomerController {
 	}
 	
 	// 회원가입 폼
-	@GetMapping("/signup")
+	@GetMapping("/customer/signup")
 	public String insertCustomer(HttpSession session, Model model) {
 		final String signupSiteKey="6LdO2uEkAAAAAN2mVTdIBzZg44L4k4AOuSXtWooz"; // 리캡차 사이트키
 
-		Customer loginCustomer=(Customer)session.getAttribute("loginCustomer");
-		if(loginCustomer != null) { // 로그인 된 상태
-			return "redirect:/home";
-		}
 		model.addAttribute("signupSiteKey", signupSiteKey);
 		return "customer/insertCustomer";
 	}
 	
+	
+	/* 로그인 --------------------------------------------------------------------------------------*/
+	
 	// 로그아웃 액션
-	@GetMapping("/customer/logout")
+	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/login";
+		return "redirect:/main";
 		//return "redirect:http://3.34.241.220/58platform/integrationPage";
 	}
 	
 	// 로그인 액션
-	@PostMapping("/login")
+	@PostMapping("/customer/login")
 	public String loginCustomer(HttpSession session, Customer customer, Model model) {
 		Customer loginCustomer=customerService.login(customer);
 		int failCount=0; // 로그인 시도 횟수를 저장할 변수
@@ -73,7 +83,7 @@ public class CustomerController {
 			}
 		}
 		if(loginCustomer == null) { // 로그인 실패 시
-			String loginFailMsg="fail";
+			String loginFailMsg="아이디와 비밀번호를 확인해주세요.";
 			++failCount;
 			
 			// 로그인 실패 정보 묶기
@@ -94,14 +104,10 @@ public class CustomerController {
 	}
 	
 	// 로그인 폼
-	@GetMapping("/login")
+	@GetMapping("/customer/login")
 	public String loginCustomer(HttpSession session, Model model) {
 		final String loginSiteKey="6Ld2OyklAAAAAKVkv4RNU_U26dK-LvHqph0-DfZe"; // 리캡차 사이트키
 		
-		Customer loginCustomer=(Customer)session.getAttribute("loginCustomer");
-		if(loginCustomer != null) { // 로그인 된 상태
-			return "redirect:/main";
-		}
 		model.addAttribute("loginSiteKey", loginSiteKey);
 		return "customer/login";
 		//return "redirect:http://3.34.241.220/58platform/integrationPage";

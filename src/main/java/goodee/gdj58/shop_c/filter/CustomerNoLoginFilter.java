@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@WebFilter("/customer/*")
-public class CustomerLoginFilter extends HttpFilter implements Filter {
+@WebFilter("/login/*")
+public class CustomerNoLoginFilter extends HttpFilter implements Filter {
        
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -25,8 +25,8 @@ public class CustomerLoginFilter extends HttpFilter implements Filter {
 		if(request instanceof HttpServletRequest) {
 			HttpServletRequest req=(HttpServletRequest)request;
 			HttpSession session=req.getSession();
-			if(session.getAttribute("loginCustomer") != null) {
-				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/main");
+			if(session.getAttribute("loginCustomer") == null) {
+				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/login");
 				return;
 			} 
 		} else {

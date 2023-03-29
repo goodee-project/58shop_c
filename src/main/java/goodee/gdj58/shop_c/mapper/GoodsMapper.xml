@@ -21,7 +21,11 @@
 			, img.goods_img_level goodsImgLevel
 			, GROUP_CONCAT(op.goods_option_no) goodsOptionNo
 			, GROUP_CONCAT(op.goods_option_content) goodsOptionContent
-			, GROUP_CONCAT(op.goods_option_quantity) goodsOptionQuantity			
+			, GROUP_CONCAT(op.goods_option_quantity) goodsOptionQuantity
+			, (SELECT SUM(p.goods_option_quantity)
+				FROM shopping_goods_option p
+				WHERE p.goods_no=g.goods_no
+				GROUP BY p.goods_no) quantitySum
 		FROM shopping_goods g
 		INNER JOIN shopping_company c
 		ON g.company_id=c.company_id
@@ -63,6 +67,10 @@
 			, c.company_name companyName
 			, img.goods_img_origin_name goodsImgOriginName
 			, img.goods_img_level goodsImgLevel
+			, (SELECT SUM(p.goods_option_quantity)
+				FROM shopping_goods_option p
+				WHERE p.goods_no=g.goods_no
+				GROUP BY p.goods_no) quantitySum
 		FROM t3
 		INNER JOIN shopping_goods g
 		ON t3.type_no=g.type_no
@@ -109,7 +117,11 @@
 			, c.company_email companyEmail
 			, c.company_address companyAddress
 			, img.goods_img_origin_name goodsImgOriginName
-			, img.goods_img_level goodsImgLevel		
+			, img.goods_img_level goodsImgLevel
+			, (SELECT SUM(p.goods_option_quantity)
+				FROM shopping_goods_option p
+				WHERE p.goods_no=g.goods_no
+				GROUP BY p.goods_no) quantitySum
 		FROM shopping_goods g
 		INNER JOIN shopping_company c
 		ON g.company_id=c.company_id
@@ -192,6 +204,10 @@
 			, c.company_name companyName
 			, img.goods_img_origin_name goodsImgOriginName
 			, img.goods_img_level goodsImgLevel
+			, (SELECT SUM(p.goods_option_quantity)
+				FROM shopping_goods_option p
+				WHERE p.goods_no=g.goods_no
+				GROUP BY p.goods_no) quantitySum
 		FROM t3
 		INNER JOIN shopping_goods g
 		ON t3.type_no=g.type_no

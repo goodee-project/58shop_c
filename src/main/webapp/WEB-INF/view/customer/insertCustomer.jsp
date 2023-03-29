@@ -471,7 +471,7 @@
 				
 					// 구글 reCaptcha 확인
 					$.ajax({
-	                        url: 'signup/validation',
+	                        url: 'signupValidation',
 	                        type : 'POST',
 	                        //ContentType: "application/x-www-form-urlencoded",
 	                        dataType: 'json',
@@ -506,7 +506,7 @@
 			<figure>
 				<a href="index.html"><img src="${pageContext.request.contextPath}/resources/html/img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a>
 			</figure>
-			<form action="${pageContext.request.contextPath}/signup" method="post" id="insertForm">
+			<form action="${pageContext.request.contextPath}/customer/signup" method="post" id="insertForm">
 				<div class="form-group">
 					<label>아이디</label>
 					<input class="form-control" type="text" id="id" name="customerId">
@@ -679,7 +679,7 @@
 				<div id="pass-info" class="clearfix"></div>
 				<input type="hidden" id="signupSiteKey" value="${signupSiteKey}">
 				<button type="button" class="btn_1 rounded full-width add_top_30" id="insertBtn">가입하기</button>
-				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/login">로그인하기</a></strong></div>
+				<div class="text-center add_top_10">이미 회원이신가요? <strong><a href="${pageContext.request.contextPath}/customer/login">로그인하기</a></strong></div>
 			</form>
 			<div class="copy">© 2018 Panagea</div>
 		</aside>
