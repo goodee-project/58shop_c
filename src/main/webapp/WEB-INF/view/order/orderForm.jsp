@@ -23,25 +23,50 @@
 		
 			$(function() {
 				
+				let customerPay = Number('<c:out value = "${cusMap.customerPay}"/>');	// 고객 보유 페이
+				let customerPoint = Number('<c:out value = "${cusMap.customerPoint}"/>');	// 고객 보유 포인트
+				let reward = Number('<c:out value = "${cusMap.reward}"/>');	// 등급할인
+				let totalPrice = $('#totalPrice').val();	// 등급할인, 포인트 미적용
 				
 				
+				// 포인트 블러 이벤트
 				$('#usePoint').blur(function() {
 					
-					let customerPay = '<c:out value = "${cusMap.customerPay}"/>';
-					let customerPoint = '<c:out value = "${cusMap.customerPoint}"/>';
-					let reward = '<c:out value = "${cusMap.reward}"/>';
-					let usePoint = $('#usePoint').val();
-					let totalPrice = $('#totalPrice').val();
-					$('#finalPrice').val((totalPrice - usePoint) * (100 - reward) / 100);
-					let finalPrice = $('#finalPrice').val();
+					let pointCheck = false;
 					
-					console.log(customerPay);
-					console.log(customerPoint);
-					console.log(usePoint);
-					console.log(totalPrice);
-					console.log(finalPrice);				
+					let usePoint = Number($('#usePoint').val());	// 사용할 포인트
 					
+					if(0 <= usePoint && usePoint <= customerPoint) {
+						
+						
+						if(usePoint <= totalPrice) {
+							
+							$('#finalPrice').val(parseInt((totalPrice - usePoint) * (100 - reward) / 100));
+							
+							console.log($('#finalPrice').val() + ' <-- finalPrice')
+							
+							pointCheck = true;
+							
+						} else {
+							
+							alert('사용할 수 있는 최대 포인트는 ' + totalPrice + ' 입니다.');
+							$('#usePoint').val('');
+							
+						}
+						
+						
+					} else {
+						
+						alert('올바른 사용 가능한 포인트를 적어주세요.(미사용시 0)');
+						
+						$('#usePoint').val('');
+						
+					}
 					
+					console.log(pointCheck)
+					console.log(usePoint)
+				
+				
 				});
 				
 				
@@ -142,7 +167,7 @@
 						
 							<div>
 								사용할 포인트 : 
-								<input type = "number" name = "usePoint" id = "usePoint">
+								<input type = "number" name = "usePoint" id = "usePoint" value = "0">
 								
 							</div>
 						
