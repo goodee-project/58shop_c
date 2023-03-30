@@ -19,3 +19,103 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   margin-bottom: 1rem;
 }
+#custom-search-button {
+  padding: 0;
+  width: 600px;
+  margin: 20px auto 0;
+  position: relative;
+}
+#custom-search-button button[type='button']{
+  position: absolute;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  right: -1px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  font-size: 0.875rem;
+  top: 0;
+  border: 0;
+  padding: 0 25px;
+  height: 50px;
+  cursor: pointer;
+  outline: none;
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  background-color: #fc5b62;
+}
+#custom-search-button button[type='button']:hover {
+  background-color: #FFC107;
+  color: #222;
+}
+@media (max-width: 575px) {
+  #custom-search-button button[type='button'] {
+    text-indent: -999px;
+    background: #fc5b62 url(../img/search.svg) no-repeat center center;
+  }
+}
+a.btn_custom1,
+.btn_custom1 {
+  border: none;
+  color: #fff;
+  background: #fc5b62;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  padding: 8px 10px;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 5px;
+}
+a.btn_custom1:hover,
+.btn_custom1:hover {
+  background: #0054a6;
+  color: #fff;
+}
+
+a.btn_custom2,
+.btn_custom2 {
+  border: none;
+  color: #fff;
+  background: #fc5b62;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  padding: 14px 66px;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  justify-content : center;
+ 
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 5px;
+}
+a.btn_custom2:hover,
+.btn_custom2:hover {
+  background: #0054a6;
+  color: #fff;
+}

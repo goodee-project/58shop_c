@@ -73,7 +73,7 @@ article.blog figure img {
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   width: auto;
-  height: 400px;
+  height: 300px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -84,11 +84,13 @@ article.blog figure img {
   backface-visibility: hidden;
 }
 article.blog figure img:hover {
+  /*
   -webkit-transform: translate(-50%, -50%) scale(1.1);
   -moz-transform: translate(-50%, -50%) scale(1.1);
   -ms-transform: translate(-50%, -50%) scale(1.1);
   -o-transform: translate(-50%, -50%) scale(1.1);
   transform: translate(-50%, -50%) scale(1.1);
+	*/
 }
 @media (max-width: 991px) {
   article.blog figure img {

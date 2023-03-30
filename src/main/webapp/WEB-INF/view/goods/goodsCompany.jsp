@@ -28,41 +28,41 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="${pageContext.request.contextPath}/resources/html/css/custom.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-	<script>
-		$(function() {
-			
-			// controller에서 넘어온 옵션값 선택하기
-			if($('input[name=keyword]').val() != 'new') {
-				let defaultWord=$('input[name=keyword]').val();
-				$('#selectOption').val(defaultWord);
-			}
-			
-			// 정렬옵션값 변수에 넣어서 폼으로 넘기기
-			$('#selectOption').change(function() {
-				let option=$(this).val();
-				$('input[name=keyword]').val(option);
-				$('#goodsCompanyForm').submit();
-			});
-			
-			// 검색값 변수에 넣어서 폼으로 넘기기(버튼클릭이벤트)
-			$('#searchBtn').click(function() {
-				let clickSearch=$('#searchword').val();
-				$('input[name=searchword]').val(clickSearch);
-				$('#goodsCompanyForm').submit();
-			});
-			
-			// 검색값 변수에 넣어서 폼으로 넘기기(엔터키이벤트)
-			$('#searchword').keydown(function(key) {
-				if(key.keyCode && key.keyCode == 13) {
-					let enterSearch=$('#searchword').val();
-					$('input[name=searchword]').val(enterSearch);
-					$('#goodsCompanyForm').submit();
-				}
-			});	
-		});
-	</script>
+
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+	$(function() {
+		// controller에서 넘어온 옵션값 선택하기
+		if($('input[name=keyword]').val() != 'new') {
+			let defaultWord=$('input[name=keyword]').val();
+			$('#selectOption').val(defaultWord);
+		}
+		
+		// 정렬옵션값 변수에 넣어서 폼으로 넘기기
+		$('#selectOption').change(function() {
+			let option=$(this).val();
+			$('input[name=keyword]').val(option);
+			$('#goodsCompanyForm').submit();
+		});
+		
+		// 검색값 변수에 넣어서 폼으로 넘기기(버튼클릭이벤트)
+		$('#searchBtn').click(function() {
+			let clickSearch=$('#searchword').val();
+			$('input[name=searchword]').val(clickSearch);
+			$('#goodsCompanyForm').submit();
+		});
+		
+		// 검색값 변수에 넣어서 폼으로 넘기기(엔터키이벤트)
+		$('#searchword').keydown(function(key) {
+			if(key.keyCode && key.keyCode == 13) {
+				let enterSearch=$('#searchword').val();
+				$('input[name=searchword]').val(enterSearch);
+				$('#goodsCompanyForm').submit();
+			}
+		});	
+	});
+</script>
 
 <body>
 	
@@ -89,48 +89,7 @@
 				<input type="hidden" name="keyword" value="${keyword}">
 				<input type="hidden" name="companyId" value="${companyId}">
 			</form>
-
-			<div>
-				<input type="text" id="searchword" value="${searchword}">
-				<button type="button" id="searchBtn">검색</button>
-			</div>
-			<div>
-				<select id="selectOption">
-					<option value="new">신상품순</option>
-					<option value="high">높은가격순</option>
-					<option value="low">낮은가격순</option>
-				</select>
-			</div>
-			<table>
-				<c:forEach var="c" items="${selectGoodsCompany}">
-					<tr>
-						<td>
-							<a href="${pageContext.request.contextPath}/goods/goodsOneCompany?companyId=${companyId}&goodsNo=${c.goodsNo}">
-								<img src="${pageContext.request.contextPath}/upload/goodsImg/${c.goodsImgOriginName}" width="200" height="200">
-							</a>
-						</td>
-						<td>
-							<a href="${pageContext.request.contextPath}/goods/goodsOneCompany?companyId=${companyId}&goodsNo=${c.goodsNo}">
-								${c.goodsName}
-							</a>
-						</td>
-						
-						<td>
-							<c:choose>
-								<c:when test="${c.quantitySum == '0'}">
-									품절
-								</c:when>
-								<c:otherwise>
-									${c.goodsPrice}원
-								</c:otherwise>
-							</c:choose>
-						
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
 		</div>
-
 
 		<div class="container margin_60_35">
 			<div class="row">
@@ -148,274 +107,82 @@
 				</aside>
 				<!--/aside -->
 				
-				<div class="col-lg-9" id="faq">
-					<h4 class="nomargin_top">Payments</h4>
-					<div role="tablist" class="add_bottom_45 accordion_2" id="payment">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a data-bs-toggle="collapse" href="#collapseOne_payment" aria-expanded="true"><i class="indicator ti-minus"></i>Introdocution</a>
-								</h5>
+		
+					<div class="col-lg-9">
+						<div class="row g-0 custom-search-input-2 inner">
+							<div class="col-lg-7">
+								<div class="form-group">
+									<input class="form-control" type="text" id="searchword" value="${searchword}" placeholder="What are you looking for...">
+									<i class="icon_search"></i>
+								</div>
 							</div>
 
-							<div id="collapseOne_payment" class="collapse show" role="tabpanel" data-bs-parent="#payment">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
+							<div class="col-lg-3">
+								<select id="selectOption" class="wide">
+									<option value="new">신상품순</option>
+									<option value="high">높은가격순</option>
+									<option value="low">낮은가격순</option>
+								</select>
+							</div>
+							<div class="col-lg-2">
+								<button type="button" id="searchBtn" class="btn_custom2">검색</button>
 							</div>
 						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseTwo_payment" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Generative Modeling Review
-									</a>
-								</h5>
-							</div>
-							<div id="collapseTwo_payment" class="collapse" role="tabpanel" data-bs-parent="#payment">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseThree_payment" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Variational Autoencoders
-									</a>
-								</h5>
-							</div>
-							<div id="collapseThree_payment" class="collapse" role="tabpanel" data-bs-parent="#payment">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-					</div>
-					<!-- /accordion payment -->
+						<!-- /row -->
+
+					<div class="col-lg-12">
+					<div class="isotope-wrapper">
+					<div class="row">
 					
-					<h4 class="nomargin_top">Suggestions</h4>
-					<div role="tablist" class="add_bottom_45 accordion_2" id="tips">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a data-bs-toggle="collapse" href="#collapseOne_tips" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
-								</h5>
-							</div>
+						<c:forEach var="c" items="${selectGoodsCompany}">
+						<div class="col-md-4 isotope-item popular">
+							<div class="box_grid">
+								<figure>
+									<a href="#0" class="wish_bt"></a>
+									<a href="${pageContext.request.contextPath}/goods/goodsOneCompany?companyId=${companyId}&goodsNo=${c.goodsNo}"><img src="${pageContext.request.contextPath}/upload/goodsImg/${c.goodsImgOriginName}" class="img-fluid" alt="" width="800" height="533"><div class="read_more"><span>상품보기</span></div></a>
 
-							<div id="collapseOne_tips" class="collapse" role="tabpanel" data-bs-parent="#tips">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
+								</figure>
+								<div class="wrapper">
+									<h3><a href="${pageContext.request.contextPath}/goods/goodsOneCompany?companyId=${companyId}&goodsNo=${c.goodsNo}">${c.goodsName}</a></h3>
+									<c:choose>
+										<c:when test="${c.quantitySum == '0'}">
+											품절
+										</c:when>
+										<c:otherwise>
+											${c.goodsPrice}원
+										</c:otherwise>
+									</c:choose>
+									<p><a href="${pageContext.request.contextPath}/goods/goodsCompany?companyId=${i.companyId}">${i.companyName}</a></p>
 								</div>
+								<ul>
+									<li></li>
+									<li><div class="score"><span>Superb<em>350 Reviews</em></span><strong>8.9</strong></div></li>
+								</ul>
 							</div>
 						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseTwo_tips" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Generative Modeling Review
-									</a>
-								</h5>
-							</div>
-							<div id="collapseTwo_tips" class="collapse" role="tabpanel" data-bs-parent="#tips">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseThree_tips" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Variational Autoencoders
-									</a>
-								</h5>
-							</div>
-							<div id="collapseThree_tips" class="collapse" role="tabpanel" data-bs-parent="#tips">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
+						</c:forEach>
+						<!-- /box_grid -->
 					</div>
-					<!-- /accordion suggestions -->
-					
-					<h4 class="nomargin_top">Reccomendations</h4>
-					<div role="tablist" class="add_bottom_45 accordion_2" id="reccomendations">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a data-bs-toggle="collapse" href="#collapseOne_reccomendations" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
-								</h5>
-							</div>
-
-							<div id="collapseOne_reccomendations" class="collapse" role="tabpanel" data-bs-parent="#reccomendations">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseTwo_reccomendations" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Generative Modeling Review
-									</a>
-								</h5>
-							</div>
-							<div id="collapseTwo_reccomendations" class="collapse" role="tabpanel" data-bs-parent="#reccomendations">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseThree_reccomendations" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Variational Autoencoders
-									</a>
-								</h5>
-							</div>
-							<div id="collapseThree_reccomendations" class="collapse" role="tabpanel" data-bs-parent="#reccomendations">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
+					<!-- /row -->
 					</div>
-					<!-- /accordion Reccomendations -->
-					
-					<h4 class="nomargin_top">Terms&amp;conditons</h4>
-					<div role="tablist" class="add_bottom_45 accordion_2" id="terms">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a data-bs-toggle="collapse" href="#collapseOne_terms" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
-								</h5>
-							</div>
-
-							<div id="collapseOne_terms" class="collapse" role="tabpanel" data-bs-parent="#terms">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseTwo_terms" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Generative Modeling Review
-									</a>
-								</h5>
-							</div>
-							<div id="collapseTwo_terms" class="collapse" role="tabpanel" data-bs-parent="#terms">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseThree_terms" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Variational Autoencoders
-									</a>
-								</h5>
-							</div>
-							<div id="collapseThree_terms" class="collapse" role="tabpanel" data-bs-parent="#terms">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-					</div>
-					<!-- /accordion Terms -->
-					
-					<h4 class="nomargin_top">Booking</h4>
-					<div role="tablist" class="add_bottom_45 accordion_2" id="booking">
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a data-bs-toggle="collapse" href="#collapseOne_booking" aria-expanded="true"><i class="indicator ti-plus"></i>Introdocution</a>
-								</h5>
-							</div>
-
-							<div id="collapseOne_booking" class="collapse" role="tabpanel" data-bs-parent="#booking">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseTwo_booking" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Generative Modeling Review
-									</a>
-								</h5>
-							</div>
-							<div id="collapseTwo_booking" class="collapse" role="tabpanel" data-bs-parent="#booking">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-						<div class="card">
-							<div class="card-header" role="tab">
-								<h5 class="mb-0">
-									<a class="collapsed" data-bs-toggle="collapse" href="#collapseThree_booking" aria-expanded="false">
-										<i class="indicator ti-plus"></i>Variational Autoencoders
-									</a>
-								</h5>
-							</div>
-							<div id="collapseThree_booking" class="collapse" role="tabpanel" data-bs-parent="#booking">
-								<div class="card-body">
-									<p>Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
-									<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.</p>
-								</div>
-							</div>
-						</div>
-						<!-- /card -->
-					</div>
-					<!-- /accordion Booking -->
+					<!-- /isotope-wrapper -->
+			
+				
 				</div>
 				<!-- /col -->
-			</div>
-			<!-- /row -->
+			</div>		
 		</div>
-		<!--/container-->
+		<!-- /container -->
+				
+				
+		</div>
+		<!-- /col -->
 	</main>
 	<!--/main-->
+		
+			
+	</div>
+	<!-- /row -->
 	
 	<footer>
 		<div class="container margin_60_35">
@@ -499,7 +266,7 @@
 		</div>
 	</footer>
 	<!--/footer-->
-	</div>
+
 	<!-- page -->
 	
 	<!-- Sign In Popup -->

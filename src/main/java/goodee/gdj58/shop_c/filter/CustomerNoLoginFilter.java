@@ -26,7 +26,7 @@ public class CustomerNoLoginFilter extends HttpFilter implements Filter {
 			HttpServletRequest req=(HttpServletRequest)request;
 			HttpSession session=req.getSession();
 			if(session.getAttribute("loginCustomer") == null) {
-				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/login");
+				((HttpServletResponse)response).sendRedirect(req.getContextPath()+"/customer/login");
 				return;
 			} 
 		} else {
