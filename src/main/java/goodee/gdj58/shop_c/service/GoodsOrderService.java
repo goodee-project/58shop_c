@@ -71,10 +71,93 @@ public class GoodsOrderService {
 	}
 	
 	
+	// ================ 주문 폼 끝 ================
+
 	
 	
 	
 	
+	/*
+		주문 하기
+
+
+
+
+
+
+
+
+	*/	
+	
+	public int goodsOrder(Integer goodsOptionNo, Integer goodsOrderQuantity
+							, int goodsOrderUsePoint, String customerId, int customerAddressNo) {
+		
+		int resultRow = 0;
+		log.info(TeamColor.CYAN + "12312332sdsdsd");
+		
+		// 주문서, 주문 생성 과정
+		if(goodsOptionNo != null && goodsOrderQuantity != null) {
+			// 한 회사의 상품 한 종류 일 때 
+			
+			
+			// goodsOptionNo로 company_id, goods_price 추출
+			HashMap<String, Object> goodsMap = goodsOrderMapper.oSelectGoodsInfo(goodsOptionNo.intValue());
+			
+			HashMap<String, Object> paramMap = new HashMap<String, Object>();
+			
+			int goodsOrderPrice = ((int) goodsMap.get("goodsPrice")) * goodsOrderQuantity.intValue();
+			
+			paramMap.put("goodsOptionNo", goodsOptionNo.intValue());
+			paramMap.put("goodsOrderQuantity", goodsOrderQuantity.intValue());
+			paramMap.put("goodsOrderPrice", goodsOrderPrice);
+			paramMap.put("goodsOrderUsePoint", goodsOrderUsePoint);
+			paramMap.put("customerId", customerId);
+			paramMap.put("companyId", (String) goodsMap.get("companyId"));
+			paramMap.put("customerAddressNo", customerAddressNo);
+
+			
+			// 주문서 생성
+			goodsOrderMapper.oInsertOrderSheet(paramMap);
+			
+			// 주문 생성
+			goodsOrderMapper.oInsertGoodsOrder(paramMap);
+			
+			
+			
+			
+			
+			
+		} else {
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return resultRow;
+		
+	}
 	
 	
 	
@@ -305,7 +388,7 @@ public class GoodsOrderService {
 			
 			// ================ 취소 항목 제외 재주문 끝 ================
 			
-			
+			resultRow = 1;
 			
 		} else if(count == 1) {
 			
@@ -315,6 +398,7 @@ public class GoodsOrderService {
 			// 나머지 모든 주문들 주문상태 취소로 변경
 			goodsOrderMapper.cUpdateGoodsOrderStateCancel(paramMap);
 			
+			resultRow = 1;
 			
 		}
 		

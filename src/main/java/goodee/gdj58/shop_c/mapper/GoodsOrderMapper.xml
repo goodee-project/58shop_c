@@ -65,11 +65,83 @@
 	
 	
 	
-	<!-- ================= 주문 폼 시작 ================= -->
+	<!-- ================= 주문 폼 끝 ================= -->
 
 
 
 
+
+	<!-- ================= 주문 시작 ================= -->
+
+	<!-- goodsOptionNo로 company_id, goods_price 추출 -->
+	<select id = "oSelectGoodsInfo"
+			parameterType = "int"
+			resultType = "java.util.HashMap">
+
+		SELECT
+			g.company_id companyId
+			, g.goods_price goodsPrice
+		FROM shopping_goods_option go
+		INNER JOIN shopping_goods g
+			ON go.goods_no = g.goods_no
+		WHERE go.goods_option_no = #{goodsOptionNo }
+
+	</select>
+	
+	<!-- 주문서 생성 -->
+	<insert id = "oInsertOrderSheet"
+			parameterType = "java.util.HashMap">
+			
+		<selectKey resultType="int" 
+			keyProperty="orderSheetNo" keyColumn="order_sheet_no" order="AFTER">
+			<!-- LAST_INSERT_ID()  마지막 auto_increment값 반환하는 함수 -->
+			SELECT LAST_INSERT_ID() 
+		</selectKey>			
+			
+			INSERT INTO shopping_order_sheet (
+				company_id
+				, customer_address_no
+				, customer_id
+				, order_sheet_state
+				, order_sheet_waybill
+				, order_sheet_price
+			) VALUES (
+				#{companyId}
+				, #{customerAddressNo}
+				, #{customerId}
+				, '결제완료'
+				, '임시 운송장번호 12'
+				, 0
+			)	
+			
+	</insert>
+	
+	
+	<!-- 주문 생성 -->
+	<insert id = "oInsertGoodsOrder"
+			parameterType = "java.util.HashMap">
+	
+		INSERT INTO shopping_goods_order (
+			order_sheet_no
+			, goods_option_no
+			, goods_order_quantity
+			, goods_order_price
+			, goods_order_use_point
+			, goods_order_state
+		) VALUES (
+			#{orderSheetNo}
+			, #{goodsOptionNo}
+			, #{goodsOrderQuantity}
+			, #{goodsOrderPrice}
+			, #{goodsOrderUsePoint}
+			, '결제완료'
+		)			
+			
+	</insert>
+
+
+
+	<!-- ================= 주문 끝 ================= -->
 
 
 
@@ -343,27 +415,29 @@
 	
 	<insert id="cInsertNewOrderSheet"
 			parameterType="java.util.HashMap">
+			
 		<!-- mariadb에서는 insert전/후 auto_increment값을 입력된 매개변수로 참조 가능 -->
 		<selectKey resultType="int" 
 			keyProperty="newOrderSheetNo" keyColumn="order_sheet_no" order="AFTER">
 			<!-- LAST_INSERT_ID()  마지막 auto_increment값 반환하는 함수 -->
 			SELECT LAST_INSERT_ID() 
 		</selectKey>
-		INSERT INTO shopping_order_sheet (
-			company_id
-			, customer_address_no
-			, customer_id
-			, order_sheet_state
-			, order_sheet_waybill
-			, order_sheet_price
-		) VALUES (
-			#{companyId}
-			, #{customerAddressNo}
-			, #{customerId}
-			, '결제완료'
-			, '임시 운송장번호'
-			, 0			
-		)
+		
+			INSERT INTO shopping_order_sheet (
+				company_id
+				, customer_address_no
+				, customer_id
+				, order_sheet_state
+				, order_sheet_waybill
+				, order_sheet_price
+			) VALUES (
+				#{companyId}
+				, #{customerAddressNo}
+				, #{customerId}
+				, '결제완료'
+				, '임시 운송장번호'
+				, 0			
+			)
 	</insert>
 
 	<!-- 취소한 주문 제외하고 나머지 주문들 재구매(서비스에서 반복문 돌림) -->

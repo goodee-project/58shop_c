@@ -28,46 +28,90 @@
 				let reward = Number('<c:out value = "${cusMap.reward}"/>');	// 등급할인
 				let totalPrice = $('#totalPrice').val();	// 등급할인, 포인트 미적용
 				
+				let pointCheck = false;
 				
 				// 포인트 블러 이벤트
 				$('#usePoint').blur(function() {
 					
-					let pointCheck = false;
 					
-					let usePoint = Number($('#usePoint').val());	// 사용할 포인트
 					
-					if(0 <= usePoint && usePoint <= customerPoint) {
+					if($('#usePoint').val() != '') {
 						
+						let usePoint = Number($('#usePoint').val());	// 사용할 포인트
 						
-						if(usePoint <= totalPrice) {
+						if(0 <= usePoint && usePoint <= customerPoint) {
 							
-							$('#finalPrice').val(parseInt((totalPrice - usePoint) * (100 - reward) / 100));
 							
-							console.log($('#finalPrice').val() + ' <-- finalPrice')
+							if(usePoint <= totalPrice) {
+								
+								$('#finalPrice').val(parseInt((totalPrice - usePoint) * (100 - reward) / 100));
+								
+								console.log($('#finalPrice').val() + ' <-- finalPrice')
+								
+								pointCheck = true;
+								
+							} else {
+								
+								alert('사용할 수 있는 최대 포인트는 ' + totalPrice + ' 입니다.');
+								$('#usePoint').val('');
+								$('#finalPrice').val('');
+								
+								pointCheck = false;
+								
+							}
 							
-							pointCheck = true;
 							
 						} else {
 							
-							alert('사용할 수 있는 최대 포인트는 ' + totalPrice + ' 입니다.');
+							alert('올바른 사용 가능한 포인트를 적어주세요.(미사용시 0)');
+							
 							$('#usePoint').val('');
+							$('#finalPrice').val('');
+							
+							pointCheck = false;
 							
 						}
-						
 						
 					} else {
 						
 						alert('올바른 사용 가능한 포인트를 적어주세요.(미사용시 0)');
 						
 						$('#usePoint').val('');
+						$('#finalPrice').val('');
+						
+						pointCheck = false;
 						
 					}
+					
 					
 					console.log(pointCheck)
 					console.log(usePoint)
 				
 				
 				});
+				
+				
+				
+				
+				// 주문 폼 전송
+				$('#orderBtn').click(function() {
+					
+					if(pointCheck) {
+						
+						$('#orderForm').submit();
+						
+					} else {
+						
+						alert('올바른 사용 가능한 포인트를 적어주세요.(미사용시 0)');
+						
+						$('#usePoint').val('');
+						$('#finalPrice').val('');						
+						
+					}
+					
+				});
+				
+				
 				
 				
 			});		
@@ -82,7 +126,7 @@
 			<h3>주문 폼</h3>
 			
 			<div>
-				<form method = "post" action = "${pageContext.request.contextPath }/login/order/order">
+				<form id = "orderForm" method = "post" action = "${pageContext.request.contextPath }/login/order/order">
 					<div>
 						<h4>구매자 정보</h4>
 						
@@ -175,7 +219,7 @@
 						
 							<div>
 								사용할 포인트 : 
-								<input type = "number" name = "usePoint" id = "usePoint" value = "0">
+								<input type = "number" name = "goodsOrderUsePoint" id = "usePoint">
 								
 							</div>
 						
@@ -195,7 +239,7 @@
 					</div>
 					
 					
-					<button type = "submit">결제하기</button>
+					<button type = "button" id = "orderBtn">결제하기</button>
 					
 					
 					

@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.shop_c.service.GoodsOrderService;
 import goodee.gdj58.shop_c.vo.Customer;
+import goodee.gdj58.shop_c.vo.CustomerAddress;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -23,9 +25,9 @@ public class GoodsOrderController {
 	private GoodsOrderService goodsOrderService;
 	
 	
-	// 주문 폼 Get
+	// 주문 Get
 	@GetMapping("/login/order/order")
-	public String orderForm(HttpSession session, Model model
+	public String order(HttpSession session, Model model
 								, @RequestParam(value = "goodsOptionNo", required = false) Integer goodsOptionNo
 								, @RequestParam(value = "cartQuantity", required = false) Integer goodsOrderQuantity) {
 		
@@ -48,6 +50,26 @@ public class GoodsOrderController {
 		
 	}
 	
+	
+	// 주문 Post
+	@PostMapping("/login/order/order")
+	public String order(HttpSession session
+							, @RequestParam(value = "goodsOptionNo", required = false) Integer goodsOptionNo
+							, @RequestParam(value = "goodsOrderQuantity", required = false) Integer goodsOrderQuantity
+							, @RequestParam(value = "goodsOrderUsePoint") int goodsOrderUsePoint
+							, @RequestParam(value = "customerAddressNo") int customerAddressNo) {
+		
+		String customerId = ((Customer) session.getAttribute("loginCustomer")).getCustomerId();
+		
+		
+		goodsOrderService.goodsOrder(goodsOptionNo, goodsOrderQuantity, goodsOrderUsePoint, customerId, customerAddressNo);
+		
+		
+		
+		
+		return "redirect:/내주문내역";
+		
+	}
 	
 	
 	

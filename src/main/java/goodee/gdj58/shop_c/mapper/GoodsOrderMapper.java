@@ -36,6 +36,39 @@ public interface GoodsOrderMapper {
 	
 	
 	
+	
+	
+	
+	// ====================== 주문 시작 ======================
+	// 메서드 앞 o는 주문 구분하기 위해 붙임
+	
+	// goodsOptionNo로 company_id, goods_price 추출
+	HashMap<String, Object> oSelectGoodsInfo(int goodsOptionNo);
+	
+	// 주문서 생성
+	int oInsertOrderSheet(HashMap<String, Object> paramMap);
+	
+	
+	
+	
+	// 주문 생성
+	int oInsertGoodsOrder(HashMap<String, Object> paramMap);
+	
+	
+	
+	
+	
+	// ====================== 주문 끝 ======================
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// ====================== 주문 취소 시작 ======================
 	// 메서드 앞 c는 취소 구분하기 위해 붙임. 
 	

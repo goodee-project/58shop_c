@@ -295,7 +295,7 @@
 
 							</div>
 							
-							<button class="btn_1 full-width purchase" type="submit">Order</button>
+							<button class="btn_1 full-width purchase" type="button" onclick="location.href='${pageContext.request.contextPath}/login/order/order' ">Order</button>
 							<div class="text-center"><small>No money charged in this step</small></div>
 						</div>
 					</aside>
