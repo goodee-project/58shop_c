@@ -21,6 +21,7 @@
 		// 선택옵션 존재할 때
 		$('#selectOption').change(function() {
 			$('#goodsOptionNo').val($('#selectOption').val());
+			$('#goodsOptionNo2').val($('#selectOption').val());
 			let optionNo=Number($('#selectOption').val());
 			let checkStock=Number($('#option'+optionNo).val());
 			//console.log(checkStock);
@@ -32,12 +33,15 @@
 		//console.log(optionNo);
 		if(optionNo) {
 			$('#goodsOptionNo').val(optionNo);
+			$('#goodsOptionNo2').val(optionNo);
 		}
 		
 		// 수량
 		$('#cartQuantity').val($('#quantity').val());
+		$('#cartQuantity2').val($('#quantity').val());
 		$('#quantity').change(function() {
 			$('#cartQuantity').val($('#quantity').val());
+			$('#cartQuantity2').val($('#quantity').val());
 		});
 		
 		$('#cartBtn').click(function() {
@@ -89,6 +93,60 @@
 			}
 			
 		});
+		
+		
+		$('#orderBtn').click(function() {
+			let check=0; // check == 2 일 때 submit
+			console.log($('#optionStock').data('stock'));
+			
+			// 재고 확인
+			let stock=0;
+			let optionStock=$('#optionStock').data('stock'); //옵션이 있을 때
+			let oneStock=$('#oneStock').val(); //옵션이 없을 때
+			let quantity=Number($('#quantity').val());
+			//console.log('oneStock: '+oneStock);
+			//console.log('optionStock: '+optionStock);
+			if(typeof optionStock == "undefined") {
+				stock=Number(oneStock);
+			} else {
+				stock=Number(optionStock);
+			}
+			
+			if(quantity > stock) {
+				alert('재고가 부족합니다. '+stock+'개 이하로 담아주세요.');
+				$('#quantity').val(stock);
+				$('#cartQuantity').val(stock);
+				return true;
+			} else if(quantity == null || quantity == 0) {
+				alert('수량을 1개 이상 선택하세요');
+				$('#quantity').val(1);
+				$('#cartQuantity').val(1);
+				return true;
+			} else {
+				++check;
+			}
+			
+			// 옵션확인
+			let optionCheck=$('#goodsOptionNo2').val();
+			if(!optionCheck || optionCheck == '선택') {
+				alert('옵션을 선택하세요');
+			} else {
+				++check;
+			}
+			console.log('옵션번호: '+$('#goodsOptionNo').val());
+			console.log('선택수량: '+$('#cartQuantity').val());
+			
+			// check == 2 일 때 submit
+			if(check == 2) {
+				console.log('장바구니담기완료');
+				$('#orderForm').submit();
+				return true;
+			}
+			
+		});		
+		
+		
+		
 	});
 </script>
 
@@ -145,6 +203,7 @@
 							</div>
 							<div>
 								<button type="button" id="cartBtn">장바구니 담기</button>
+								<button type="button" id="orderBtn">주문하기</button>
 							</div>
 						</c:when>
 						<c:otherwise>
@@ -164,6 +223,10 @@
 		<form action="${pageContext.request.contextPath}/insertCart" method="get" id="cartForm">
 			<input type="hidden" id="cartQuantity" name="cartQuantity">
 			<input type="hidden" id="goodsOptionNo" name="goodsOptionNo">
+		</form>
+		<form action="${pageContext.request.contextPath}/login/order/order" method="get" id="orderForm">
+			<input type="hidden" id="cartQuantity2" name="cartQuantity">
+			<input type="hidden" id="goodsOptionNo2" name="goodsOptionNo">
 		</form>
 	</div>
 	</c:forEach>

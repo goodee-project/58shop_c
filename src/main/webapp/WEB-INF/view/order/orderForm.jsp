@@ -82,7 +82,7 @@
 			<h3>주문 폼</h3>
 			
 			<div>
-				<form>
+				<form method = "post" action = "${pageContext.request.contextPath }/login/order/order">
 					<div>
 						<h4>구매자 정보</h4>
 						
@@ -126,6 +126,14 @@
 								</tr>
 							
 								<c:forEach var="o" items="${orderInfoList }">
+								
+									<c:if test="${orderInfoList.size() == 1 }">
+										<div>
+											<input type = "hidden" name = "goodsOptionNo" value = "${param.goodsOptionNo }">
+											<input type = "hidden" name = "goodsOrderQuantity" value = "${param.cartQuantity }">
+										</div>
+									</c:if>
+								
 									<tr>
 										<td>
 											<img class = "img" src = "${pageContext.request.contextPath}/upload/goodsImg/${o.goodsImgSaveName }">
@@ -181,16 +189,10 @@
 							</div>
 						
 						
-						
-						
 						</div>
-						
-						
 						
 					
 					</div>
-					
-					
 					
 					
 					<button type = "submit">결제하기</button>

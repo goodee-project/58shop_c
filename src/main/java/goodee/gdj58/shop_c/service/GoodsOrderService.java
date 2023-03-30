@@ -31,7 +31,7 @@ public class GoodsOrderService {
 		
 	}
 	
-	// 상품 한 종류 주문 상품 정보
+	// 주문 페이지의 주문 상품 정보
 	// 이미지, 상품명, 회사명, 가격, 옵션 내용
 	// 여러 주문일 때는 반복문 돌릴 예정
 	public ArrayList<HashMap<String, Object>> ofSelectGoodsOrderInfoList(Integer goodsOptionNo, Integer goodsOrderQuantity

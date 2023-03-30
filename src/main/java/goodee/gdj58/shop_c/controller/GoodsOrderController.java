@@ -22,14 +22,9 @@ public class GoodsOrderController {
 	@Autowired
 	private GoodsOrderService goodsOrderService;
 	
-	@GetMapping("/order/order")
-	public String order() {
-		return "order/order";
-	}
-	
 	
 	// 주문 폼 Get
-	@GetMapping("/customer/order/orderForm")
+	@GetMapping("/login/order/order")
 	public String orderForm(HttpSession session, Model model
 								, @RequestParam(value = "goodsOptionNo", required = false) Integer goodsOptionNo
 								, @RequestParam(value = "cartQuantity", required = false) Integer goodsOrderQuantity) {
@@ -57,7 +52,7 @@ public class GoodsOrderController {
 	
 	
 	// 주문 취소 Get
-	@GetMapping("/customer/orderCancel")
+	@GetMapping("/login/order/orderCancel")
 	public String orderCancel(HttpSession session
 									, @RequestParam("orderSheetNo") int orderSheetNo
 									, @RequestParam("goodsOrderNo") int goodsOrderNo) {
