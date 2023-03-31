@@ -2,6 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.CustomerMapper">
 	
+	<!-- 
+	
+		============마이페이지=============	
+	
+	 -->
+	<!-- 비밀번호 변경이력 추가 -->
+	 
+	 
+	<!-- 비밀번호변경 -->
+	<update id="customerUpdatePw"
+	>
+	</update>
+	
+	<!-- 회원정보수정 -->
+	<update id="customerUpdateInfo"
+			parameterType="goodee.gdj58.shop_c.vo.Customer">
+		UPDATE customer SET
+   				customer_name=#{customerName}
+  	 			, customer_nickname=#{customerNickname}
+   				, customer_email=#{customerEmail}
+   				, customer_phone=#{customerPhone}
+   				, customer_birth=#{customerBirth}
+   				, customer_email_marketing_accept=#{customerEmailMarketingAccept}
+		WHERE customer_id=#{customerId}
+	</update>
+	
+	<!-- 회원정보조회 -->
+	<select id="customerInfo"
+			parameterType="goodee.gdj58.shop_c.vo.Customer"
+			resultType="goodee.gdj58.shop_c.vo.Customer">
+		SELECT customer_id customerId
+			, customer_name customerName
+			, customer_nickname customerNickname
+			, customer_postecode customerPostcode
+			, customer_address customerAddress
+			, customer_phone customerPhone
+			, customer_rank customerRank
+			, customer_email customerEmail
+			, customer_point customerPoint
+			, customer_birth customerBirth
+			, customer_gender customerGender
+			, createdate
+			, customer_email_marketing_accept customerEmailMarketingAccept
+			, customer_last_login_date customerLastLoginDate
+		FROM customer
+		WHERE customerId = #{customerId}
+	</select>
+	
+	
+	<!-- 
+	
+		============회원가입=============	
+	
+	 -->
+	
 	<!-- 회원가입 -->
 	<insert id="insertCustomer"
 			parameterType="goodee.gdj58.shop_c.vo.Customer">
@@ -43,29 +98,14 @@
 						, #{customerInfoAgree}
 					)
 	</insert>
+
+
+	<!-- 
 	
-	<!-- 회원정보조회 -->
-	<select id="customerInfo"
-			parameterType="goodee.gdj58.shop_c.vo.Customer"
-			resultType="goodee.gdj58.shop_c.vo.Customer">
-		SELECT customer_id customerId
-			, customer_name customerName
-			, customer_nickname customerNickname
-			, customer_postecode customerPostcode
-			, customer_address customerAddress
-			, customer_phone customerPhone
-			, customer_rank customerRank
-			, customer_email customerEmail
-			, customer_point customerPoint
-			, customer_birth customerBirth
-			, customer_gender customerGender
-			, createdate
-			, customer_email_marketing_accept customerEmailMarketingAccept
-			, customer_last_login_date customerLastLoginDate
-		FROM customer
-		WHERE customerId = #{customerId}
-	</select>
+		============로그인=============	
 	
+	 -->
+
 	<!-- 마지막 로그인 일시 업데이트 -->
 	<update id="lastLoginUpdate"
 			parameterType="goodee.gdj58.shop_c.vo.Customer">

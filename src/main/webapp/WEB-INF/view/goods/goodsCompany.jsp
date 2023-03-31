@@ -93,20 +93,9 @@
 
 		<div class="container margin_60_35">
 			<div class="row">
-				<aside class="col-lg-3" id="sidebar">
-						<div class="box_style_cat" id="faq_box">
-							<ul id="cat_nav">
-								<li><a href="#payment" class="active"><i class="icon_document_alt"></i>Payments</a></li>
-								<li><a href="#tips"><i class="icon_document_alt"></i>Suggestions</a></li>
-								<li><a href="#reccomendations"><i class="icon_document_alt"></i>Reccomendations</a></li>
-								<li><a href="#terms"><i class="icon_document_alt"></i>Terms&amp;conditons</a></li>
-								<li><a href="#booking"><i class="icon_document_alt"></i>Booking</a></li>
-							</ul>
-						</div>
-						<!--/sticky -->
-				</aside>
-				<!--/aside -->
 				
+				<!-- category include -->
+				<c:import url="/WEB-INF/view/inc/sideCategory.jsp"></c:import>
 		
 					<div class="col-lg-9">
 						<div class="row g-0 custom-search-input-2 inner">
