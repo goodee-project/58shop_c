@@ -88,6 +88,24 @@
 
 	</select>
 	
+	<!-- orderTotal 생성 -->
+	<insert id = "oInsertOrderTotal"
+			parameterType = "java.util.HashMap">
+	
+		<selectKey resultType="int" 
+			keyProperty="orderTotalNo" keyColumn="order_total_no" order="AFTER">
+			<!-- LAST_INSERT_ID()  마지막 auto_increment값 반환하는 함수 -->
+			SELECT LAST_INSERT_ID() 
+		</selectKey>		
+	
+			INSERT INTO shopping_order_total (
+				order_total_state
+			) VALUES (
+				'결제완료'
+			)		
+			
+	</insert>
+	
 	<!-- 주문서 생성 -->
 	<insert id = "oInsertOrderSheet"
 			parameterType = "java.util.HashMap">
@@ -100,6 +118,7 @@
 			
 			INSERT INTO shopping_order_sheet (
 				company_id
+				, order_total_no
 				, customer_address_no
 				, customer_id
 				, order_sheet_state
@@ -107,6 +126,7 @@
 				, order_sheet_price
 			) VALUES (
 				#{companyId}
+				, #{orderTotalNo}
 				, #{customerAddressNo}
 				, #{customerId}
 				, '결제완료'
@@ -138,6 +158,24 @@
 		)			
 			
 	</insert>
+
+
+	<!-- 장바구니의 companyId, optionNo, orderQuantity 리스트 추출 -->
+	<select id = "oSelectCartInfoList"
+			resultType = "java.util.HashMap">
+	
+		SELECT
+			g.company_id companyId
+			, go.goods_option_no goodsOptionNo
+			, g.goods_price goodsPrice
+			, c.cart_quantity goodsOrderQuantity
+		FROM shopping_cart c
+		INNER JOIN shopping_goods_option go
+			ON c.goods_option_no = go.goods_option_no
+		INNER JOIN shopping_goods g
+			ON go.goods_no = g.goods_no	
+			
+	</select>
 
 
 

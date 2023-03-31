@@ -42,17 +42,39 @@ public interface GoodsOrderMapper {
 	// ====================== 주문 시작 ======================
 	// 메서드 앞 o는 주문 구분하기 위해 붙임
 	
+	// 한 회사 한 종류의 상품 시작
+	
 	// goodsOptionNo로 company_id, goods_price 추출
 	HashMap<String, Object> oSelectGoodsInfo(int goodsOptionNo);
+
+	// order_total 생성 후 order_total_no 추출
+	int oInsertOrderTotal(HashMap<String, Object> paramMap);
 	
 	// 주문서 생성
 	int oInsertOrderSheet(HashMap<String, Object> paramMap);
 	
-	
-	
-	
 	// 주문 생성
 	int oInsertGoodsOrder(HashMap<String, Object> paramMap);
+	
+	// 한 회사 한 종류의 상품 끝
+	
+	
+	
+	
+	// 장바구니 담긴 상품들 주문
+	
+	// 장바구니의 companyId, optionNo, orderQuantity 리스트 추출
+	ArrayList<HashMap<String, Object>> oSelectCartInfoList();
+	
+	
+	
+	
+	
+	
+	
+	
+	// 하나 or 여러 회사의 여러 종류의 상품 끝
+	
 	
 	
 	

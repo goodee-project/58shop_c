@@ -98,7 +98,16 @@
 					
 					if(pointCheck) {
 						
-						$('#orderForm').submit();
+						if(customerPay >= $('#finalPrice').val()) {
+							
+							$('#orderForm').submit();
+							
+						} else {
+							
+							alert('페이 금액이 부족합니다. 충전 후 결제하세요.');
+							
+						}
+							
 						
 					} else {
 						

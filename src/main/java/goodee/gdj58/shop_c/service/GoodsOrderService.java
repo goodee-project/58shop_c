@@ -116,6 +116,9 @@ public class GoodsOrderService {
 			paramMap.put("customerAddressNo", customerAddressNo);
 
 			
+			// order_total 생성
+			goodsOrderMapper.oInsertOrderTotal(paramMap);
+			
 			// 주문서 생성
 			goodsOrderMapper.oInsertOrderSheet(paramMap);
 			
@@ -128,10 +131,98 @@ public class GoodsOrderService {
 			
 			
 		} else {
+			// 장바구니 담긴 상품들 주문
+			
+			ArrayList<Integer> orderSheetNoList = new ArrayList<Integer>();
+			
+			// 장바구니의 companyId, optionNo, orderQuantity 리스트 추출
+			ArrayList<HashMap<String, Object>> cartInfoList = goodsOrderMapper.oSelectCartInfoList();
+			
+			HashMap<String, Object> sheetMap = new HashMap<String, Object>();
+
+			// order_total 생성
+			goodsOrderMapper.oInsertOrderTotal(sheetMap);
+			
+			// 주문서 생성 시작
+			for(int i=0; i<cartInfoList.size(); i+=1) {
+				
+				boolean check1 = true;
+				boolean check2 = true;
+				
+				
+				sheetMap.put("customerId", customerId);
+				sheetMap.put("customerAddressNo", customerAddressNo);
+				sheetMap.put("companyId", (String) cartInfoList.get(i).get("companyId"));
+				
+				if(i == 0) {
+					
+					goodsOrderMapper.oInsertOrderSheet(sheetMap);
+					
+					log.info(TeamColor.CYAN + (Integer) sheetMap.get("orderSheetNo") + " <-- orderSheetNo");
+					
+					orderSheetNoList.add((Integer) sheetMap.get("orderSheetNo"));
+					
+				} else {
+					
+					for(int j=0; j<i; j+=1) {
+						
+						if(((String) cartInfoList.get(i).get("companyId")).equals((String) cartInfoList.get(j).get("companyId"))) {
+							
+							if(check1) {
+								
+								orderSheetNoList.add(orderSheetNoList.get(j));
+								
+								check1 = false;
+								
+								check2 = false;
+							}
+							
+						}
+						
+					}
+					
+					if(check2) {
+						
+						goodsOrderMapper.oInsertOrderSheet(sheetMap);
+						
+						orderSheetNoList.add((Integer) sheetMap.get("orderSheetNo"));
+						
+					}
+					
+				}
+				
+			}
+			
+			log.info(TeamColor.CYAN + orderSheetNoList.toString() + " <-- orderSheetNoList");
+			
+			// 주문서 생성 끝
 			
 			
 			
+			// 주문 생성 시작
+			for(int i=0; i<cartInfoList.size(); i+=1) {
+				
+				int goodsOrderPrice = (int) cartInfoList.get(i).get("goodsPrice") * (int) cartInfoList.get(i).get("goodsOrderQuantity");
+				
+				cartInfoList.get(i).put("orderSheetNo", orderSheetNoList.get(i).intValue());
+				cartInfoList.get(i).put("goodsOrderPrice", goodsOrderPrice);
+				
+				// 처음 주문에 포인트 적용
+				if(i == 0) {
+					
+					cartInfoList.get(i).put("goodsOrderUsePoint", goodsOrderUsePoint);
+					
+				} else {
+					
+					cartInfoList.get(i).put("goodsOrderUsePoint", 0);
+					
+				}
+				
+				goodsOrderMapper.oInsertGoodsOrder(cartInfoList.get(i));
+				
+			}
 			
+			// 주문 생성 끝
 			
 			
 			
