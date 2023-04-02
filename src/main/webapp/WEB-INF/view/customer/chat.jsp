@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Panagea - Premium site template for travel agencies, hotels and restaurant listing.">
     <meta name="author" content="Ansonika">
-    <title>Panagea | Premium site template for travel agencies, hotels and restaurant listing.</title>
+    <title>마이페이지 | 채팅</title>
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/html/img/favicon.ico" type="image/x-icon">
@@ -27,7 +27,11 @@
 	<link href="${pageContext.request.contextPath}/resources/html/css/vendors.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="${pageContext.request.contextPath}/resources/html/css/custom.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/html/css/custom.css" rel="stylesheet">    
+    
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script src="/58shop_c/webjars/sockjs-client/1.5.1/sockjs.min.js"></script>
+	<script src="/58shop_c/webjars/webstomp-client/1.2.6/dist/webstomp.min.js"></script>
 
 </head>
 
@@ -43,72 +47,75 @@
 		<section class="hero_in general">
 			<div class="wrapper">
 				<div class="container">
-					<h1 class="fadeInUp"><span></span>마이페이지</h1>
+					<h1 class="fadeInUp"><span></span>채팅</h1>
 				</div>
 			</div>
 		</section>
-		<!--/hero_in-->
-		<div class="container margin_60_35">
-			
-			<div class="main_title_2">
-				<span><em></em></span>
-				<h2>000님의 이번달 등급은 00입니다</h2>
-				<p></p>
+		
+		<!--start content-->
+		<div class="wrapper p-5">
+			<div class="page-content p-4" style="background:#FFFFFF;">
+				<div class="chat-wrapper">					
+					
+					<div class="chat-header d-flex align-items-center">
+						<div class="chat-toggle-btn"><i class='bx bx-menu-alt-left'></i>
+						</div>
+						<div>
+							<h4 class="mb-1 font-weight-bold">${chattingRoomName}</h4>
+						</div>
+						<div class="chat-top-header-menu ms-auto">
+							<a href="javascript:;"><i class='bx bx-user-plus'></i></a>
+						</div>
+					</div>
+					<!-- chat -->
+					<input type="hidden" value="${chattingRoomName}" id="chattingRoomName">
+					<input type="hidden" value="${sessionScope.login}" id="login">
+					<div class="chat-content">
+						<div id="msgArea" style="min-height:520px;">
+	            			<c:forEach var="cl" items="${chatList}">
+								<c:if test="${sessionScope.login != cl.fromId}">
+									<div class="chat-content-leftside">
+										<div class="d-flex">
+											<img src="/58platform/assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+											<div class="flex-grow-1 ms-2">
+												<p class="mb-0 chat-time">관리자, ${cl.createdate}</p>
+												<p class="chat-left-msg">${cl.chattingMemo}</p>
+											</div>
+										</div>
+									</div>
+								</c:if>
+								<c:if test="${sessionScope.login == cl.fromId}">						
+									<div class="chat-content-rightside">
+										<div class="d-flex ms-auto">
+											<div class="flex-grow-1 me-2">
+												<p class="mb-0 chat-time text-end">${cl.fromId}, ${cl.createdate}</p>
+												<p class="chat-right-msg" style="float:right">${cl.chattingMemo}</p>
+											</div>
+										</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</div>
+					<div class="chat-footer d-flex align-items-center">
+						<div class="flex-grow-1 pe-2">
+							<div class="input-group">	<span class="input-group-text"><i class='bx bx-smile'></i></span>
+								<input type="text" id="msg" class="form-control" placeholder="Type a message">
+								<button class="btn btn-secondary" type="button" id="button-send">Button</button>
+							</div>
+						</div>
+						<div class="chat-footer-menu"> <a href="javascript:;"><i class='bx bx-file'></i></a>
+							<a href="javascript:;"><i class='bx bx-dots-horizontal-rounded'></i></a>
+						</div>
+					</div>
+					<!--start chat overlay-->
+					<div class="overlay chat-toggle-btn-mobile"></div>
+					<!--end chat overlay-->
+				</div>
 			</div>
-			
-			<div class="row">
-				<div class="col-lg-6 col-md-6">
-					<a class="box_topic" href="#0">
-						<span><i class="pe-7s-wallet"></i></span>
-						<h3>회원정보</h3>
-					</a>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<a class="box_topic" href="#0">
-						<i class="pe-7s-users"></i>
-						<h3>배송지 조회</h3>
-					</a>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<a class="box_topic" href="#0">
-						<i class="pe-7s-wallet"></i>
-						<h3>포인트/페이</h3>
-					</a>
-				</div>
-				<div class="col-lg-6 col-md-6">
-					<a class="box_topic" href="${pageContext.request.contextPath}/customer/chat">
-						<i class="pe-7s-help2"></i>
-						<h3>채팅</h3>
-					</a>
-				</div>
-				
-			</div>
-			<!--/row-->
 		</div>
-		<!-- /container -->
-		<div class="bg_color_1">
-			<div class="container margin_60_35">
-				<div class="main_title_3">
-					<span><em></em></span>
-					<h2>주문내역</h2>
-				</div>
-				<div class="list_articles add_bottom_30 clearfix">
-					<ul>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Et dicit vidisse epicurei pri</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Ad sit virtute rationibus efficiantur</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Partem vocibus omittam pri ne</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Case debet appareat duo cu</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Impedit torquatos quo in</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Nec omnis alienum no</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Quo eu soleat facilisi menandri</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Et dicit vidisse epicurei pri</a></li>
-					</ul>
-				</div>
-				<!-- /list_articles -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /bg_color_1 -->
+   		<!--end page main-->
+		
 	</main>
 	<!--/main-->
 	
@@ -246,6 +253,110 @@
 	<!-- /Sign In Popup -->
 	
 	<div id="toTop"></div><!-- Back to top button -->
+	
+	<script>
+	$(document).ready(function(){		
+		const chattingRoomName = $("#chattingRoomName").val();
+		const username = $("#login").val();		
+		
+		console.log("chattingRoomName: " + chattingRoomName);
+		console.log("username: " + username);
+		
+		/* const websocket = new WebSocket("ws://localhost:8080/ws/chat");
+		console.log("websocket");
+		console.log(websocket); */
+		// console.log(websocket);
+		
+		let sockJs = new SockJS("/58shop_c/stomp/chat"); // registerStompEndpoints - registry.addEndpoint("/stomp/chat")
+		// var sockJs = new SockJS("http://localhost:8080/ws/chat", null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
+		console.log("sockJs");
+		console.log(sockJs);
+		
+		var stomp = webstomp.over(sockJs);
+		console.log(stomp);
+		
+		// ajax 채팅
+		setInterval(ajaxChat, 2000);
+		function ajaxChat(){
+				$.ajax({
+					type : 'get',
+					url : '/58shop_c/customer/chat',
+					// 채팅 방 번호와 자기 자신의 workMemberNo를 전송
+					data: { chattingRoomName : chattingRoomName},
+					success: function (json) {
+			            console.log("성공");            
+			        },
+			        error: function (request, status, error) {
+			            console.log("에러");
+			        },
+			        complete: function() {
+			            // location.reload();
+			            // 리로드하고싶은 div 아이디값 적용 !! 
+			            $('#msgArea').load(location.href+' #msgArea');
+			            // 두번째 ' #left_body' 앞 공백까지 포함하기 !!!
+			        }
+				}); // end for ajax
+		}
+		
+		// 2. connection이 이루어지면 실행할 콜백함수
+		stomp.connect({}, function(){
+			console.log("STOMP connected!");
+			//3. send(path, header, chattingMemo)로 메세지를 보낼 수 있음
+            stomp.send('/pub/chat/enter', JSON.stringify({chattingRoomName: chattingRoomName, fromId: username}));
+			
+			//4. subscribe(path, callback)으로 메세지를 받을 수 있음
+            stomp.subscribe("/sub/chat?chattingRoomName=" + chattingRoomName, function (chat) {
+            	console.log("subscribe!!!");
+            	console.log("chat");
+            	console.log(chat.body);
+            	
+                var content = JSON.parse(chat.body);
+            	console.log(content);
+
+                var fromId = content.fromId;
+                let chattingMemo = content.chattingMemo;
+                let createdate = content.createdate;
+                console.log("SUBSCRIBE")
+                console.log(fromId + ": " + chattingMemo);
+                var str = '';
+
+                if(fromId != username){
+                    str = '<div class="chat-content-leftside">';
+                    str += '<div class="d-flex">';
+                    str += '<img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />';
+                    str += '<div class="flex-grow-1 ms-2">';
+                    str += '<p class="mb-0 chat-time">' + fromId + ', ' + createdate + '</p>';
+                    str += '<p class="chat-left-msg">' + chattingMemo + '</p>';
+                    str += '</div></div></div>';
+                } else {
+                    str = '<div class="chat-content-rightside">';
+                    str += '<div class="d-flex ms-auto">';
+                    str += '<div class="flex-grow-1 me-2">';
+                    str += '<p class="mb-0 chat-time text-end">' + fromId + ', ' + createdate + '</p>';
+                    str += '<p class="chat-right-msg" style="float:right;">' + chattingMemo + '</p>';
+                    str += '</div></div></div>';
+                }                
+                
+                $("#msgArea").append(str);
+			}); 
+			
+	        $("#button-send").on("click", function(e){
+                var msg =  $("#msg").val();
+                console.log(username + ":" + msg);
+                
+                stomp.send('/pub/chat/message', JSON.stringify({chattingRoomName: chattingRoomName, chattingMemo: msg, fromId: username}));
+                $("#msg").val('');
+            });	        
+	     	// 엔터키를 누르면 submit 버튼이 눌리도록
+	        $("#msg").keyup(function(event) {
+				if (event.which === 13) {
+					// console.log("enter key pressed!");
+    				$("#button-send").click();
+				}
+			});
+        });
+	});
+  </script>
 	
 	<!-- COMMON SCRIPTS -->
     <script src="${pageContext.request.contextPath}/resources/html/js/common_scripts.js"></script>

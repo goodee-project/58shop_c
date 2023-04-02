@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.shop_c.mapper.ChatMapper">
+	<!-- 채팅 메세지 저장 -->
+	<insert id="insertChattingMsg" parameterType="goodee.gdj58.shop_c.vo.Chatting">
+		INSERT INTO chatting (
+			chatting_room_name
+			, from_id
+			, chatting_memo
+			, createdate
+		) VALUES (
+			#{chattingRoomName}
+			, #{fromId}
+			, #{chattingMemo}
+			, NOW()
+		)
+	</insert>
+	
+	<!-- 채팅 메시지 리스트 -->
+	<select id="selectChattingList" parameterType="String" resultType="java.util.Map">
+		SELECT
+			chatting_room_name chattingRoomName
+			, chatting_no chattingNo
+			, chatting_memo chattingMemo
+			, DATE_FORMAT(createdate,'%Y-%m-%d %H:%i') createdate
+			, from_id fromId
+		FROM chatting
+		WHERE chatting_room_name = #{chattingRoomName}
+	</select>
+	
+	<!-- 채팅방 생성하기 -->
+	<insert id="insertChattingRoom" parameterType="String">
+		INSERT INTO
+			chatting_room (
+			chatting_room_name
+			, createdate
+			, updatedate
+		) VALUES (
+			#{chattingRoomName}
+			, NOW()
+			, NOW()
+		)
+	</insert>
+	
+	<!-- 채팅방 리스트 -->
+	<select id="selectChattingRoomList" resultType="java.util.Map">
+		SELECT c.chatting_room_name chattingRoomName
+			, c.chatting_memo chattingMemo
+			, c.from_id fromId
+			, cr.updatedate updatedate
+		FROM chatting c
+		INNER JOIN chatting_room cr ON cr.chatting_room_name = c.chatting_room_name
+		WHERE (c.chatting_room_name, c.createdate)
+		IN(
+			SELECT chatting_room_name, MAX(createdate) createdate
+			FROM chatting
+			GROUP BY chatting_room_name
+		)
+			ORDER BY
+				c.chatting_room_name desc
+	</select>
+</mapper>
