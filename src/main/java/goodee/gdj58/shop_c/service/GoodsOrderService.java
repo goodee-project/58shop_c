@@ -93,7 +93,8 @@ public class GoodsOrderService {
 							, int goodsOrderUsePoint, String customerId, int customerAddressNo) {
 		
 		int resultRow = 0;
-		log.info(TeamColor.CYAN + "12312332sdsdsd");
+		
+		int usePay = 0;
 		
 		// 주문서, 주문 생성 과정
 		if(goodsOptionNo != null && goodsOrderQuantity != null) {
@@ -125,9 +126,14 @@ public class GoodsOrderService {
 			// 주문 생성
 			goodsOrderMapper.oInsertGoodsOrder(paramMap);
 			
+			// 주문서 가격 수정
+			goodsOrderMapper.oUpdateOrderSheetPrice((int) paramMap.get("orderSheetNo"));
 			
+			// 주문한 수량 재고 차감
+			goodsOrderMapper.oUpdateOrderQuantity(paramMap);
 			
-			
+			// 사용한 총 페이
+			usePay = goodsOrderMapper.oSelectUsePay((int) paramMap.get("orderTotalNo"));
 			
 			
 		} else {
@@ -224,18 +230,63 @@ public class GoodsOrderService {
 			
 			// 주문 생성 끝
 			
+			// 주문한 수량 재고 차감
+			for(int i=0; i<cartInfoList.size(); i+=1) {
+				
+				goodsOrderMapper.oUpdateOrderQuantity(cartInfoList.get(i));
+				
+			}
 			
+			// 장바구니 주문서 가격 수정(포인트, 등급할인 적용) 시작
 			
+			for(int i=0; i<orderSheetNoList.size(); i+=1) {
+				
+				boolean check3 = true;
+				boolean check4 = true;
+				
+				if(i == 0) {
+
+					goodsOrderMapper.oUpdateOrderSheetPrice(orderSheetNoList.get(i));
+					
+				} else {
+					
+					for(int j=0; j<i; j+=1) {
+						
+						if(orderSheetNoList.get(i) == orderSheetNoList.get(j)) {
+							
+							if(check3) {
+								
+								check3 = false;
+								check4 = false;
+								
+							} 
+							
+						}
+						
+					}
+					
+					if(check4) {
+						
+						goodsOrderMapper.oUpdateOrderSheetPrice(orderSheetNoList.get(i));
+						
+						log.info(TeamColor.CYAN + orderSheetNoList.get(i) + " <-- sheetPrice");
+						
+					}					
+					
+				}
+				
+			}
 			
+			// 장바구니 주문서 가격 수정(포인트, 등급할인 적용) 끝
 			
-			
-			
+			// 사용한 총 페이
+			usePay = goodsOrderMapper.oSelectUsePay((int) sheetMap.get("orderTotalNo"));
 			
 			
 		}
 		
 		
-		
+		log.info(TeamColor.CYAN + usePay + " <-- usePay");
 		
 		
 		

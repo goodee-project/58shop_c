@@ -20,7 +20,7 @@ public class ChatController {
 	private final ChatService chatService;	
 	
 	// 채팅 목록 조회
-	@GetMapping("/customer/chat")
+	@GetMapping("/login/chat")
 	public ModelAndView rooms(HttpSession session) {
 		ModelAndView mv = new ModelAndView("customer/chat");
 		Customer customer = (Customer) session.getAttribute("loginCustomer");

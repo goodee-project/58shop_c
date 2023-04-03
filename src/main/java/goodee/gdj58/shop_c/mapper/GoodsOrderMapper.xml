@@ -158,6 +158,40 @@
 		)			
 			
 	</insert>
+	
+	<!-- 주문서 가격 수정 -->
+	<insert id = "oUpdateOrderSheetPrice"
+			parameterType = "int">
+			
+		UPDATE shopping_order_sheet
+		SET
+			order_sheet_price = (SELECT
+									TRUNCATE(((SUM(go.goods_order_price) - SUM(go.goods_order_use_point)) * (100 - r.reward) / 100), 0) orderSheetPrice
+								FROM shopping_goods_order go
+								INNER JOIN shopping_order_sheet os
+									ON go.order_sheet_no = os.order_sheet_no
+								INNER JOIN customer c
+									ON c.customer_id = os.customer_id
+								INNER JOIN rank r
+									ON c.customer_rank = r.customer_rank	
+								WHERE go.order_sheet_no = #{orderSheetNo})	
+		WHERE order_sheet_no = #{orderSheetNo}			
+			
+	</insert>	
+	
+	<!-- 주문한 수량 재고 차감 -->
+	<update id = "oUpdateOrderQuantity"
+			parameterType = "java.util.HashMap">
+	
+		UPDATE shopping_goods_option
+		SET
+			goods_option_quantity = (SELECT
+										goods_option_quantity
+									FROM shopping_goods_option
+									WHERE goods_option_no = #{goodsOptionNo}) - #{goodsOrderQuantity}
+		WHERE goods_option_no = #{goodsOptionNo}	
+			
+	</update>
 
 
 	<!-- 장바구니의 companyId, optionNo, orderQuantity 리스트 추출 -->
@@ -175,6 +209,19 @@
 		INNER JOIN shopping_goods g
 			ON go.goods_no = g.goods_no	
 			
+	</select>
+
+			
+	<!-- 결제한 총 페이 -->
+	<select id = "oSelectUsePay"
+			parameterType = "int"
+			resultType = "int">
+			
+		SELECT
+			SUM(order_sheet_price)
+		FROM shopping_order_sheet
+		WHERE order_total_no = #{orderTotalNo}	
+	
 	</select>
 
 

@@ -56,6 +56,12 @@ public interface GoodsOrderMapper {
 	// 주문 생성
 	int oInsertGoodsOrder(HashMap<String, Object> paramMap);
 	
+	// 주문서 가격 수정
+	int oUpdateOrderSheetPrice(int orderSheetNo);
+	
+	// 주문한 수량 재고 차감
+	int oUpdateOrderQuantity(HashMap<String, Object> paramMap);
+	
 	// 한 회사 한 종류의 상품 끝
 	
 	
@@ -65,15 +71,14 @@ public interface GoodsOrderMapper {
 	
 	// 장바구니의 companyId, optionNo, orderQuantity 리스트 추출
 	ArrayList<HashMap<String, Object>> oSelectCartInfoList();
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	// 하나 or 여러 회사의 여러 종류의 상품 끝
+	
+
+
+	
+	// 결제한 총 페이
+	int oSelectUsePay(int orderTotalNo);
 	
 	
 	
