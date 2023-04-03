@@ -1,4 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.shop_c.mapper.OrderSheetMapper">
+
+	<!-- 주문상세내역 출력 -->
+	
+	
+	<!-- 주문서목록 출력 -->
+	<select id="selectTotalOrder"
+			parameterType="java.lang.String"
+			resultType="java.util.Map">
+		SELECT ot.order_total_no orderTotalNo 
+			, 
+		 	 (SELECT SUM(order_sheet_price)
+			 	FROM shopping_order_sheet) orderTotalSum
+			, COUNT(go.goods_option_no) orderTotalOption
+			, g.goods_name goodsName
+			, img.goods_img_origin_name goodsImgOriginName
+			, ot.order_total_state orderTotalState
+			, ot.createdate createdate
+		FROM shopping_order_total ot
+		INNER JOIN shopping_order_sheet os
+		ON ot.order_total_no=os.order_total_no
+		INNER JOIN shopping_goods_order go
+		ON os.order_sheet_no=go.order_sheet_no
+		INNER JOIN shopping_goods_option op
+		ON go.goods_option_no=op.goods_option_no
+		INNER JOIN shopping_goods g
+		ON op.goods_no=g.goods_no
+		INNER JOIN shopping_goods_img img
+		ON op.goods_no=img.goods_no
+		WHERE os.customer_id=#{customerId}
+		GROUP BY ot.order_total_no		
+	</select>
+
 </mapper>

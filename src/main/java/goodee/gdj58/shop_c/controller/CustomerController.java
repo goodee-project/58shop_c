@@ -20,16 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class CustomerController {
 	@Autowired CustomerService customerService;
-	
-	
-	/* 마이페이지 ------------------------------------------------------------------------------------*/
-	
-	@GetMapping("/login/mypageMain")
-	public String mypageMain(HttpSession session) {
-		return "customer/mypageMain";
-	}
-	
-	
+		
+
 	/* 회원가입 -------------------------------------------------------------------------------------*/
 	
 	// 회원가입 액션

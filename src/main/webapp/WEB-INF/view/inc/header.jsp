@@ -74,7 +74,7 @@
 				
 				<c:choose>
 					<c:when test="${loginCustomer != null}">
-						<li><span><a href="${pageContext.request.contextPath}/login/mypageMain">마이페이지</a></span></li>
+						<li><span><a href="${pageContext.request.contextPath}/login/mypage">마이페이지</a></span></li>
 					</c:when>
 					<c:otherwise>
 						<li><span><a href="${pageContext.request.contextPath}/customer/signup">회원가입</a></span></li>

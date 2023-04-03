@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class OrderSheet { // 주문서
 	private int orderSheetNo;
+	private int orderTotalNo; // 여러 업체의 주문서를 묶은 통합주문서
 	private String companyId;
 	private int customerAddressNo; // 배송지 번호
 	private String customerId;

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,7 +77,7 @@
 					</a>
 				</div>
 				<div class="col-lg-6 col-md-6">
-					<a class="box_topic" href="${pageContext.request.contextPath}/customer/chat">
+					<a class="box_topic" href="${pageContext.request.contextPath}/login/chat">
 						<i class="pe-7s-help2"></i>
 						<h3>채팅</h3>
 					</a>
@@ -90,20 +91,31 @@
 			<div class="container margin_60_35">
 				<div class="main_title_3">
 					<span><em></em></span>
-					<h2>주문내역</h2>
+					<h2>주문목록</h2>
 				</div>
-				<div class="list_articles add_bottom_30 clearfix">
-					<ul>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Et dicit vidisse epicurei pri</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Ad sit virtute rationibus efficiantur</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Partem vocibus omittam pri ne</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Case debet appareat duo cu</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Impedit torquatos quo in</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Nec omnis alienum no</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Quo eu soleat facilisi menandri</a></li>
-						<li><a href="#0"><i class="icon_documents_alt"></i>Et dicit vidisse epicurei pri</a></li>
-					</ul>
-				</div>
+				<table>
+					<c:forEach var="i" items="${selectTotalOrder}">
+						<tr>
+							<td>${i.orderTotalNo}</td>
+							<td>
+								<a href="${pageContext.request.contextPath}/login/orderSheet?orderTotalNo=${i.orderTotalNo}">
+									<img src="${pageContext.request.contextPath}/upload/goodsImg/${i.goodsImgOriginName}" width="80" height="80">
+								</a>
+							</td>
+							<td>
+								<a href="${pageContext.request.contextPath}/login/orderSheet?orderTotalNo=${i.orderTotalNo}">
+									${i.goodsName} 외 ${i.orderTotalOption-1}건
+								</a>
+							</td>
+							<td>${i.orderTotalState}</td>
+							<td>
+								<c:set var="orderdate" value="${i.createdate}" />
+								${fn:substring(orderdate,0,10)}							
+							</td>							
+						</tr>						
+					</c:forEach>
+				</table>
+				
 				<!-- /list_articles -->
 			</div>
 			<!-- /container -->

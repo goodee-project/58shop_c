@@ -3,7 +3,7 @@
 
 
 <aside class="col-lg-3" id="sidebar">
-		<div style="position: relative; z-index: 2;">
+		<div style="position: relative; z-index: 8;">
 			<nav class="custom-menu">
 			<ul>
 				

@@ -123,7 +123,7 @@
 				<c:import url="/WEB-INF/view/inc/sideCategory.jsp"></c:import>
 					
 
-					<div class="col-lg-9" style="position: relative; z-index: 1;">
+					<div class="col-lg-9">
 						<div class="row g-0 custom-search-input-2 inner">
 							<div class="col-lg-7">
 								<div class="form-group">
